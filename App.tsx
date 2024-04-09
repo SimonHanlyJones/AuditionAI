@@ -1,25 +1,39 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import  GetPDFButton from '@/components/getPdfButton';
-import HelloWorldButtonFromAPI from '@/components/testButtons';
+import {
+  ProjectSelectScreen,
+  CharacterSelectScreen,
+  ProjectScreen,
+} from "@/screens";
+import { NavigationContainer, DarkTheme } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { COLORS } from "./primitives/colors";
 
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      {/* <GetPDFButton /> */}
-      <HelloWorldButtonFromAPI />
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer theme={DarkTheme}>
+      <Stack.Navigator
+        initialRouteName="ProjectSelect"
+        screenOptions={{
+          cardStyle: { backgroundColor: COLORS.screenBackground },
+        }}
+      >
+        <Stack.Screen
+          name="ProjectSelect"
+          component={ProjectSelectScreen}
+          options={{ title: "Projects" }}
+        />
+        <Stack.Screen
+          name="CharacterSelect"
+          component={CharacterSelectScreen}
+          options={{ title: "Select Character" }}
+        />
+        <Stack.Screen
+          name="Project"
+          component={ProjectScreen}
+          options={{ title: "Project" }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
