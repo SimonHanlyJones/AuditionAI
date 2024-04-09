@@ -1,6 +1,7 @@
 import {
   ProjectSelectScreen,
   CharacterSelectScreen,
+  SceneSelectScreen,
   ProjectScreen,
 } from "@/screens";
 import { NavigationContainer, DarkTheme } from "@react-navigation/native";
@@ -27,6 +28,11 @@ export default function App() {
           name="CharacterSelect"
           component={CharacterSelectScreen}
           options={{ title: "Select Character" }}
+        />
+        <Stack.Screen
+          name="SceneSelect"
+          component={SceneSelectScreen}
+          options={{ title: "Select Scene" }}
         />
         <Stack.Screen
           name="Project"

@@ -1,18 +1,13 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { Text, View } from "react-native";
+import { BASE_STYLES } from "@/primitives";
 
 export function PerformTab() {
   return (
-    <View style={styles.container}>
-      <Text>PERFORM</Text>
+    <View style={BASE_STYLES.screenContainer}>
+      <Text>
+        This tab will also need the new script, and will use the trickier
+        voice/listening tech
+      </Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

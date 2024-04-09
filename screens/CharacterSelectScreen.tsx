@@ -1,25 +1,27 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { NavigationProp } from "@react-navigation/core";
+import { View } from "react-native";
+import { BASE_STYLES } from "@/primitives";
+import { ButtonList } from "@/components/ButtonList";
+import { useNavigation, useRoute, Screens } from "@/navigation";
 
 export function CharacterSelectScreen() {
-  const navigation =
-    useNavigation<NavigationProp<Record<string, object | undefined>>>();
+  const navigation = useNavigation<Screens.CharacterSelect>();
+  const route = useRoute<Screens.CharacterSelect>();
+  const { project } = route.params;
+
+  console.log("project", project);
 
   return (
-    <View style={styles.container}>
-      <Text>CHARACTER SELECT</Text>
-      <Button title="GO BACK" onPress={() => navigation.navigate("Project")} />
-      <StatusBar style="auto" />
+    <View style={BASE_STYLES.screenContainer}>
+      <ButtonList
+        items={project.characters.map((character) => ({
+          text: character,
+          onPress: () =>
+            navigation.navigate("SceneSelect", {
+              project,
+              characterName: character,
+            }),
+        }))}
+      />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

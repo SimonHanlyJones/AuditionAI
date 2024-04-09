@@ -1,25 +1,13 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { NavigationProp } from "@react-navigation/core";
-import {
-  createBottomTabNavigator,
-  type BottomTabNavigationOptions,
-} from "@react-navigation/bottom-tabs";
-import { COLORS } from "@/primitives/colors";
+import { Text, View } from "react-native";
+import { BASE_STYLES } from "@/primitives";
 
 export function ScriptTab() {
   return (
-    <View style={styles.container}>
-      <Text>SCRIPT</Text>
+    <View style={BASE_STYLES.screenContainer}>
+      <Text>
+        We'll need to generate the script for this tab, we can start doing that
+        when we come into the projects screen
+      </Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

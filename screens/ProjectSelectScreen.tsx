@@ -1,64 +1,26 @@
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Button,
-  FlatList,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { NavigationProp } from "@react-navigation/core";
-import { COLORS, PALETTE } from "@/primitives/colors";
-
-const Projects = [
-  { id: "1", name: "Project 1" },
-  { id: "2", name: "Project 2" },
-  { id: "3", name: "Project 3" },
-  // Add more projects as needed
-];
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { useState } from "react";
+import { useNavigation, Screens } from "@/navigation";
+import { COLORS, PALETTE, BASE_STYLES } from "@/primitives";
+import { getProjects } from "./projects";
+import { ButtonList } from "@/components/ButtonList";
 
 export function ProjectSelectScreen() {
-  const navigation =
-    useNavigation<NavigationProp<Record<string, object | undefined>>>();
+  const navigation = useNavigation<Screens.ProjectSelect>();
+
+  const [projects, setProjects] = useState(getProjects());
 
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: "column",
-        }}
-      >
-        {[0, 1, 2].map((i) => {
-          return (
-            <TouchableOpacity
-              onPress={() => console.log(`${i} Pressed!`)}
-              style={{
-                backgroundColor: COLORS.contentPrimary,
-                height: 60,
-                margin: 4,
-                borderColor: COLORS.contentSecondary,
-                borderWidth: 4,
-              }}
-              key={i}
-            />
-          );
-        })}
-      </View>
-      <View style={{ height: 80 }}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: COLORS.importantPrimary,
-            borderRadius: 10,
-            padding: 10,
-            margin: 10,
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          onPress={() => navigation.navigate("CharacterSelect")}
-        >
+    <View style={BASE_STYLES.screenContainer}>
+      <ButtonList
+        items={projects.map((project) => ({
+          text: project.title,
+          onPress: () => navigation.navigate("CharacterSelect", { project }),
+        }))}
+      />
+      {/* TODO: below button should have a modal popup which handles the 'add project' flow */}
+      <View style={{ width: "100%" }}>
+        <TouchableOpacity style={styles.addProjectButton}>
           <Text
             style={{ color: PALETTE.DARKEST, fontSize: 18, fontWeight: "bold" }}
           >
@@ -71,9 +33,12 @@ export function ProjectSelectScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  addProjectButton: {
+    backgroundColor: COLORS.importantPrimary,
+    borderRadius: 10,
     justifyContent: "center",
-    flexDirection: "column",
+    alignItems: "center",
+    height: 60,
+    margin: 8,
   },
 });
