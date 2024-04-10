@@ -1,24 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  ProjectSelectScreen,
+  CharacterSelectScreen,
+  SceneSelectScreen,
+  ProjectScreen,
+} from "@/screens";
+import { NavigationContainer, DarkTheme } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { COLORS } from "./primitives/colors";
 
-import { ScriptAnalysisComponent } from '@/components/testButtons';
-
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <ScriptAnalysisComponent />
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer theme={DarkTheme}>
+      <Stack.Navigator
+        initialRouteName="ProjectSelect"
+        screenOptions={{
+          cardStyle: { backgroundColor: COLORS.screenBackground },
+        }}
+      >
+        <Stack.Screen
+          name="ProjectSelect"
+          component={ProjectSelectScreen}
+          options={{ title: "Projects" }}
+        />
+        <Stack.Screen
+          name="CharacterSelect"
+          component={CharacterSelectScreen}
+          options={{ title: "Select Character" }}
+        />
+        <Stack.Screen
+          name="SceneSelect"
+          component={SceneSelectScreen}
+          options={{ title: "Select Scene" }}
+        />
+        <Stack.Screen
+          name="Project"
+          component={ProjectScreen}
+          options={{ title: "Project" }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
