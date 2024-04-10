@@ -5,7 +5,7 @@ import * as FileSystem from 'expo-file-system';
 
 
 /**
- * Calls the 'Hello World' test function in Firebase Functions function and retrieves the response message.
+ * Calls the 'Hello World' test function in Firebase Functions function and retrieves the response message. Useful for testing the Firebase infrastructure in a way that is decoupled from the Gemini API
  *
  * @return {Promise<string>} The response message from the 'Hello World' function.
  */
@@ -24,6 +24,14 @@ export async function callHelloWorldFunction() {
     console.log(message);
     return message;
   }
+  /**
+   * Function to get a pdf or txt file from the file system.
+   * 
+   * PDF files are converted to text using an API call to the Firebase function "pdfToText". 
+   * 
+   * Text files are returned as is. 
+   * @return {Promise<any>} 
+   */
   export const getScriptAndConvert = async () => {
     let result = await DocumentPicker.getDocumentAsync({
       type: ['application/pdf', 'text/plain'], // Allow both PDF and text files
@@ -46,7 +54,13 @@ export async function callHelloWorldFunction() {
 };
 
 
-export async function uploadPdfForExtraction(pdfUri: string) {
+/**
+ * Asynchronously uploads a PDF for extraction and returns the extracted text data.
+ *
+ * @param {string} pdfUri - The URI of the PDF to be uploaded for extraction
+ * @return {Promise<string>} The extracted text data from the PDF
+ */
+async function uploadPdfForExtraction(pdfUri: string) {
     try {
       const response = await fetch(pdfUri);
       const blob = await response.blob();
@@ -74,6 +88,16 @@ export async function uploadPdfForExtraction(pdfUri: string) {
   }
 
 
+/**
+ * Performs an asynchronous API call to the Firebase Fucntion backend, which is a wrapper for the Gemini service
+ * to generate content based on a given script and prompt.
+ * 
+ * This is a helper function to call the Gemini service, and is intended for use in other functions which are exported for use.
+ *
+ * @param {string} script - The script input for the Gemini service.
+ * @param {string} prompt - The prompt input for the Gemini service.
+ * @return {string} The generated content based on the script and prompt.
+ */
 async function callGemini(script : string, prompt : string) {
   // url for local funciton emulation
   // const url = `http://127.0.0.1:5001/audition-a-i-ak9x5l/us-central1/callGemini`;
@@ -102,6 +126,12 @@ async function callGemini(script : string, prompt : string) {
   }
 
 };
+/**
+ * Retrieves the title and characters from a script using the callGemini API via the Firebase Function instance and parsing the response into JSON.
+ *
+ * @param {string} script - The script to analyze and extract title and characters from.
+ * @return {Promise<object>} A promise that resolves to an object with the title and characters extracted from the script.
+ */
 export async function getTitleAndCharacters(script: string) {
   const prompt = `Read the following script, determine its title and the characters in the script and give me a json object in this format {"title": ..., "characters": [...]} with no explanation. The script is: `
   const response = await callGemini(script, prompt)
@@ -109,6 +139,13 @@ export async function getTitleAndCharacters(script: string) {
   return await parseJSONString(response);
 }
 
+/**
+ * Retrieves an analysis of a character from a script by sending a prompt to a Gemini API via our Firebase Functions and parsing the response into JSON.
+ *
+ * @param {string} script - The script content to analyze.
+ * @param {string} characterName - The name of the character to analyze.
+ * @return {Promise<any>} A Promise that resolves to a JSON object containing insights about the character based on the script content.
+ */
 export async function getAnalysis(script: string, characterName: string) {
   const prompt = `You are my acting coach. I am cast to play ${characterName} in the script attached. I want a full breakdown of this character, derived exclusively from the script provided. Your goal is to provide me every insight I need to bring ${characterName} with emotional honesty and inegrity. I can only do this if you provide insight into ${characterName} and explain them in detail. Please analyze the script and give me a JSON object with the following headings:
   1. **Character Overview**: Provide an overview of ${characterName} as depicted in the script. Include any notable features that facilitate an understanding of their identity and their purpose in the narrative.
@@ -153,6 +190,12 @@ export async function getAnalysis(script: string, characterName: string) {
   return await parseJSONString(response);
 }
 
+/**
+ * Asynchronously calls the Gemini API via our Firebase Functions to validate and fix the provided JSON string, then returns the corrected JSON.
+ *
+ * @param {string} json - The JSON string to be validated and fixed.
+ * @return {Promise<string>} The corrected JSON string.
+ */
 export async function fixJSONGeminiCall(json: string) {
   const prompt = `Validate and fix the following JSON string, return only the corrected JSON and no additional characters: `
   const response = await callGemini(json, prompt)
@@ -160,6 +203,12 @@ export async function fixJSONGeminiCall(json: string) {
   return response
 }
 
+/**
+ * Asynchronously parses a JSON string after trimming, and handles any errors by throwing an "Invalid JSON string" error.
+ *
+ * @param {string} jsonString - The JSON string to be parsed
+ * @return {Promise<any>} A promise that resolves to the parsed JSON object
+ */
 async function parseJSONString(jsonString: string) {
   try {
     // console.log("raw string", jsonString)
@@ -170,6 +219,12 @@ async function parseJSONString(jsonString: string) {
     throw new Error("Invalid JSON string");
   }
 }
+/**
+ * Trims the input JSON string, removing any leading or trailing characters that are not part of the JSON object.
+ *
+ * @param {string} jsonString - The input JSON string to be trimmed.
+ * @return {string} The trimmed JSON string.
+ */
 async function trimJSONString(jsonString: string) {
   const startIndex = jsonString.indexOf('{');
   const endIndex = jsonString.lastIndexOf('}');
