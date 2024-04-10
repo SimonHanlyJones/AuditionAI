@@ -168,15 +168,15 @@ export const getTitleAndCharacters = functions.https.onRequest({ secrets: [googl
     });
 
 
-    export const callGemini = functions.https.onRequest({ secrets: [googleGeminiApiKey]}, async (request: any, response: any) => {
+export const callGemini = functions.https.onRequest({ secrets: [googleGeminiApiKey]}, async (request: any, response: any) => {
 
-        if (request.method === "POST" && request.headers.authorization === "duckduck") {
-            const prompt = request.body.prompt;
-            const script = request.body.script;
-            
-            const aiResponse = await sendOneShotAPIRequest(prompt, script)
-            response.send(aiResponse);
-        } else {
-            response.status(401).send("Unauthorized");
-        }
-    });
+    if (request.method === "POST" && request.headers.authorization === "duckduck") {
+        const prompt = request.body.prompt;
+        const script = request.body.script;
+        
+        const aiResponse = await sendOneShotAPIRequest(prompt, script)
+        response.send(aiResponse);
+    } else {
+        response.status(401).send("Unauthorized");
+    }
+});
