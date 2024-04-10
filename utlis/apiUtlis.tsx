@@ -5,7 +5,8 @@ import * as FileSystem from 'expo-file-system';
 
 
 /**
- * Calls the 'Hello World' test function in Firebase Functions function and retrieves the response message. Useful for testing the Firebase infrastructure in a way that is decoupled from the Gemini API
+ * Calls the 'Hello World' test function in Firebase Functions and retrieves the response message. 
+ * Useful for testing the Firebase infrastructure in a way that is decoupled from the Gemini API
  *
  * @return {Promise<string>} The response message from the 'Hello World' function.
  */
