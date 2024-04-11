@@ -5,6 +5,8 @@ import { COLORS, PALETTE, BASE_STYLES } from "@/primitives";
 import { getProjects } from "./projects";
 import { ButtonList } from "@/components/ButtonList";
 
+import { ScriptAnalysisComponentDemoComponent } from '@/components/testButtons';
+
 export function ProjectSelectScreen() {
   const navigation = useNavigation<Screens.ProjectSelect>();
 
@@ -12,6 +14,7 @@ export function ProjectSelectScreen() {
 
   return (
     <View style={BASE_STYLES.screenContainer}>
+      <ScriptAnalysisComponentDemoComponent />
       <ButtonList
         items={projects.map((project) => ({
           text: project.title,

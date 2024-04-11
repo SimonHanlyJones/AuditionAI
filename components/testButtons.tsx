@@ -7,17 +7,6 @@ import { View, Button, Text } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
 import { Picker } from '@react-native-picker/picker';
 
-// interface AnalysisData {
-//   CharacterOverview: string;
-//   PersonalityTraits: Array<{ Trait: string; Description: string }>;
-//   PhysicalTraits: string;
-//   CostumeChoices: string;
-//   MainRelationships: Array<{ Name: string; Relationship: string; Description: string }>;
-//   EmotionalCharacterArc: string;
-//   ImportantScenes: Array<{ Scene: string; Description: string }>;
-//   SceneAppearances: Array<{ Number: string; Scene: string }>;
-//   Otherinsights: string;
-// }
 
 export const HelloWorldButtonFromAPI = () => {
   return <Button title="Call API" onPress={callHelloWorldFunction} />;
@@ -36,7 +25,7 @@ export const getAnalysisButton = (script: string, character: string) => {
 };
 
 
-export const ScriptAnalysisComponent = () => {
+export const ScriptAnalysisComponentDemoComponent = () => {
   const [script, setScript] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [characters, setCharacters] = useState<string[]>([]);
