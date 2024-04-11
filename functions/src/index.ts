@@ -11,29 +11,6 @@
 import * as logger from "firebase-functions/logger";
 const functions = require('firebase-functions/v2');
 
-// const { defineSecret } = require('firebase-functions/params');
-
-// Define the secret
-// const geminiApiKey = defineSecret('GOOGLE_GEMINI_API_KEY');
-
-// const { defineString } = require('firebase-functions/params');
-// const { onInit } = require('firebase-functions/v2/core');
-
-// const geminiAiKeyConfig = defineString('GOOGLE_GEMINI_API_KEY');
-// const voiceSecret = defineSecret('GOOGLE_VOICE_API_KEY');
-
-// interface Part {
-//     text: string;
-// }
-
-// interface Content {
-//     parts: Part[];
-// }
-
-
-
-// let voiceAiKey: string;
-
 
 
 const PDFParser = require('pdf2json');
@@ -104,14 +81,15 @@ export const getScriptAndConvert = functions.https.onRequest(async (request: any
 
 // Gemini Helper functions
 async function generateContent(contents: any) {
-    const model = "gemini-pro"
-    // const model = "gemini-1.5-pro-latest"
+    // const model = "gemini-pro"
+    const model = "gemini-1.5-pro-latest"
     
 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${googleGeminiApiKey.value()}`;
 
     logger.info("url", url);
     logger.info("contents", contents);
+    const safetySettings = await packSafetySettings();
     
     try {
       const response = await fetch(url, {
@@ -119,7 +97,10 @@ async function generateContent(contents: any) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ contents: contents }),
+        body: JSON.stringify({ 
+            contents: contents, 
+            safetySettings: safetySettings
+        }),
       });
   
       if (!response.ok) {
@@ -152,6 +133,28 @@ async function packPrompt(prompt: string, script: string) {
     return oneShotContents;
 }
 
+async function packSafetySettings() {
+    const safetySettings = [
+        {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "threshold": "BLOCK_NONE"
+        },
+        {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "threshold": "BLOCK_NONE"
+        },
+        {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "threshold": "BLOCK_NONE"
+        },
+        {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "threshold": "BLOCK_NONE"
+        }
+      ];
+      return safetySettings;
+    };
+
 export const getTitleAndCharacters = functions.https.onRequest({ secrets: [googleGeminiApiKey]}, async (request: any, response: any) => {
 
         // console.info("This is a info message.");
@@ -168,7 +171,7 @@ export const getTitleAndCharacters = functions.https.onRequest({ secrets: [googl
     });
 
 
-export const callGemini = functions.https.onRequest({ secrets: [googleGeminiApiKey]}, async (request: any, response: any) => {
+export const callGemini = functions.https.onRequest({ timeoutSeconds: 500, secrets: [googleGeminiApiKey]}, async (request: any, response: any) => {
 
     if (request.method === "POST" && request.headers.authorization === "duckduck") {
         const prompt = request.body.prompt;

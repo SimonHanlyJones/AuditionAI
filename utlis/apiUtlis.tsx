@@ -100,7 +100,7 @@ async function uploadPdfForExtraction(pdfUri: string) {
  * @return {string} The generated content based on the script and prompt.
  */
 async function callGemini(script : string, prompt : string) {
-  // url for local funciton emulation
+  // url for local function emulation
   // const url = `http://127.0.0.1:5001/audition-a-i-ak9x5l/us-central1/callGemini`;
   
   const url = `https://callgemini-7dxvm6ugja-uc.a.run.app`;
@@ -118,16 +118,24 @@ async function callGemini(script : string, prompt : string) {
     if (!response.ok) {
       throw new Error(`API call failed: ${response.statusText}`);
     }
-  
     const data = await response.json();
-    return data.candidates[0].content.parts[0].text;
+
+    // Check for meaningful AI output
+    if (!data.candidates || data.candidates.length === 0 || !data.candidates[0].content || !data.candidates[0].content.parts || data.candidates[0].content.parts.length === 0 || !data.candidates[0].content.parts[0].text) {
+      throw new Error('No meaningful AI output found.');
+    }
+    
+    // If there is meaningful AI output, extract it
+    const content = data.candidates[0].content.parts[0].text;
+
+
+    return content;
   } catch (error) {
     console.error('Error during API call:', error);
     throw error;
   }
-
 };
-/**
+/**e
  * Retrieves the title and characters from a script using the callGemini API via the Firebase Function instance and parsing the response into JSON.
  *
  * @param {string} script - The script to analyze and extract title and characters from.
@@ -147,10 +155,10 @@ export async function getTitleAndCharacters(script: string) {
  * @param {string} characterName - The name of the character to analyze.
  * @return {Promise<any>} A Promise that resolves to a JSON object containing insights about the character based on the script content.
  */
-export async function getAnalysis(script: string, characterName: string) {
-  const prompt = `You are my acting coach. I am cast to play ${characterName} in the script attached. I want a full breakdown of this character, derived exclusively from the script provided. Your goal is to provide me every insight I need to bring ${characterName} with emotional honesty and inegrity. I can only do this if you provide insight into ${characterName} and explain them in detail. Please analyze the script and give me a JSON object with the following headings:
-  1. **Character Overview**: Provide an overview of ${characterName} as depicted in the script. Include any notable features that facilitate an understanding of their identity and their purpose in the narrative.
 
+export async function getAnalysis(script: string, characterName: string) {
+  const prompt = `You are my acting coach. I am cast to play ${characterName} in the script attached. I want a full breakdown of this character, derived exclusively from the script provided. Your goal is to provide me every insight I need to bring ${characterName} with emotional honesty and integrity. I can only do this if you provide insight into ${characterName} and explain them in detail. Please analyze the script and give me a JSON object with the following headings:
+  
   2. **Personality Traits**: Based on the script, list the key personality traits of ${characterName}, include a description of how each of these traits influence their behavior in the story.
   
   3. **Physical Traits**: Describe ${characterName}'s physical appearance and attributes as depicted in the script. Include any notable features that are crucial to portraying the character effectively.
@@ -163,33 +171,37 @@ export async function getAnalysis(script: string, characterName: string) {
   
   7. **Important Scenes**: Identify and explain the scenes from the script where ${characterName} experiences significant change or development. Describe the context of these scenes and how they contribute to the character's arc. Explore the nuance of the scenes and ${characterName}'s perspective in detail, deliver as much insight as possible to your actor.
   
-  8. **Scene Appearances**: An ordered list every scene from the script in which ${characterName} appears, provide a number that corresponds to the order in which the scene appears and a brief description of each scene to enable the actor to understand the context of the scene me to idenify it.
+  8. **Scene Appearances**: An ordered list every scene from the script in which ${characterName} appears, provide a number that corresponds to the order in which the scene appears and a brief description of each scene to enable the actor to identify it.
 
-  9. **Other insights**: Provide any additional insights or background information that can enchance my performance.
+  9. **Other insights**: Provide any additional insights or background information that can enhance my performance.
   
   The JSON object should be structured as follows:
   
   {
-      "CharacterOverview:": ...,
-      "PersonalityTraits": [{Trait: ..., Description: ...}],
-      "PhysicalTraits": ...,
-      "CostumeChoices": ...,
-      "MainRelationships": [{"Name": ...}, {"Relationship": ...}, {"Description": ...}],
-      "EmotionalCharacterArc": ...,
-      "ImportantScenes": [{"Scene": ..., "Description": ...}],
-      "SceneAppearances": [{"Number": ...,"Scene": ...}],
-      "Otherinsights": ...
+      "CharacterOverview:": string,
+      "PersonalityTraits": [{Trait: string, Description: string}],
+      "PhysicalTraits": [{Trait: string, Description: string}],
+      "CostumeChoices": string,
+      "MainRelationships": [{"Name": string}, {"Relationship": string}, {"Description": string}],
+      "EmotionalCharacterArc": string,
+      "ImportantScenes": [{"Scene": string, "Description": string}],
+      "SceneAppearances": [{"Number": int, "Scene": string}],
+      "OtherInsights": string
   }
   
-  Please provide the analysis with no additional explanation, ensuring all insights are derived from the script content I have attached. Provide valid JSON in the format above.`;
+  Please provide the analysis with no additional explanation, ensuring all insights are derived from the script content I have attached. Provide valid JSON in the format above.
+  
+  SCRIPT:
+  `;
 
   console.log("analysis sent, waiting for response")
   var response = await callGemini(script, prompt)
-  console.log("response recived, parsing JSON")
-  response = await fixJSONGeminiCall(response)
-  console.log("parsed JSON: ", response)
+  console.log("response received, parsing JSON")
+  // response = await fixJSONGeminiCall(response)
+  // console.log("parsed JSON: ", response)
   return await parseJSONString(response);
 }
+
 
 /**
  * Asynchronously calls the Gemini API via our Firebase Functions to validate and fix the provided JSON string, then returns the corrected JSON.
@@ -236,3 +248,30 @@ async function trimJSONString(jsonString: string) {
 
   return jsonString.substring(startIndex, endIndex + 1);
 }
+
+export async function getSceneText(script: string, sceneDescription: string) {
+  const prompt = `Your job is to read the script set out below, identify the scene that matches this description: 
+  
+  ${sceneDescription}
+
+  You must parse the full text of this scene into a JSON object with the following headings:
+  { "Dialogue":
+    [
+      "Character": string,
+      "Text": string
+    ]
+  }
+  
+  Provide only the characters dialog, and any stage directions as a separate character. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations. End the scene in the proper place, once there is a location change. Provide valid JSON in the format above.
+  
+  SCRIPT:
+  `;
+
+  console.log("analysis sent, waiting for response")
+  var response = await callGemini(script, prompt)
+  console.log("response received, parsing JSON")
+  // response = await fixJSONGeminiCall(response)
+  // console.log("parsed JSON: ", response)
+  return await parseJSONString(response);
+}
+
