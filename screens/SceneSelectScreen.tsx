@@ -1,9 +1,6 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, Button } from "react-native";
-import { useState } from "react";
-import { ButtonList } from "@/components/ButtonList";
+import { View, ScrollView, Pressable, Text} from "react-native";
+import { styles } from "@/primitives";
 import { useNavigation, useRoute, Screens } from "@/navigation";
-import { BASE_STYLES } from "@/primitives";
 import { getCharacterInfo } from "./characters";
 
 export function SceneSelectScreen() {
@@ -18,19 +15,25 @@ export function SceneSelectScreen() {
     ...(character.additionalScenes || []),
   ];
 
+  const scenesItems = characterScenes.map((scene) => ({
+      text: scene.title,
+      onPress: () =>
+        navigation.navigate("Project", {
+          project,
+          character,
+          scene,
+        }),
+  }));
+
   return (
-    <View style={BASE_STYLES.screenContainer}>
-      <ButtonList
-        items={characterScenes.map((scene) => ({
-          text: scene.title,
-          onPress: () =>
-            navigation.navigate("Project", {
-              project,
-              character,
-              scene,
-            }),
-        }))}
-      />
+    <View style={styles.screenContainer}>
+      <ScrollView fadingEdgeLength={50}>
+        {scenesItems.map((item, index) => (
+          <Pressable key={index} onPress={item.onPress} style={({pressed}) => [styles.scene, pressed && styles.scenePressed]}>
+              <Text style={styles.sceneText} numberOfLines={1} ellipsizeMode={'tail'}>{item.text}</Text>
+          </Pressable>
+      ))}
+      </ScrollView>
     </View>
   );
 }

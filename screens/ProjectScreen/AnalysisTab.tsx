@@ -1,9 +1,8 @@
-import { View } from "react-native";
-import { ButtonList } from "@/components/ButtonList";
+import { View, ScrollView, Pressable, Text} from "react-native";
+import { styles } from "@/primitives";
 import { useContext } from "react";
 import { type CharacterInfo } from "../characters";
 import { TabContext } from "./TabContext";
-import { BASE_STYLES } from "@/primitives";
 
 function addItemIfInfoPresent(
   analysisItems: { text: string; onPress: () => void }[],
@@ -58,14 +57,22 @@ export function AnalysisTab() {
     "otherInsights",
     "Other Insights"
   );
+
+  const analysisItemsMap = analysisItems.map((item) => ({
+    text: item.text,
+    onPress: item.onPress,
+      }),
+  );
+
   return (
-    <View style={BASE_STYLES.screenContainer}>
-      <ButtonList
-        items={analysisItems.map((item) => ({
-          text: item.text,
-          onPress: item.onPress,
-        }))}
-      />
+    <View style={styles.screenContainer}>
+      <ScrollView fadingEdgeLength={50}>
+        {analysisItemsMap.map((item, index) => (
+          <Pressable key={index} onPress={item.onPress} style={({pressed}) => [styles.analysis, pressed && styles.analysisPressed]}>
+              <Text style={styles.analysisText} numberOfLines={1} adjustsFontSizeToFit>{item.text}</Text>
+          </Pressable>
+      ))}
+      </ScrollView>
     </View>
   );
 }

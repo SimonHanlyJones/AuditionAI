@@ -4,25 +4,37 @@ import {
   SceneSelectScreen,
   ProjectScreen,
 } from "@/screens";
-import { NavigationContainer, DarkTheme } from "@react-navigation/native";
+import { NavigationContainer} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { COLORS } from "./primitives/colors";
+import { navigationStyle } from "@/primitives";
+import { styles } from "@/primitives";
+import { TouchableOpacity, Text } from "react-native";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer theme={DarkTheme}>
+    <NavigationContainer theme={navigationStyle}>
       <Stack.Navigator
         initialRouteName="ProjectSelect"
         screenOptions={{
-          cardStyle: { backgroundColor: COLORS.screenBackground },
+          headerTitleAlign: 'center'
         }}
       >
         <Stack.Screen
           name="ProjectSelect"
           component={ProjectSelectScreen}
-          options={{ title: "Projects" }}
+          options={{ 
+            title: "Projects", 
+            headerRight: () => (
+              <TouchableOpacity
+                style={styles.addProject}
+                onPress={() => alert('Add Project')}
+              >
+                <Text style={styles.addProjectText}>+</Text>
+              </TouchableOpacity>
+            )
+          }}
         />
         <Stack.Screen
           name="CharacterSelect"

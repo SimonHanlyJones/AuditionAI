@@ -1,6 +1,5 @@
-import { View } from "react-native";
-import { BASE_STYLES } from "@/primitives";
-import { ButtonList } from "@/components/ButtonList";
+import { View, ScrollView, Pressable, Text} from "react-native";
+import { styles } from "@/primitives";
 import { useNavigation, useRoute, Screens } from "@/navigation";
 
 export function CharacterSelectScreen() {
@@ -10,18 +9,24 @@ export function CharacterSelectScreen() {
 
   console.log("project", project);
 
+  const charactersItems = project.characters.map((character) => ({
+    text: character,
+    onPress: () =>
+      navigation.navigate("SceneSelect", {
+        project,
+        characterName: character,
+      }),
+  }));
+
   return (
-    <View style={BASE_STYLES.screenContainer}>
-      <ButtonList
-        items={project.characters.map((character) => ({
-          text: character,
-          onPress: () =>
-            navigation.navigate("SceneSelect", {
-              project,
-              characterName: character,
-            }),
-        }))}
-      />
+    <View style={styles.screenContainer}>
+      <ScrollView fadingEdgeLength={50}>
+        {charactersItems.map((item, index) => (
+          <Pressable key={index} onPress={item.onPress} style={({pressed}) => [styles.character, pressed && styles.characterPressed]}>
+              <Text style={styles.characterText} adjustsFontSizeToFit>{item.text}</Text>
+          </Pressable>
+      ))}
+      </ScrollView>
     </View>
   );
 }
