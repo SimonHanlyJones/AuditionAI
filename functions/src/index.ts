@@ -48,7 +48,7 @@ export const getScriptAndConvert = functions.https.onRequest(async (request: any
 
             pdfParser.on("pdfParser_dataError", (err: Error) => {
                 console.error(err);
-                response.status(500).send(`Failed to extract text from PDF: ${err.message}`);
+                response.status(500).send(`Failed to extract text from PDF : ${err.message}`);
             });
 
             pdfParser.on("pdfParser_dataReady", (pdfData: any) => {
@@ -155,20 +155,20 @@ async function packSafetySettings() {
       return safetySettings;
     };
 
-export const getTitleAndCharacters = functions.https.onRequest({ secrets: [googleGeminiApiKey]}, async (request: any, response: any) => {
+// export const getTitleAndCharacters = functions.https.onRequest({ secrets: [googleGeminiApiKey]}, async (request: any, response: any) => {
 
-        // console.info("This is a info message.");
-        // console.warn("This is an warn message.");
-        if (request.method === "POST" && request.headers.authorization === "duckduck") {
-            const prompt = request.body.prompt;
-            const script = request.body.script;
+//         // console.info("This is a info message.");
+//         // console.warn("This is an warn message.");
+//         if (request.method === "POST" && request.headers.authorization === "duckduck") {
+//             const prompt = request.body.prompt;
+//             const script = request.body.script;
             
-            const aiResponse = await sendOneShotAPIRequest(prompt, script)
-            response.send(aiResponse);
-        } else {
-            response.status(401).send("Unauthorized");
-        }
-    });
+//             const aiResponse = await sendOneShotAPIRequest(prompt, script)
+//             response.send(aiResponse);
+//         } else {
+//             response.status(401).send("Unauthorized");
+//         }
+//     });
 
 
 export const callGemini = functions.https.onRequest({ timeoutSeconds: 500, secrets: [googleGeminiApiKey]}, async (request: any, response: any) => {

@@ -10,6 +10,8 @@ import { navigationStyle } from "@/primitives";
 import { styles } from "@/primitives";
 import { TouchableOpacity, Text } from "react-native";
 
+import { getScriptAndConvert } from "./utlis/apiUtlis";
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -29,7 +31,7 @@ export default function App() {
             headerRight: () => (
               <TouchableOpacity
                 style={styles.addProject}
-                onPress={() => alert('Add Project')}
+                onPress={getScriptAndConvert}
               >
                 <Text style={styles.addProjectText}>+</Text>
               </TouchableOpacity>

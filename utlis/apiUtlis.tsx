@@ -1,7 +1,5 @@
 import * as DocumentPicker from 'expo-document-picker';
-
 import * as FileSystem from 'expo-file-system';
-
 
 
 /**
@@ -65,8 +63,14 @@ async function uploadPdfForExtraction(pdfUri: string) {
     try {
       const response = await fetch(pdfUri);
       const blob = await response.blob();
+
+      // Emulator URL
+      // const url = 'http://127.0.0.1:5001/audition-a-i-ak9x5l/us-central1/getScriptAndConvert';
+
+      // Firebase URL
+      const url = 'https://getscriptandconvert-7dxvm6ugja-uc.a.run.app' 
       
-      const binaryResponse = await fetch('https://extractpdftext-7dxvm6ugja-uc.a.run.app'
+      const binaryResponse = await fetch(url
       , {
         method: 'POST',
         headers: {
@@ -90,7 +94,7 @@ async function uploadPdfForExtraction(pdfUri: string) {
 
 
 /**
- * Performs an asynchronous API call to the Firebase Fucntion backend, which is a wrapper for the Gemini service
+ * Performs an asynchronous API call to the Firebase Function backend, which is a wrapper for the Gemini service
  * to generate content based on a given script and prompt.
  * 
  * This is a helper function to call the Gemini service, and is intended for use in other functions which are exported for use.
@@ -102,7 +106,6 @@ async function uploadPdfForExtraction(pdfUri: string) {
 async function callGemini(script : string, prompt : string) {
   // url for local function emulation
   // const url = `http://127.0.0.1:5001/audition-a-i-ak9x5l/us-central1/callGemini`;
-  
   const url = `https://callgemini-7dxvm6ugja-uc.a.run.app`;
   
   try {
@@ -128,14 +131,13 @@ async function callGemini(script : string, prompt : string) {
     // If there is meaningful AI output, extract it
     const content = data.candidates[0].content.parts[0].text;
 
-
     return content;
   } catch (error) {
     console.error('Error during API call:', error);
     throw error;
   }
 };
-/**e
+/**
  * Retrieves the title and characters from a script using the callGemini API via the Firebase Function instance and parsing the response into JSON.
  *
  * @param {string} script - The script to analyze and extract title and characters from.
@@ -143,8 +145,9 @@ async function callGemini(script : string, prompt : string) {
  */
 export async function getTitleAndCharacters(script: string) {
   const prompt = `Read the following script, determine its title and the characters in the script and give me a json object in this format {"title": ..., "characters": [...]} with no explanation. The script is: `
-  const response = await callGemini(script, prompt)
-  console.log("get title and characters", response)
+  console.log("title and characters request sent");
+  const response = await callGemini(script, prompt);
+  console.log("get title and characters response:", response);
   return await parseJSONString(response);
 }
 
@@ -155,7 +158,6 @@ export async function getTitleAndCharacters(script: string) {
  * @param {string} characterName - The name of the character to analyze.
  * @return {Promise<any>} A Promise that resolves to a JSON object containing insights about the character based on the script content.
  */
-
 export async function getAnalysis(script: string, characterName: string) {
   const prompt = `You are my acting coach. I am cast to play ${characterName} in the script attached. I want a full breakdown of this character, derived exclusively from the script provided. Your goal is to provide me every insight I need to bring ${characterName} with emotional honesty and integrity. I can only do this if you provide insight into ${characterName} and explain them in detail. Please analyze the script and give me a JSON object with the following headings:
   
@@ -224,9 +226,7 @@ export async function fixJSONGeminiCall(json: string) {
  */
 async function parseJSONString(jsonString: string) {
   try {
-    // console.log("raw string", jsonString)
     const trimmedJsonString = await trimJSONString(jsonString);
-    // console.log("trimmed string", trimmedJsonString)
     return JSON.parse(trimmedJsonString);
   } catch (error) {
     throw new Error("Invalid JSON string");

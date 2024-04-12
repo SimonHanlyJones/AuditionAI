@@ -25,7 +25,7 @@ export function ProjectSelectScreen() {
           </Pressable>
       ))}
       </ScrollView>
-      {/* <ScriptAnalysisComponentDemoComponent /> */}
+      <ScriptAnalysisComponentDemoComponent />
     </View>
   );
 };
