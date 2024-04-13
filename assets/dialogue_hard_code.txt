@@ -1,0 +1,169 @@
+{
+  "dialogue": [
+    {
+      "character": "Stage Directions",
+      "text": "Caroline Bingley, standing next to Darcy, gazes at the somewhat provincial gathering with distaste.",
+      "gender": "UNKNOWN"
+    },
+    {
+      "character": "CAROLINE BINGLEY",
+      "text": "We are a long way from Grosvenor Square, are we not, Mr Darcy?",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "Stage Directions",
+      "text": "He does indeed look superior to the assembled company. On the dance floor a young couple, staring at the newcomers, trip over each other, stumble and burst out laughing.",
+      "gender": "UNKNOWN"
+    },
+    {
+      "character": "Stage Directions",
+      "text": "Mr Bingley spots Jane Bennet. For a moment he forgets himself and openly looks at her.",
+      "gender": "UNKNOWN"
+    },
+    {
+      "character": "MR BINGLEY",
+      "text": "I find it very charming.",
+      "gender": "MALE"
+    },
+    {
+      "character": "CAROLINE BINGLEY",
+      "text": "My brother is so easily pleased, is he not?",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "Stage Directions",
+      "text": "Darcy does not answer.",
+      "gender": "UNKNOWN"
+    },
+    {
+      "character": "Stage Directions",
+      "text": "Elizabeth has found her great friend Charlotte Lucas - an intelligent, sensible woman in her late twenties. They spy through the crowd.",  
+      "gender": "UNKNOWN"
+    },
+    {
+      "character": "ELIZABETH",
+      "text": "So which of the painted peacocks is our Mr Bingley?",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "CHARLOTTE",
+      "text": "He is on the right, and on the left is his sister.",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "ELIZABETH",
+      "text": "And the person with the disagreeable expression?",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "CHARLOTTE",
+      "text": "That is his good friend, Mr Darcy.",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "ELIZABETH",
+      "text": "Poor soul.",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "CHARLOTTE",
+      "text": "On the contrary, he has ten thousand a year and owns half of Derbyshire.",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "Stage Directions",
+      "text": "Sir William Lucas, 53 a hale but unsophisticated member of the self-made gentry, takes it upon himself to introduce Mr Bingley and Mr Darcy to his daughter Charlotte and the Bennet family.",
+      "gender": "UNKNOWN"
+    },
+    {
+      "character": "SIR WILLIAM",
+      "text": "My eldest daughter you know, Mrs Bennet ...miss Jane Bennet, Elizabeth and Miss Mary Bennet.",
+      "gender": "MALE"
+    },
+    {
+      "character": "MRS BENNET",
+      "text": "It is a pleasure. I have two others but they are already dancing.",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "MR BINGLEY",
+      "text": "Delighted to make your acquaintance.",
+      "gender": "MALE"
+    },
+    {
+      "character": "SIR WILLIAM",
+      "text": "And may I introduce Mr Darcy. -- of Pemberley, in Derbyshire!",
+      "gender": "MALE"
+    },
+    {
+      "character": "Stage Directions",
+      "text": "A stiff bow from Darcy, Elizabeth smiles, Darcy does not.",
+      "gender": "UNKNOWN"
+    },
+    {
+      "character": "Stage Directions",
+      "text": "Moments later. Elizabeth is standing in a small group with Jane, Bingley, Miss Bingley and Darcy. Bingley can't keep his eyes off Jane, but is frightfully at a loss in disguising his instant ardour.",
+      "gender": "UNKNOWN"
+    },
+    {
+      "character": "ELIZABETH",
+      "text": "How do you like it here in Hertfordshire, Mr Bingley?",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "MR BINGLEY",
+      "text": "Very much.",
+      "gender": "MALE"
+    },
+    {
+      "character": "ELIZABETH",
+      "text": "The library at Netherfield, I've heard, is one of the finest in the country.",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "MR BINGLEY",
+      "text": "Yes, it fills me with guilt. Not a good reader, you see. I like being out of doors. I mean, I can read, of COURSE -",
+      "gender": "MALE"
+    },
+    {
+      "character": "Stage Directions",
+      "text": "His sister steps in. as the blush threatens to engulf his ears.",
+      "gender": "UNKNOWN"
+    },
+    {
+      "character": "MISS BINGLEY",
+      "text": "Your library at Pemberly, Mr Darcy, is astonishingly good.",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "DARCY",
+      "text": "Thank you. It is the work of many generations.",
+      "gender": "MALE"
+    },
+    {
+      "character": "MISS BINGLEY",
+      "text": "And then you have added so much to it yourself.",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "JANE",
+      "text": "I wish I read more, but there always seems so many other things to do.",
+      "gender": "FEMALE"
+    },
+    {
+      "character": "BINGLEY",
+      "text": "That's exactly what I meant.",
+      "gender": "MALE"
+    },
+    {
+      "character": "Stage Directions",
+      "text": "He beams at Jane.",
+      "gender": "UNKNOWN"
+    },
+    {
+      "character": "Stage Directions",
+      "text": "Mr and Mrs Bennet stand a little apart from Elizabeth and the other young people. Lydia and Kitty bound up to them in a state of high excitement.",
+      "gender": "UNKNOWN"
+    }
+  ]
+}

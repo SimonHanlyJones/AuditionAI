@@ -164,6 +164,8 @@ export async function getTitleAndCharacters(script: string) {
   Ensure that characters are listed only once even if they are called different things in the script. Ensure that the titles and characters have normal formatting and case.
   
   SCRIPT:`;
+  console.log('PROMPT:', prompt);
+  console.log('script length:', script.length);
   console.log("title and characters request sent");
   const response = await callGemini(script, prompt);
   console.log("get title and characters response:", response);
@@ -217,6 +219,8 @@ export async function getCharacterAnalysis(
   
   SCRIPT:
   `;
+  console.log('PROMPT:', prompt);
+  console.log('script length:', script.length);
 
   console.log("analysis sent, waiting for response");
   var response = await callGemini(script, prompt);
@@ -284,12 +288,12 @@ export async function getSceneText(script: string, sceneDescription: string) {
     ]
   }
   
-  Provide only the characters dialog, and any stage directions as a separate character. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations. End the scene in the proper place, once there is a location change. Provide valid JSON in the format above.
+  Provide only the characters dialog, and any stage directions as a separate character. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations. Start and end the scene in the proper place, at the point indicated in the script and once there is a location change. Provide valid JSON in the format above.
   
   SCRIPT:
   `;
-
-  console.log("Scene script request sent sent, waiting for response")
+  console.log(prompt);
+  console.log("Scene script request sent sent, waiting for response");
   var response = await callGemini(script, prompt)
   console.log("response received, parsing JSON")
   // response = await fixJSONGeminiCall(response)
