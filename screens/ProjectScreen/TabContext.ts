@@ -3,10 +3,14 @@ import { type ProjectInfo } from "../projects";
 import { type CharacterInfo } from "../characters";
 import { type SceneInfo } from "../scenes";
 
-type TabContextInfo = {
+export type TabContextInfo = {
   project: ProjectInfo;
   character: CharacterInfo;
   scene: SceneInfo;
+  sceneScript?: {
+    dialog: { character: string; text: string; gender: string }[];
+  };
+  sceneScriptLoading: boolean;
 };
 
 type SetTabContextInfo = (info: TabContextInfo) => void;
