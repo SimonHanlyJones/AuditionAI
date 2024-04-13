@@ -92,7 +92,7 @@ export const ScriptAnalysisComponentDemoComponent = () => {
   };
   return (
     <View>
-      <Button title="Get PDF or Txt Script" onPress={handleScriptSelection} />
+      <Button title="TEST BUTTON: Get PDF or Txt Script" onPress={handleScriptSelection} />
       {script && (
         <Button title="Get Title and Characters" onPress={fetchTitleAndCharacters} />
       )}

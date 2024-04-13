@@ -1,8 +1,9 @@
-import { View, ScrollView, Pressable, Text} from "react-native";
+import { View, ScrollView, Pressable, Text, Button } from "react-native";
 import { styles } from "@/primitives";
 import { useState } from "react";
 import { useNavigation, Screens } from "@/navigation";
 import { getProjects } from "./projects";
+import { getNewProjectInfo } from "@/utlis/apiUtlis";
 
 import { ScriptAnalysisComponentDemoComponent } from '@/components/testButtons';
 
@@ -10,6 +11,11 @@ export function ProjectSelectScreen() {
   const navigation = useNavigation<Screens.ProjectSelect>();
 
   const [projects, setProjects] = useState(getProjects());
+
+  async function addProject() {
+    const newProject = await getNewProjectInfo();
+    setProjects([...projects, newProject]);
+  }
 
   const projectItems = projects.map((project) => ({
     text: project.title,
@@ -25,6 +31,11 @@ export function ProjectSelectScreen() {
           </Pressable>
       ))}
       </ScrollView>
+      <Button
+        onPress={addProject}
+        title="+ Add Project"
+        color="#007bff"
+      />
       <ScriptAnalysisComponentDemoComponent />
     </View>
   );

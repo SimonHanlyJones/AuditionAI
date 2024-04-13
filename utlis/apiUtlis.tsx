@@ -1,6 +1,29 @@
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 
+import { ProjectInfo } from '@/screens/projects';
+
+
+export async function getNewProjectInfo() {
+  const script = await getScriptAndConvert();
+  const titleAndCharacters = await getTitleAndCharacters(script);
+
+  if (!titleAndCharacters.characters || !titleAndCharacters.title || !script) {
+    throw new Error('Missing information from API');
+  }
+
+  const newProject: ProjectInfo = {
+    title: titleAndCharacters.title,
+    script: script,
+    characters: titleAndCharacters.characters,
+  };
+  return newProject
+}
+
+
+
+  
+
 
 /**
  * Calls the 'Hello World' test function in Firebase Functions and retrieves the response message. 
@@ -144,7 +167,14 @@ async function callGemini(script : string, prompt : string) {
  * @return {Promise<object>} A promise that resolves to an object with the title and characters extracted from the script.
  */
 export async function getTitleAndCharacters(script: string) {
-  const prompt = `Read the following script, determine its title and the characters in the script and give me a json object in this format {"title": ..., "characters": [...]} with no explanation. The script is: `
+  const prompt = `Read the following script, determine its title and the characters in the script and give me a json object in this format with no explanation:
+  {
+      "title": string,
+      "characters": [string]
+  } 
+  Ensure that characters are listed only once even if they are called different things in the script. Ensure that the titles and characters have normal formatting and case.
+  
+  SCRIPT:`
   console.log("title and characters request sent");
   const response = await callGemini(script, prompt);
   console.log("get title and characters response:", response);
@@ -180,15 +210,15 @@ export async function getAnalysis(script: string, characterName: string) {
   The JSON object should be structured as follows:
   
   {
-      "CharacterOverview:": string,
-      "PersonalityTraits": [{Trait: string, Description: string}],
-      "PhysicalTraits": [{Trait: string, Description: string}],
-      "CostumeChoices": string,
-      "MainRelationships": [{"Name": string}, {"Relationship": string}, {"Description": string}],
-      "EmotionalCharacterArc": string,
-      "ImportantScenes": [{"Scene": string, "Description": string}],
-      "SceneAppearances": [{"Number": int, "Scene": string}],
-      "OtherInsights": string
+      "characterOverview:": string,
+      "personalityTraits": [{trait: string, description: string}],
+      "physicalTraits": [{trait: string, description: string}],
+      "costumeChoices": string,
+      "mainRelationships": [{"name": string}, {"relationship": string}, {"description": string}],
+      "emotionalCharacterArc": string,
+      "importantScenes": [{"scene": string, "description": string}],
+      "sceneAppearances": [{"number": int, "scene": string}],
+      "otherInsights": string
   }
   
   Please provide the analysis with no additional explanation, ensuring all insights are derived from the script content I have attached. Provide valid JSON in the format above.
@@ -257,8 +287,8 @@ export async function getSceneText(script: string, sceneDescription: string) {
   You must parse the full text of this scene into a JSON object with the following headings:
   { "Dialogue":
     [
-      "Character": string,
-      "Text": string
+      "character": string,
+      "text": string
     ]
   }
   
