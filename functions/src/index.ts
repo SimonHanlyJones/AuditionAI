@@ -79,59 +79,6 @@ export const getScriptAndConvert = functions.https.onRequest(async (request: any
     }
 });
 
-// Gemini Helper functions
-async function generateContent(contents: any) {
-    // const model = "gemini-pro"
-    const model = "gemini-1.5-pro-latest"
-    
-
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${googleGeminiApiKey.value()}`;
-
-    logger.info("url", url);
-    logger.info("contents", contents);
-    const safetySettings = await packSafetySettings();
-    
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 
-            contents: contents, 
-            safetySettings: safetySettings
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`API call failed: ${response.statusText}`);
-      }
-  
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error during API call:', error);
-      throw error;
-    }
-  }
-
-async function sendOneShotAPIRequest(prompt: string, script: string) {
-    try {
-        const oneShotContents = await packPrompt(prompt, script);
-        const response = await generateContent(oneShotContents);
-        return response;
-    } catch (error) {
-        console.error('Error in sendOneShotAPIRequest:', error);
-        throw error;
-    }
-}
-
-async function packPrompt(prompt: string, script: string) {
-    const oneShotContents = [
-        {"parts": [{"text": prompt + script}]}
-    ];
-    return oneShotContents;
-}
 
 async function packSafetySettings() {
     const safetySettings = [
@@ -155,31 +102,58 @@ async function packSafetySettings() {
       return safetySettings;
     };
 
-// export const getTitleAndCharacters = functions.https.onRequest({ secrets: [googleGeminiApiKey]}, async (request: any, response: any) => {
+    async function generateContent(prompt: string, script: string) {
 
-//         // console.info("This is a info message.");
-//         // console.warn("This is an warn message.");
-//         if (request.method === "POST" && request.headers.authorization === "duckduck") {
-//             const prompt = request.body.prompt;
-//             const script = request.body.script;
-            
-//             const aiResponse = await sendOneShotAPIRequest(prompt, script)
-//             response.send(aiResponse);
-//         } else {
-//             response.status(401).send("Unauthorized");
-//         }
-//     });
-
-
-export const callGemini = functions.https.onRequest({ timeoutSeconds: 500, secrets: [googleGeminiApiKey]}, async (request: any, response: any) => {
-
-    if (request.method === "POST" && request.headers.authorization === "duckduck") {
-        const prompt = request.body.prompt;
-        const script = request.body.script;
+        const contents = {"parts": [{"text": prompt + script}]}
+        // const model = "gemini-pro"
+        const model = "gemini-1.5-pro-latest"
         
-        const aiResponse = await sendOneShotAPIRequest(prompt, script)
-        response.send(aiResponse);
-    } else {
-        response.status(401).send("Unauthorized");
-    }
-});
+    
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${googleGeminiApiKey.value()}`;
+    
+        logger.info("url", url);
+        logger.info("contents", contents);
+        const safetySettings = await packSafetySettings();
+        
+        try {
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+                contents: contents, 
+                safetySettings: safetySettings
+            }),
+          });
+      
+          if (!response.ok) {
+            throw new Error(`API call failed with status ${response.status}: ${response.statusText}`);
+          }
+      
+          const data = await response.json();
+          return data;
+        } catch (error) {
+            logger.error('Error during API call:', error);
+            throw error;
+        }
+      }
+
+      export const callGemini = functions.https.onRequest({ timeoutSeconds: 500, secrets: [googleGeminiApiKey]}, async (request: any, response: any) => {
+        if (request.method === "POST" && request.headers.authorization === "duckduck") {
+            try {
+                const prompt = request.body.prompt;
+                const script = request.body.script;
+                const aiResponse = await generateContent(prompt, script);
+                response.send(aiResponse);
+            } catch (error) {
+                // Log the error and send a generic error message to the user
+                logger.error('Failed to handle Gemini API request:', error);
+                response.status(500).send({
+                    error: "There was a problem processing your request: " + error
+                });
+            }
+        } else {
+            response.status(401).send("Unauthorized");
+        }
+    });

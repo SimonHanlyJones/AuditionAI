@@ -127,12 +127,14 @@ async function callGemini(script : string, prompt : string) {
     });
   
     if (!response.ok) {
+      console.error('API call failed:', response.statusText);
       throw new Error(`API call failed: ${response.statusText}`);
     }
     const data = await response.json();
 
     // Check for meaningful AI output
     if (!data.candidates || data.candidates.length === 0 || !data.candidates[0].content || !data.candidates[0].content.parts || data.candidates[0].content.parts.length === 0 || !data.candidates[0].content.parts[0].text) {
+      console.error('No meaningful AI output found.');
       throw new Error('No meaningful AI output found.');
     }
     
@@ -273,11 +275,12 @@ export async function getSceneText(script: string, sceneDescription: string) {
   { "Dialogue":
     [
       "character": string,
-      "text": string
+      "text": string,
+      "gender": string,
     ]
   }
   
-  Provide only the characters dialog, and any stage directions as a separate character. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations. End the scene in the proper place, once there is a location change. Provide valid JSON in the format above.
+  Provide only the characters dialog, and any stage directions as a separate character. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations. End the scene in the proper place, once there is a location change. Provide valid JSON in the format above.
   
   SCRIPT:
   `;
