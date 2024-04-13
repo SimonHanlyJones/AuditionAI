@@ -19,7 +19,7 @@ export enum Screens {
 interface NavigatorParamList extends ParamListBase {
   ProjectSelect: undefined;
   CharacterSelect: { project: ProjectInfo };
-  SceneSelect: { project: ProjectInfo; characterName: string };
+  SceneSelect: { project: ProjectInfo; character: CharacterInfo };
   Project: {
     project: ProjectInfo;
     character: CharacterInfo;
