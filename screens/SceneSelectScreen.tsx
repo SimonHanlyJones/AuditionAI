@@ -3,20 +3,17 @@ import { styles } from "@/primitives";
 import { useNavigation, useRoute, Screens } from "@/navigation";
 import { getCharacterInfo } from "./characters";
 
-export function SceneSelectScreen() {
+export async function SceneSelectScreen() {
   const navigation = useNavigation<Screens.SceneSelect>();
   const route = useRoute<Screens.SceneSelect>();
   const { characterName, project } = route.params;
 
-  const character = getCharacterInfo(characterName);
+  const character = await getCharacterInfo(project.script, characterName);
 
-  const characterScenes = [
-    ...(character.importantScenes || []),
-    ...(character.additionalScenes || []),
-  ];
+  const characterScenes = character.sceneAppearances || []
 
   const scenesItems = characterScenes.map((scene) => ({
-      text: scene.title,
+      text: scene.scene,
       onPress: () =>
         navigation.navigate("Project", {
           project,

@@ -4,21 +4,6 @@ import * as FileSystem from 'expo-file-system';
 import { ProjectInfo } from '@/screens/projects';
 
 
-export async function getNewProjectInfo() {
-  const script = await getScriptAndConvert();
-  const titleAndCharacters = await getTitleAndCharacters(script);
-
-  if (!titleAndCharacters.characters || !titleAndCharacters.title || !script) {
-    throw new Error('Missing information from API');
-  }
-
-  const newProject: ProjectInfo = {
-    title: titleAndCharacters.title,
-    script: script,
-    characters: titleAndCharacters.characters,
-  };
-  return newProject
-}
 
 
 
@@ -188,7 +173,7 @@ export async function getTitleAndCharacters(script: string) {
  * @param {string} characterName - The name of the character to analyze.
  * @return {Promise<any>} A Promise that resolves to a JSON object containing insights about the character based on the script content.
  */
-export async function getAnalysis(script: string, characterName: string) {
+export async function getCharacterAnalysis(script: string, characterName: string) {
   const prompt = `You are my acting coach. I am cast to play ${characterName} in the script attached. I want a full breakdown of this character, derived exclusively from the script provided. Your goal is to provide me every insight I need to bring ${characterName} with emotional honesty and integrity. I can only do this if you provide insight into ${characterName} and explain them in detail. Please analyze the script and give me a JSON object with the following headings:
   
   2. **Personality Traits**: Based on the script, list the key personality traits of ${characterName}, include a description of how each of these traits influence their behavior in the story.

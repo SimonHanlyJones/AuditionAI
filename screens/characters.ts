@@ -1,108 +1,108 @@
 import { SceneInfo } from "./scenes";
 
+import { getCharacterAnalysis } from "@/utlis/apiUtlis";
+
 export interface CharacterInfo {
   name: string;
+  characterOverview: string;
   personalityTraits?: { trait: string; description: string }[];
-  physicalTraits?: string;
+  physicalTraits?: { trait: string; description: string }[];
+  costumeChoices: string,
   mainRelationships?: {
     name: string;
     relationship: string;
     description: string;
   }[];
-  characterArc?: string;
-  importantScenes?: SceneInfo[];
-  additionalScenes?: SceneInfo[];
+  emotionalCharacterArc?: string;
+  importantScenes?: {scene: string, description: string}[];
+  sceneAppearances?: SceneInfo[];
   otherInsights?: string;
 }
 
-export function getCharacterInfo(characterName: string): CharacterInfo {
-  // TODO: make API call or get character info from storage if it exists
+export async function getCharacterInfo(projectScript: string, characterName: string): Promise<CharacterInfo> {
+  const jsonResponse = await getCharacterAnalysis(projectScript, characterName);
+  const character: CharacterInfo = {...{name: characterName}, ...jsonResponse} as CharacterInfo;
+  return character
 
-  // TEMP: using hard coded data for now
-  const jsonResponse = CHARACTER_INFO;
-
-  const character: CharacterInfo = {
-    name: characterName,
-  };
   // starting with simple parsing, can do more robust parsing if needed
   // personalityTraits
-  try {
-    character.personalityTraits = jsonResponse["Personality Traits"].map(
-      (personalityTraits) => {
-        return {
-          trait: personalityTraits.Trait,
-          description: personalityTraits.Description,
-        };
-      }
-    );
-  } catch (error) {
-    console.log("Failed to process personality traits data");
-  }
 
-  // physicalTraits
-  try {
-    character.personalityTraits = jsonResponse["Personality Traits"].map(
-      (personalityTraits) => {
-        return {
-          trait: personalityTraits.Trait,
-          description: personalityTraits.Description,
-        };
-      }
-    );
-  } catch (error) {
-    console.log("Failed to process physical traits data");
-  }
 
-  // mainRelationships
-  try {
-    character.physicalTraits = jsonResponse["Physical Traits"];
-  } catch (error) {
-    console.log("Failed to process main relationships data");
-  }
+  // try {
+  //   character.personalityTraits = jsonResponse["Personality Traits"].map(
+  //     (personalityTraits: { trait: string; description: string }[]) => {
+  //       return {
+  //         trait: personalityTraits.Trait,
+  //         description: personalityTraits.Description,
+  //       };
+  //     }
+  //   );
+  // } catch (error) {
+  //   console.log("Failed to process personality traits data");
+  // }
 
-  // characterArc
-  try {
-    character.characterArc = jsonResponse["Emotional/Character Arc"];
-  } catch (error) {
-    console.log("Failed to process character arc data");
-  }
+  // // physicalTraits
+  // try {
+  //   character.personalityTraits = jsonResponse["Personality Traits"].map(
+  //     (personalityTraits) => {
+  //       return {
+  //         trait: personalityTraits.Trait,
+  //         description: personalityTraits.Description,
+  //       };
+  //     }
+  //   );
+  // } catch (error) {
+  //   console.log("Failed to process physical traits data");
+  // }
 
-  // importantScenes
-  try {
-    character.importantScenes = jsonResponse["Important Scenes"].map(
-      (scene) => {
-        return {
-          title: scene.Scene,
-          description: scene.Description,
-        };
-      }
-    );
-  } catch (error) {
-    console.log("Failed to process important scenes data");
-  }
+  // // mainRelationships
+  // try {
+  //   character.physicalTraits = jsonResponse["Physical Traits"];
+  // } catch (error) {
+  //   console.log("Failed to process main relationships data");
+  // }
 
-  // additionalScenes
-  try {
-    character.additionalScenes = jsonResponse["Scene Appearances"].map(
-      (scene) => {
-        return {
-          title: scene.Scene,
-          description: "",
-        };
-      }
-    );
-  } catch (error) {
-    console.log("Failed to process additional scenes data");
-  }
+  // // characterArc
+  // try {
+  //   character.characterArc = jsonResponse["Emotional/Character Arc"];
+  // } catch (error) {
+  //   console.log("Failed to process character arc data");
+  // }
 
-  // otherInsights
-  try {
-    character.otherInsights = jsonResponse["Other Insights"];
-  } catch (error) {
-    console.log("Failed to process other insights data");
-  }
+  // // importantScenes
+  // try {
+  //   character.importantScenes = jsonResponse["Important Scenes"].map(
+  //     (scene) => {
+  //       return {
+  //         title: scene.Scene,
+  //         description: scene.Description,
+  //       };
+  //     }
+  //   );
+  // } catch (error) {
+  //   console.log("Failed to process important scenes data");
+  // }
 
-  return character;
+  // // additionalScenes
+  // try {
+  //   character.additionalScenes = jsonResponse["Scene Appearances"].map(
+  //     (scene) => {
+  //       return {
+  //         title: scene.Scene,
+  //         description: "",
+  //       };
+  //     }
+  //   );
+  // } catch (error) {
+  //   console.log("Failed to process additional scenes data");
+  // }
+
+  // // otherInsights
+  // try {
+  //   character.otherInsights = jsonResponse["Other Insights"];
+  // } catch (error) {
+  //   console.log("Failed to process other insights data");
+  // }
 }
 
 const CHARACTER_INFO = {

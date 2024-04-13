@@ -10,6 +10,8 @@ export function CharacterSelectScreen() {
   console.log("project", project);
 
   const charactersItems = project.characters.map((character) => ({
+
+    
     text: character,
     onPress: () =>
       navigation.navigate("SceneSelect", {

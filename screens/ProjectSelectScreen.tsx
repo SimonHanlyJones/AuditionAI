@@ -2,8 +2,7 @@ import { View, ScrollView, Pressable, Text, Button } from "react-native";
 import { styles } from "@/primitives";
 import { useState } from "react";
 import { useNavigation, Screens } from "@/navigation";
-import { getProjects } from "./projects";
-import { getNewProjectInfo } from "@/utlis/apiUtlis";
+import { getProjects, getNewProjectInfo } from "./projects";
 
 import { ScriptAnalysisComponentDemoComponent } from '@/components/testButtons';
 
@@ -14,6 +13,7 @@ export function ProjectSelectScreen() {
 
   async function addProject() {
     const newProject = await getNewProjectInfo();
+
     setProjects([...projects, newProject]);
   }
 
