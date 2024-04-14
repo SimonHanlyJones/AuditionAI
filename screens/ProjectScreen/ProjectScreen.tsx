@@ -38,10 +38,12 @@ export function ProjectScreen() {
           tabBarLabelStyle: {
             fontSize: 14,
             fontWeight: "bold",
+            paddingBottom: 8,
           },
           tabBarStyle: {
             height: 64,
-            paddingVertical: 6,
+            marginBottom: 0,
+            paddingVertical: 5,
           },
         }}
       >

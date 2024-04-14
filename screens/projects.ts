@@ -9,7 +9,7 @@ export interface ProjectInfo {
 export async function getNewProjectInfo() {
   const script = await getScriptAndConvert();
   const titleAndCharacters = await getTitleAndCharacters(script);
-
+  
   if (!titleAndCharacters.characters || !titleAndCharacters.title || !script) {
     throw new Error('Missing information from API');
   }

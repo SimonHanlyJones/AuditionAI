@@ -1,11 +1,11 @@
 export const navigationStyle = {
   dark: true,
   colors: {
-    primary: '#95FFE6',
-    background: '#000000',
-    card: '#000000',
-    text: '#95FFE6',
-    border: '#95FFE6',
+    primary: '#E3DCF2',
+    background: '#130526',
+    card: '#130526',
+    text: '#FFFFFF',
+    border: '#59428C',
     notification: '#000000',
   },
 };
