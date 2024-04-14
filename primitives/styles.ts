@@ -94,4 +94,16 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center'
   },
+  sceneDialogText: {
+    color: colors.textColor,
+    fontSize: 16,
+    marginVertical: 10
+  },
+  sceneCharacterName: {
+    color: colors.textColor,
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginVertical: 5
+  }
+  
 });

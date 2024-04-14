@@ -8,6 +8,7 @@ import { PerformTab } from "./PerformTab";
 import { useRoute, Screens } from "@/navigation";
 import { TabContext, type TabContextInfo } from "./TabContext";
 import { getSceneText } from "@/utlis/apiUtlis";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Tabs = createBottomTabNavigator();
 
@@ -44,6 +45,10 @@ export function ProjectScreen() {
 
     fetchSceneText();
   }, [project?.script, scene?.scene]); 
+
+  useEffect(() => {
+    console.log('Updating context:', tabContext);
+  },[tabContext]);
 
   if (tabContext === undefined) return;
 

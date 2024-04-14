@@ -31,12 +31,12 @@ export function ProjectSelectScreen() {
           </Pressable>
       ))}
       </ScrollView>
-      {/* <Button
+      <Button
         onPress={addProject}
         title="+ Add Project"
         color="#007bff"
       />
-      <ScriptAnalysisComponentDemoComponent /> */}
+      {/* <ScriptAnalysisComponentDemoComponent /> */}
     </View>
   );
 };

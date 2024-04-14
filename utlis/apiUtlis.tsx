@@ -215,7 +215,7 @@ export async function getCharacterAnalysis(
       "otherInsights": string
   }
   
-  Please provide the analysis with no additional explanation, ensuring all insights are derived from the script content I have attached. Provide valid JSON in the format above.
+  Please provide the analysis with no additional explanation, ensuring all insights are derived from the script content I have attached. Provide valid JSON in the format above do not add and fields or add any text that is not valid JSON.
   
   SCRIPT:
   `;
@@ -254,7 +254,14 @@ async function parseJSONString(jsonString: string) {
     const trimmedJsonString = await trimJSONString(jsonString);
     return JSON.parse(trimmedJsonString);
   } catch (error) {
-    throw new Error("Invalid JSON string");
+    try {
+      const fixedJsonString = await fixJSONGeminiCall(jsonString);
+      const retrimmedJsonString = await trimJSONString(fixedJsonString);
+      return JSON.parse(retrimmedJsonString); // Attempt to parse the corrected JSON
+    } catch (innerError) {
+      // If parsing the corrected JSON also fails, throw an error
+      throw new Error("JSON parsing failed after attempting to fix: " + innerError);
+    }
   }
 }
 /**
@@ -264,14 +271,15 @@ async function parseJSONString(jsonString: string) {
  * @return {string} The trimmed JSON string.
  */
 async function trimJSONString(jsonString: string) {
-  const startIndex = jsonString.indexOf("{");
-  const endIndex = jsonString.lastIndexOf("}");
+  const cleanedJsonString = jsonString.split('\n').filter(line => !line.trim().startsWith('//')).join('\n');
+  const startIndex = cleanedJsonString.indexOf("{");
+  const endIndex = cleanedJsonString.lastIndexOf("}");
 
   if (startIndex === -1 || endIndex === -1) {
     throw new Error("Cannot find JSON start and end markers");
   }
 
-  return jsonString.substring(startIndex, endIndex + 1);
+  return cleanedJsonString.substring(startIndex, endIndex + 1);
 }
 
 export async function getSceneText(script: string, sceneDescription: string) {
