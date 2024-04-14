@@ -1,31 +1,39 @@
-import { View, ScrollView, Pressable, Text} from "react-native";
+import { useState } from "react";
+import { View, ScrollView, Pressable, Text, Modal, TouchableWithoutFeedback} from "react-native";
 import { styles } from "@/primitives";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useContext } from "react";
 import { type CharacterInfo } from "../characters";
 import { TabContext } from "./TabContext";
 
-function addItemIfInfoPresent(
-  analysisItems: { text: string; onPress: () => void }[],
-  character: CharacterInfo,
-  infoKey: string,
-  infoTitle: string,
-  iconName?: string
-) {
-  if (infoKey in character) {
-    analysisItems.push({
-      text: infoTitle,
-      onPress: () => {
-        console.log(infoTitle + ":", character[infoKey as keyof CharacterInfo]);
-      },
-      icon: iconName
-    });
-  }
-}
-
 export function AnalysisTab() {
   const tabContext = useContext(TabContext);
   if (tabContext === undefined) return;
+
+  const [showAnalysisModal, setShowAnalysisModal] = useState(false);
+  const [modalTitle, setModalTitle] = useState('');
+  const [modalData, setModalData] = useState(undefined);
+
+  function addItemIfInfoPresent(
+    analysisItems: { text: string; onPress: () => void }[],
+    character: CharacterInfo,
+    infoKey: string,
+    infoTitle: string,
+    iconName?: string
+  ) {
+    if (infoKey in character) {
+      analysisItems.push({
+        text: infoTitle,
+        onPress: () => {
+          setModalTitle(infoTitle);
+          setModalData(character[infoKey]);
+          setShowAnalysisModal(true);
+          // console.log(infoTitle + ":", character[infoKey as keyof CharacterInfo]);
+        },
+        icon: iconName
+      });
+    }
+  }
 
   const { project, character, scene } = tabContext.info;
 
@@ -113,6 +121,37 @@ export function AnalysisTab() {
         ))}
       </View>
       </ScrollView>
+      <Modal transparent={true} visible={showAnalysisModal} animationType="fade" onRequestClose={() => setShowAnalysisModal(false)} statusBarTranslucent>
+        <TouchableWithoutFeedback onPress={() => setShowAnalysisModal(false)}>
+          <View style={styles.overlay}>
+            <TouchableWithoutFeedback>
+              <View style={styles.modal}>
+                <View style={styles.h2}>
+                  <Text style={styles.h2Text}>{modalTitle}</Text>
+                </View>
+                <ScrollView fadingEdgeLength={50}>
+                {typeof modalData === 'string' && (
+                  <View style={styles.textBox}>
+                      <Text style={styles.text}>{modalData}</Text>
+                  </View>
+                )}
+                {typeof modalData === 'object' && (
+                  modalData.map((item, index) => (
+                    <View key={index} style={styles.textBox}>
+                      {Object.entries(item).map(([key, value]) => (
+                        <View key={key} style={styles.textItem}>
+                          <Text style={styles.text}><Text style={styles.textKey}>{key}:</Text> {value}</Text> 
+                        </View>
+                      ))}
+                    </View>
+                  ))
+                )}
+                </ScrollView>
+              </View>
+            </TouchableWithoutFeedback>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </View>
   );
 }

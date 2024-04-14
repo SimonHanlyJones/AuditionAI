@@ -4,17 +4,36 @@ import {
   SceneSelectScreen,
   ProjectScreen,
 } from "@/screens";
+import { useState, useEffect } from "react";
+import { View, Text} from "react-native";
 import { NavigationContainer} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { navigationStyle } from "@/primitives";
 import { styles } from "@/primitives";
-import { TouchableOpacity, Text } from "react-native";
 
 import { getScriptAndConvert } from "./utlis/apiUtlis";
 
 const Stack = createStackNavigator();
 
 export default function App() {
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={styles.splashScreen}>
+        <Text style={styles.splashScreenText}>AuditionAI</Text>
+      </View>
+    );
+  }
+
   return (
     <NavigationContainer theme={navigationStyle}>
       <Stack.Navigator
