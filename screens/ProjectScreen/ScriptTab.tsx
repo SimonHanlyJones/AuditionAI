@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
-import { BASE_STYLES } from "@/primitives";
-import { useContext } from "react";
+import { styles } from "@/primitives";
+// import { BASE_STYLES } from "@/primitives";
+import { useContext, useEffect } from "react";
 import { TabContext } from "./TabContext";
 
 // export type TabContextInfo = {
@@ -16,32 +17,38 @@ import { TabContext } from "./TabContext";
 
 export function ScriptTab() {
   const tabContext = useContext(TabContext);
+
+  useEffect(() => {
+    if (tabContext && tabContext?.info && tabContext?.info?.sceneScript) {
+      console.log('New Scene script data received:', tabContext.info.sceneScript);
+    };
+  }, [tabContext?.info.sceneScript]);
   
     if (tabContext?.info.sceneScriptLoading) {
       return (
-        <View style={BASE_STYLES.screenContainer}>
-          <Text>Loading...</Text>
+        <View style={styles.screenContainer}>
+          <Text style={styles.sceneCharacterName}>Loading...</Text>
         </View>
       );
     }
   
-    if (!tabContext?.info.sceneScript?.dialog) {
+    if (!tabContext?.info.sceneScript?.dialogue) {
       // Add a return statement to handle cases where dialog is not available
       return (
-        <View style={BASE_STYLES.screenContainer}>
-          <Text>No script data available.</Text>
+        <View style={styles.screenContainer}>
+          <Text style={styles.sceneCharacterName}>No script data available.</Text>
         </View>
       );
     }
   
     return (
-      <View style={BASE_STYLES.screenContainer}>
-        {tabContext.info.sceneScript.dialog.map((item, index) => (
+      <View style={styles.screenContainer}>
+        {tabContext.info.sceneScript.dialogue.map((item, index) => (
           <View key={index}>
-            <Text style={BASE_STYLES.sceneCharacterName}>
+            <Text style={styles.sceneCharacterName}>
               {item.character.toUpperCase()}
             </Text>
-            <Text style={BASE_STYLES.sceneDialogText}>
+            <Text style={styles.sceneDialogText}>
               {item.text}
             </Text>
           </View>

@@ -33,6 +33,7 @@ export function ProjectScreen() {
             sceneScript,
             sceneScriptLoading: false
           }));
+          console.log("Scene Script Fetched and set:", sceneScript);
         } catch (error) {
           console.error('Failed to fetch scene text:', error);
           setTabContext(prevContext => ({

@@ -8,7 +8,7 @@ export type TabContextInfo = {
   character: CharacterInfo;
   scene: SceneInfo;
   sceneScript?: {
-    dialog: { character: string; text: string; gender: string }[];
+    dialogue: { character: string; text: string; gender: string }[];
   };
   sceneScriptLoading: boolean;
 };
