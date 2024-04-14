@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigation, Screens } from "@/navigation";
 import { getProjects, getNewProjectInfo } from "./projects";
 
-import { ScriptAnalysisComponentDemoComponent, HelloWorldButtonFromAPI } from '@/components/testButtons';
+import { ScriptAnalysisComponentDemoComponent, HelloWorldButtonFromAPI, VoiceTestButton } from '@/components/testButtons';
 
 export function ProjectSelectScreen() {
   const navigation = useNavigation<Screens.ProjectSelect>();
@@ -35,6 +35,8 @@ export function ProjectSelectScreen() {
       <Pressable style={({pressed}) => [styles.addProject, pressed && styles.addProjectPressed]} onPress={addProject}>
         <Text style={styles.addProjectText}>+</Text>
       </Pressable>
+      {/* <HelloWorldButtonFromAPI /> */}
+      <VoiceTestButton />
     </View>
   );
 };

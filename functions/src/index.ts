@@ -37,7 +37,6 @@ exports.helloWorld = functions.https.onRequest({ secrets: [googleGeminiApiKey, g
             res = res + "voiceAPIKey loaded "
         }
         
-
         // const apiKey = googleGeminiApiKey.value(); // Access the secret value
         // Use the API key as needed, but don't log or expose it
         res = res + "Hello from Firebase!"
@@ -92,15 +91,23 @@ function validateVoice (voice: string, gender: string): boolean {
 
 export const callVoiceAPI = functions.https.onRequest({ timeoutSeconds: 500, secrets: [googleVoiceApiKey]}, async (request: any, response: any) => {
     if (!request.body.text || !request.body.voiceName || !request.body.gender || !validateVoiceRequest(request.body)) {
-            response.status(400).send("Missing parameters");
+        response.status(400).send("Missing parameters");
         return;
     } else if (!validateVoice(request.body.voiceName, request.body.gender)) {
-            response.status(400).send("Invalid voice");
+        response.status(400).send("Invalid voice");
         return;
-    } else if (request.method === "POST" && request.headers.authorization === "duckduck") {
+    } else if (request.headers.authorization != "duckduck") {
+        response.status(400).send("Unauthorized");
+        return;
+
+    } else if (request.method === "POST") {
         try {
             const aiResponse = await synthesizeText(request.body.text, request.body.voiceName, request.body.gender);
-            response.send(aiResponse);
+            if (aiResponse.success) {
+                response.status(200).send(aiResponse);
+            } else {
+                response.status(500).send(aiResponse);
+            }
         } catch (error) {
             // Log the error and send a generic error message to the user
             logger.error('Failed to handle Voice API request:', error);
@@ -118,7 +125,7 @@ async function synthesizeText(text:string, voiceName: string, gender: string) {
     
     const requestBody = {
         input: { text: text },
-        voice: { languageCode: voiceName.slice(0, 4), name: voiceName, ssmlGender: gender },
+        voice: { languageCode: voiceName.slice(0, 5), name: voiceName, ssmlGender: gender },
         audioConfig: { audioEncoding: 'MP3' },
     };
 
@@ -134,16 +141,24 @@ async function synthesizeText(text:string, voiceName: string, gender: string) {
         const responseData = await response.json();
         
         if (response.ok) {
-            // The audio content is in base64 in responseData.audioContent
-            const audioBuffer = Buffer.from(responseData.audioContent, 'base64');
-            return audioBuffer
-
+            // Assume responseData.audioContent contains the base64-encoded audio
+            return {
+                success: true,
+                audioContent: responseData.audioContent,
+                message: 'Audio successfully synthesized'
+            };
         } else {
-            throw new Error(`API request failed with status ${response.status}: ${responseData.error.message}`);
+            return {
+                success: false,
+                message: `API request failed with status ${response.status}: ${responseData.error.message}`
+            };
         }
     } catch (error) {
         console.error('Error during API call:', error);
-        throw new Error(`API request failed with status ${error}`);
+        return {
+            success: false,
+            message: 'Failed to call Text to Speech API: ' + error
+        };
     }
 }
 

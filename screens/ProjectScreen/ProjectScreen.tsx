@@ -23,6 +23,14 @@ export function ProjectScreen() {
     sceneScriptLoading: true // Initial loading state
   });
 
+  /**
+  * When script and scene are loaded in, fetch the scene text
+  * 
+  * Retrieves the scene script based on the project script and scene ID.
+  * 
+  *
+  * @return {Promise<void>} Async function with no explicit return value
+  */
   useEffect(() => {
     const fetchSceneText = async () => {
       if (project?.script && scene?.scene) {

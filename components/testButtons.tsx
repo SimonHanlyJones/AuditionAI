@@ -1,6 +1,7 @@
 
 
-import { callHelloWorldFunction, getScriptAndConvert, getAnalysis, getTitleAndCharacters } from '@/utlis/apiUtlis';
+import { callHelloWorldFunction, getScriptAndConvert, getCharacterAnalysis, getTitleAndCharacters } from '@/utlis/apiUtlis';
+import { synthesizeVoiceFromTextApiCall, playAudio } from '@/utlis/voiceUtlis';
 
 import React, { useState } from 'react';
 import { View, Button, Text } from 'react-native';
@@ -9,7 +10,7 @@ import { Picker } from '@react-native-picker/picker';
 
 
 export const HelloWorldButtonFromAPI = () => {
-  return <Button title="Call API" onPress={callHelloWorldFunction} />;
+  return <Button title="Test API is connected with this weird trick" onPress={callHelloWorldFunction} />;
 };
 
 export const getScriptAndConvertButton = () => {
@@ -21,8 +22,20 @@ export const getTitleAndCharactersButton = (script: string) => {
 }
 
 export const getAnalysisButton = (script: string, character: string) => {
-  return <Button title="Provide a Character and get an Analysis" onPress={() => getAnalysis(script, character)} />;
+  return <Button title="Provide a Character and get an Analysis" onPress={() => getCharacterAnalysis(script, character)} />;
 };
+
+
+const generateAndPlayVoice = async (text: string) => {
+  const path = await synthesizeVoiceFromTextApiCall(text, 'en-GB-Neural2-A', 'FEMALE');
+  await playAudio(path);
+  return path
+}
+
+export const VoiceTestButton = () => {
+  return <Button title="generate voice" onPress={() => generateAndPlayVoice("hi, I'm a bird! Look at me fly!")} />;
+};
+
 
 
 export const ScriptAnalysisComponentDemoComponent = () => {
@@ -82,7 +95,7 @@ export const ScriptAnalysisComponentDemoComponent = () => {
       return;
     }
     try {
-      const analysisData = await getAnalysis(script, selectedCharacter);
+      const analysisData = await getCharacterAnalysis(script, selectedCharacter);
       setAnalysis(analysisData);  // Update the state with the fetched analysis data
       console.log(analysisData);
     } catch (error) {
