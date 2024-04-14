@@ -4,17 +4,6 @@ import { styles, colors } from "@/primitives";
 import { useContext, useEffect } from "react";
 import { TabContext } from "./TabContext";
 
-// export type TabContextInfo = {
-//   project: ProjectInfo;
-//   character: CharacterInfo;
-//   scene: SceneInfo;
-//   sceneScript?: {
-//     dialog: { character: string; text: string; gender: string }[];
-//   };
-//   sceneScriptLoading: boolean;
-// };
-
-
 export function ScriptTab() {
   const tabContext = useContext(TabContext);
 

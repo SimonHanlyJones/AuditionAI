@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigation, Screens } from "@/navigation";
 import { getProjects, getNewProjectInfo } from "./projects";
 
-import { ScriptAnalysisComponentDemoComponent } from '@/components/testButtons';
+import { ScriptAnalysisComponentDemoComponent, HelloWorldButtonFromAPI } from '@/components/testButtons';
 
 export function ProjectSelectScreen() {
   const navigation = useNavigation<Screens.ProjectSelect>();
@@ -13,8 +13,9 @@ export function ProjectSelectScreen() {
 
   async function addProject() {
     const newProject = await getNewProjectInfo();
-
-    setProjects([...projects, newProject]);
+    if (newProject) {
+      setProjects([...projects, newProject]);
+    }
   }
 
   const projectItems = projects.map((project) => ({
