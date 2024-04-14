@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-const colors = {
+export const colors = {
   background: "#130526",
   border: '#59428C',
   flash: '#761DF2',
@@ -16,8 +16,30 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     width: "100%"
   },
+  loadingBox: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+  },
+  loadingText: {
+    color: colors.textColor,
+    margin: 10,
+  },
   addProject: {
-    marginHorizontal: 30,
+    alignItems: "center",
+    backgroundColor: colors.border,
+    borderColor: colors.border,
+    borderRadius: 35,
+    borderWidth: 2,
+    bottom: 20,
+    height: 70,
+    justifyContent: "center",
+    position: 'absolute',
+    right: 20,
+    width: 70,
+  },
+  addProjectPressed: {
+    backgroundColor: colors.flash,
   },
   addProjectText: {
     color: colors.textColor,
@@ -94,6 +116,7 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center'
   },
+  ////////////////////////////////////////
   sceneDialogText: {
     color: colors.textColor,
     fontSize: 16,

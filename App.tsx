@@ -27,15 +27,7 @@ export default function App() {
           name="ProjectSelect"
           component={ProjectSelectScreen}
           options={{ 
-            title: "Projects", 
-            headerRight: () => (
-              <TouchableOpacity
-                style={styles.addProject}
-                onPress={getScriptAndConvert}
-              >
-                <Text style={styles.addProjectText}>+</Text>
-              </TouchableOpacity>
-            )
+            title: "Projects"
           }}
         />
         <Stack.Screen

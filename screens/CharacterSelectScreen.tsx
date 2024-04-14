@@ -1,7 +1,7 @@
-import { View, ScrollView, Pressable, Text } from "react-native";
+import { View, ScrollView, Pressable, Text, ActivityIndicator } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useState, useEffect } from "react";
-import { styles } from "@/primitives";
+import { colors, styles } from "@/primitives";
 import { useNavigation, useRoute, Screens } from "@/navigation";
 import { getCharacterInfo } from "./characters";
 
@@ -31,15 +31,10 @@ export function CharacterSelectScreen() {
   return (
     <View style={styles.screenContainer}>
       {isLoadingCharacter ? (
-        <Text
-          style={{
-            ...styles.characterText,
-            ...{ textAlign: "center", marginTop: 100 },
-          }}
-          adjustsFontSizeToFit
-        >
-          ...Loading Character...
-        </Text>
+        <View style={styles.loadingBox}>
+          <ActivityIndicator size={40} color={colors.textColor} />
+          <Text style={styles.loadingText}>Loading Character</Text>
+        </View>
       ) : (
         <ScrollView fadingEdgeLength={50}>
           {charactersItems.map((item, index) => (

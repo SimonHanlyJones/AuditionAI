@@ -1,4 +1,4 @@
-import { View, ScrollView, Pressable, Text, Button } from "react-native";
+import { View, ScrollView, Pressable, Text } from "react-native";
 import { styles } from "@/primitives";
 import { useState } from "react";
 import { useNavigation, Screens } from "@/navigation";
@@ -31,12 +31,9 @@ export function ProjectSelectScreen() {
           </Pressable>
       ))}
       </ScrollView>
-      <Button
-        onPress={addProject}
-        title="+ Add Project"
-        color="#007bff"
-      />
-      {/* <ScriptAnalysisComponentDemoComponent /> */}
+      <Pressable style={({pressed}) => [styles.addProject, pressed && styles.addProjectPressed]} onPress={addProject}>
+        <Text style={styles.addProjectText}>+</Text>
+      </Pressable>
     </View>
   );
 };
