@@ -1,7 +1,7 @@
 import { View, ScrollView, Pressable, Text, ActivityIndicator } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useState, useEffect } from "react";
-import { colors, styles } from "@/primitives";
+import { styles, colors } from "@/primitives";
 import { useNavigation, useRoute, Screens } from "@/navigation";
 import { getCharacterInfo } from "./characters";
 

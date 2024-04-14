@@ -1,5 +1,5 @@
-import { Text, View } from "react-native";
-import { styles } from "@/primitives";
+import { ActivityIndicator, Text, View, ScrollView } from "react-native";
+import { styles, colors } from "@/primitives";
 // import { BASE_STYLES } from "@/primitives";
 import { useContext, useEffect } from "react";
 import { TabContext } from "./TabContext";
@@ -26,8 +26,9 @@ export function ScriptTab() {
   
     if (tabContext?.info.sceneScriptLoading) {
       return (
-        <View style={styles.screenContainer}>
-          <Text style={styles.sceneCharacterName}>Loading...</Text>
+        <View style={styles.loadingBox}>
+          <ActivityIndicator size={40} color={colors.textColor} />
+          <Text style={styles.loadingText}>Loading Script</Text>
         </View>
       );
     }
@@ -43,16 +44,18 @@ export function ScriptTab() {
   
     return (
       <View style={styles.screenContainer}>
-        {tabContext.info.sceneScript.dialogue.map((item, index) => (
-          <View key={index}>
-            <Text style={styles.sceneCharacterName}>
-              {item.character.toUpperCase()}
-            </Text>
-            <Text style={styles.sceneDialogText}>
-              {item.text}
-            </Text>
-          </View>
-        ))}
+        <ScrollView fadingEdgeLength={50}>
+          {tabContext.info.sceneScript.dialogue.map((item, index) => (
+            <View key={index}>
+              <Text style={styles.sceneCharacterName}>
+                {item.character}
+              </Text>
+              <Text style={styles.sceneDialogText}>
+                {item.text}
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
       </View>
     );
   }

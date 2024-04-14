@@ -183,17 +183,19 @@ export const styles = StyleSheet.create({
     paddingTop: 10,
     width: '100%'
   },
-  ////////////////////////////////////////
-  sceneDialogText: {
-    color: colors.textColor,
-    fontSize: 16,
-    marginVertical: 10
-  },
   sceneCharacterName: {
     color: colors.textColor,
     fontWeight: 'bold',
-    fontSize: 18,
-    marginVertical: 5
+    fontSize: 16,
+    marginHorizontal: 15,
+    marginTop: 15,
+    textAlign: 'center',
+    textTransform: 'uppercase'
+  },
+  sceneDialogText: {
+    color: colors.textColor,
+    fontSize: 16,
+    marginHorizontal: 15,
+    marginVertical: 10
   }
-  
 });
