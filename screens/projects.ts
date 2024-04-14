@@ -8,6 +8,12 @@ export interface ProjectInfo {
 
 export async function getNewProjectInfo() {
   const script = await getScriptAndConvert();
+
+  if (!script) {
+    alert('No script selected, please select a script.'); // Show alert message
+    return;
+  }
+
   const titleAndCharacters = await getTitleAndCharacters(script);
 
   if (!titleAndCharacters.characters || !titleAndCharacters.title || !script) {

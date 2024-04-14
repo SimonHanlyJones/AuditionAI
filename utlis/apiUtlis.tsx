@@ -292,11 +292,14 @@ export async function getSceneText(script: string, sceneDescription: string) {
   
   SCRIPT:
   `;
-  console.log(prompt);
-  console.log("Scene script request sent sent, waiting for response");
+  console.log('PROMPT:', prompt);
+  console.log('script length:', script.length);
+
+  console.log("Scene script request sent, waiting for response");
   var response = await callGemini(script, prompt)
+  response = await parseJSONString(response);
   console.log("response received, parsing JSON")
   // response = await fixJSONGeminiCall(response)
-  // console.log("parsed JSON: ", response)
-  return await parseJSONString(response);
+  console.log("parsed JSON: ", response)
+  return response
 }

@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnalysisTab } from "./AnalysisTab";
 import { ScriptTab } from "./ScriptTab";
 import { PerformTab } from "./PerformTab";
@@ -18,14 +18,32 @@ export function ProjectScreen() {
   const [tabContext, setTabContext] = useState<TabContextInfo>({
     project,
     character,
-    scene,
-    sceneScriptLoading: true,
+    scene,       // Initialize sceneScript as null
+    sceneScriptLoading: true // Initial loading state
   });
 
-  getSceneText(project.script, scene.scene).then((sceneScript) => {
-    setTabContext({ ...tabContext, sceneScript });
-    setTabContext({ ...tabContext, sceneScriptLoading: false });
-  });
+  useEffect(() => {
+    const fetchSceneText = async () => {
+      if (project?.script && scene?.scene) {
+        try {
+          const sceneScript = await getSceneText(project.script, scene.scene);
+          setTabContext(prevContext => ({
+            ...prevContext,
+            sceneScript,
+            sceneScriptLoading: false
+          }));
+        } catch (error) {
+          console.error('Failed to fetch scene text:', error);
+          setTabContext(prevContext => ({
+            ...prevContext,
+            sceneScriptLoading: false
+          }));
+        }
+      } 
+    };
+
+    fetchSceneText();
+  }, [project?.script, scene?.scene]); 
 
   if (tabContext === undefined) return;
 
