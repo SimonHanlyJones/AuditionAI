@@ -7,7 +7,7 @@ import { ScriptTab } from "./ScriptTab";
 import { PerformTab } from "./PerformTab";
 import { useRoute, Screens } from "@/navigation";
 import { TabContext, type TabContextInfo } from "./TabContext";
-import { getSceneText } from "@/utlis/apiUtlis";
+import { getSceneText } from "@/utlis/geminiUtlis";
 import { useFocusEffect } from "@react-navigation/native";
 
 const Tabs = createBottomTabNavigator();

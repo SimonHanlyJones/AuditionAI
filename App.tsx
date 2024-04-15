@@ -11,7 +11,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { navigationStyle } from "@/primitives";
 import { styles } from "@/primitives";
 
-import { getScriptAndConvert } from "./utlis/apiUtlis";
+import { getScriptAndConvert } from "./utlis/geminiUtlis";
 
 const Stack = createStackNavigator();
 

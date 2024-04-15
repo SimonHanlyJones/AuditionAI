@@ -1,6 +1,6 @@
 import { SceneInfo } from "./scenes";
 
-import { getCharacterAnalysis } from "@/utlis/apiUtlis";
+import { getCharacterAnalysis } from "@/utlis/geminiUtlis";
 
 export interface CharacterInfo {
   name: string;

@@ -1,6 +1,6 @@
 
 
-import { callHelloWorldFunction, getScriptAndConvert, getCharacterAnalysis, getTitleAndCharacters } from '@/utlis/apiUtlis';
+import { callHelloWorldFunction, getScriptAndConvert, getCharacterAnalysis, getTitleAndCharacters } from '@/utlis/geminiUtlis';
 import { synthesizeVoiceFromTextApiCall, playAudio } from '@/utlis/voiceUtlis';
 
 import React, { useState } from 'react';

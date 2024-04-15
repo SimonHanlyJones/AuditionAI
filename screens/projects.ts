@@ -1,4 +1,4 @@
-import { getScriptAndConvert, getTitleAndCharacters } from '@/utlis/apiUtlis';
+import { getScriptAndConvert, getTitleAndCharacters } from '@/utlis/geminiUtlis';
 
 export interface ProjectInfo {
   title: string;
