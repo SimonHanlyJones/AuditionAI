@@ -13,20 +13,29 @@ import { useContext } from "react";
 import { type CharacterInfo } from "../characters";
 import { TabContext } from "./TabContext";
 
+type IconName = React.ComponentProps<typeof MaterialCommunityIcons>["name"];
+type AnalysisItem = {
+  text: string;
+  onPress: () => void;
+  icon?: IconName;
+};
+
 export function AnalysisTab() {
   const tabContext = useContext(TabContext);
   if (tabContext === undefined) return;
 
   const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
-  const [modalData, setModalData] = useState(undefined);
+  const [modalData, setModalData] = useState<
+    CharacterInfo[keyof CharacterInfo] | undefined
+  >(undefined);
 
   function addItemIfInfoPresent(
-    analysisItems: { text: string; onPress: () => void }[],
+    analysisItems: AnalysisItem[],
     character: CharacterInfo,
-    infoKey: string,
+    infoKey: keyof CharacterInfo,
     infoTitle: string,
-    iconName?: string,
+    iconName?: IconName
   ) {
     if (infoKey in character) {
       analysisItems.push({
@@ -44,69 +53,69 @@ export function AnalysisTab() {
 
   const { project, character, scene } = tabContext.info;
 
-  const analysisItems: { text: string; onPress: () => void }[] = [];
+  const analysisItems: AnalysisItem[] = [];
   addItemIfInfoPresent(
     analysisItems,
     character,
     "characterOverview",
     "Character Overview",
-    "account",
+    "account"
   );
   addItemIfInfoPresent(
     analysisItems,
     character,
     "personalityTraits",
     "Personality Traits",
-    "head",
+    "head"
   );
   addItemIfInfoPresent(
     analysisItems,
     character,
     "physicalTraits",
     "Physical Traits",
-    "arm-flex",
+    "arm-flex"
   );
   addItemIfInfoPresent(
     analysisItems,
     character,
     "costumeChoices",
     "Costume Choices",
-    "hanger",
+    "hanger"
   );
   addItemIfInfoPresent(
     analysisItems,
     character,
     "mainRelationships",
     "Main Relationships",
-    "account-multiple",
+    "account-multiple"
   );
   addItemIfInfoPresent(
     analysisItems,
     character,
     "emotionalCharacterArc",
     "Character Arc",
-    "map-marker-path",
+    "map-marker-path"
   );
   addItemIfInfoPresent(
     analysisItems,
     character,
     "sceneAppearances",
     "Scene Appearances",
-    "forest",
+    "forest"
   );
   addItemIfInfoPresent(
     analysisItems,
     character,
     "importantScenes",
     "Important Scenes",
-    "chat-alert",
+    "chat-alert"
   );
   addItemIfInfoPresent(
     analysisItems,
     character,
     "otherInsights",
     "Other Insights",
-    "lightbulb-on",
+    "lightbulb-on"
   );
 
   const analysisItemsMap = analysisItems.map((item) => ({
