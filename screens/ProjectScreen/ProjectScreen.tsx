@@ -5,16 +5,17 @@ import { useState, useEffect } from "react";
 import { AnalysisTab } from "./AnalysisTab";
 import { ScriptTab } from "./ScriptTab";
 import { PerformTab } from "./PerformTab";
-import { useRoute, Screens } from "@/navigation";
+import { useRoute, useNavigation, Screens } from "@/navigation";
 import { TabContext, type TabContextInfo } from "./TabContext";
 import { getSceneText } from "@/utlis/geminiUtlis";
-import { useFocusEffect } from "@react-navigation/native";
 
 const Tabs = createBottomTabNavigator();
 
 export function ProjectScreen() {
   const route = useRoute<Screens.Project>();
+  const navitgation = useNavigation<Screens.Project>();
   const { project, character, scene } = route.params;
+  navitgation.setOptions({ title: project.title });
 
   const [tabContext, setTabContext] = useState<TabContextInfo>({
     project,
@@ -86,6 +87,7 @@ export function ProjectScreen() {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="analytics-sharp" size={size} color={color} />
             ),
+            headerShown: false,
           }}
         />
         <Tabs.Screen
@@ -99,6 +101,7 @@ export function ProjectScreen() {
                 color={color}
               />
             ),
+            headerShown: false,
           }}
         />
         <Tabs.Screen
@@ -112,6 +115,7 @@ export function ProjectScreen() {
                 color={color}
               />
             ),
+            headerShown: false,
           }}
         />
       </Tabs.Navigator>
