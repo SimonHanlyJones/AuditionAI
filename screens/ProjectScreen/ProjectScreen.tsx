@@ -13,9 +13,10 @@ const Tabs = createBottomTabNavigator();
 
 export function ProjectScreen() {
   const route = useRoute<Screens.Project>();
-  const navitgation = useNavigation<Screens.Project>();
+  const navigation = useNavigation<Screens.Project>();
   const { project, character, scene } = route.params;
-  navitgation.setOptions({ title: project.title });
+
+  useEffect(() => navigation.setOptions({ title: project.title }), []);
 
   const [tabContext, setTabContext] = useState<TabContextInfo>({
     project,

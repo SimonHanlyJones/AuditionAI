@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
@@ -22,7 +22,6 @@ type AnalysisItem = {
 
 export function AnalysisTab() {
   const tabContext = useContext(TabContext);
-  if (tabContext === undefined) return;
 
   const [showAnalysisModal, setShowAnalysisModal] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -51,7 +50,8 @@ export function AnalysisTab() {
     }
   }
 
-  const { project, character, scene } = tabContext.info;
+  if (tabContext === undefined) return;
+  const { project, character, scene } = tabContext.info; // Q: does this lose reactivity, since we are destructuring?
 
   const analysisItems: AnalysisItem[] = [];
   addItemIfInfoPresent(
