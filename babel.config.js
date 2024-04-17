@@ -5,16 +5,16 @@
 //   };
 // };
 
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ['babel-preset-expo'],
+    presets: ["babel-preset-expo"],
     plugins: [
       [
-        'module-resolver',
+        "module-resolver",
         {
           alias: {
-            '@': './', // This sets '@' as an alias to the root directory
+            "@": "./", // This sets '@' as an alias to the root directory
           },
         },
       ],

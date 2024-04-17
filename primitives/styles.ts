@@ -2,9 +2,9 @@ import { StyleSheet } from "react-native";
 
 export const colors = {
   background: "#130526",
-  border: '#59428C',
-  flash: '#761DF2',
-  textColor: '#F2EFE9'
+  border: "#59428C",
+  flash: "#761DF2",
+  textColor: "#F2EFE9",
 };
 
 export const styles = StyleSheet.create({
@@ -16,12 +16,12 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
-    width: "100%"
+    width: "100%",
   },
   splashScreenText: {
     color: colors.textColor,
     fontSize: 40,
-    textShadowColor: 'rgba(256, 256, 256, 0.2)',
+    textShadowColor: "rgba(256, 256, 256, 0.2)",
     textShadowOffset: { width: 0, height: 4 },
     textShadowRadius: 5,
   },
@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     flex: 1,
     flexDirection: "column",
-    width: "100%"
+    width: "100%",
   },
   loadingBox: {
     alignItems: "center",
@@ -44,15 +44,15 @@ export const styles = StyleSheet.create({
     margin: 10,
   },
   h2: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 5,
-    marginTop: 15
+    marginTop: 15,
   },
   h2Text: {
     color: colors.textColor,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   textBox: {
     paddingHorizontal: 15,
@@ -67,9 +67,9 @@ export const styles = StyleSheet.create({
     marginVertical: 3,
   },
   textKey: {
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    textTransform: 'capitalize',
+    fontStyle: "normal",
+    fontWeight: "bold",
+    textTransform: "capitalize",
   },
   addProject: {
     alignItems: "center",
@@ -80,7 +80,7 @@ export const styles = StyleSheet.create({
     bottom: 24,
     height: 66,
     justifyContent: "center",
-    position: 'absolute',
+    position: "absolute",
     right: 24,
     width: 66,
   },
@@ -96,47 +96,47 @@ export const styles = StyleSheet.create({
     borderColor: colors.border,
     borderBottomWidth: 1,
     justifyContent: "center",
-    padding: 16
+    padding: 16,
   },
   projectPressed: {
     backgroundColor: colors.flash,
   },
   projectText: {
     color: colors.textColor,
-    fontSize: 16
+    fontSize: 16,
   },
   character: {
     alignItems: "center",
     borderColor: colors.border,
     borderBottomWidth: 1,
     justifyContent: "center",
-    padding: 16
+    padding: 16,
   },
   characterPressed: {
     backgroundColor: colors.flash,
   },
   characterText: {
     color: colors.textColor,
-    fontSize: 16
+    fontSize: 16,
   },
   scene: {
     alignItems: "center",
     borderColor: colors.border,
     borderBottomWidth: 1,
     justifyContent: "center",
-    padding: 16
+    padding: 16,
   },
   scenePressed: {
     backgroundColor: colors.flash,
   },
   sceneText: {
     color: colors.textColor,
-    fontSize: 16
+    fontSize: 16,
   },
   analysisContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    alignItems: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
     padding: 10,
   },
   analysis: {
@@ -160,20 +160,20 @@ export const styles = StyleSheet.create({
   analysisText: {
     color: colors.textColor,
     fontSize: 12,
-    textAlign: 'center'
+    textAlign: "center",
   },
   overlay: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingBottom: 150,
     paddingLeft: 30,
     paddingRight: 30,
-    paddingTop: 150
+    paddingTop: 150,
   },
   modal: {
-    alignItems: 'center',
+    alignItems: "center",
     backgroundColor: colors.background,
     borderColor: colors.border,
     borderWidth: 1,
@@ -181,21 +181,21 @@ export const styles = StyleSheet.create({
     paddingLeft: 5,
     paddingRight: 5,
     paddingTop: 10,
-    width: '100%'
+    width: "100%",
   },
   sceneCharacterName: {
     color: colors.textColor,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
     marginHorizontal: 15,
     marginTop: 15,
-    textAlign: 'center',
-    textTransform: 'uppercase'
+    textAlign: "center",
+    textTransform: "uppercase",
   },
   sceneDialogText: {
     color: colors.textColor,
     fontSize: 16,
     marginHorizontal: 15,
-    marginVertical: 10
-  }
+    marginVertical: 10,
+  },
 });

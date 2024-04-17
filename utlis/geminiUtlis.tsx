@@ -164,8 +164,8 @@ export async function getTitleAndCharacters(script: string) {
   Ensure that characters are listed only once even if they are called different things in the script. Ensure that the titles and characters have normal formatting and case.
   
   SCRIPT:`;
-  console.log('PROMPT:', prompt);
-  console.log('script length:', script.length);
+  console.log("PROMPT:", prompt);
+  console.log("script length:", script.length);
   console.log("title and characters request sent");
   const response = await callGemini(script, prompt);
   console.log("get title and characters response:", response);
@@ -181,7 +181,7 @@ export async function getTitleAndCharacters(script: string) {
  */
 export async function getCharacterAnalysis(
   script: string,
-  characterName: string
+  characterName: string,
 ) {
   const prompt = `You are my acting coach. I am cast to play ${characterName} in the script attached. I want a full breakdown of this character, derived exclusively from the script provided. Your goal is to provide me every insight I need to bring ${characterName} with emotional honesty and integrity. I can only do this if you provide insight into ${characterName} and explain them in detail. Please analyze the script and give me a JSON object with the following headings:
   
@@ -219,8 +219,8 @@ export async function getCharacterAnalysis(
   
   SCRIPT:
   `;
-  console.log('PROMPT:', prompt);
-  console.log('script length:', script.length);
+  console.log("PROMPT:", prompt);
+  console.log("script length:", script.length);
 
   console.log("analysis sent, waiting for response");
   var response = await callGemini(script, prompt);
@@ -260,7 +260,9 @@ async function parseJSONString(jsonString: string) {
       return JSON.parse(retrimmedJsonString); // Attempt to parse the corrected JSON
     } catch (innerError) {
       // If parsing the corrected JSON also fails, throw an error
-      throw new Error("JSON parsing failed after attempting to fix: " + innerError);
+      throw new Error(
+        "JSON parsing failed after attempting to fix: " + innerError,
+      );
     }
   }
 }
@@ -271,7 +273,10 @@ async function parseJSONString(jsonString: string) {
  * @return {string} The trimmed JSON string.
  */
 async function trimJSONString(jsonString: string) {
-  const cleanedJsonString = jsonString.split('\n').filter(line => !line.trim().startsWith('//')).join('\n');
+  const cleanedJsonString = jsonString
+    .split("\n")
+    .filter((line) => !line.trim().startsWith("//"))
+    .join("\n");
   const startIndex = cleanedJsonString.indexOf("{");
   const endIndex = cleanedJsonString.lastIndexOf("}");
 
@@ -300,14 +305,14 @@ export async function getSceneText(script: string, sceneDescription: string) {
   
   SCRIPT:
   `;
-  console.log('PROMPT:', prompt);
-  console.log('script length:', script.length);
+  console.log("PROMPT:", prompt);
+  console.log("script length:", script.length);
 
   console.log("Scene script request sent, waiting for response");
-  var response = await callGemini(script, prompt)
+  var response = await callGemini(script, prompt);
   response = await parseJSONString(response);
-  console.log("response received, parsing JSON")
+  console.log("response received, parsing JSON");
   // response = await fixJSONGeminiCall(response)
-  console.log("parsed JSON: ", response)
-  return response
+  console.log("parsed JSON: ", response);
+  return response;
 }

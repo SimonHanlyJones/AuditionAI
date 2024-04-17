@@ -21,7 +21,7 @@ export interface CharacterInfo {
 
 export async function getCharacterInfo(
   projectScript: string,
-  characterName: string
+  characterName: string,
 ): Promise<CharacterInfo> {
   const jsonResponse = await getCharacterAnalysis(projectScript, characterName);
   const character: CharacterInfo = {

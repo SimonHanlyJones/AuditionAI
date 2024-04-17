@@ -1,4 +1,10 @@
-import { View, ScrollView, Pressable, Text, ActivityIndicator } from "react-native";
+import {
+  View,
+  ScrollView,
+  Pressable,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { styles, colors } from "@/primitives";

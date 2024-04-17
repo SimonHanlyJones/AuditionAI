@@ -19,45 +19,45 @@ export function ProjectScreen() {
   const [tabContext, setTabContext] = useState<TabContextInfo>({
     project,
     character,
-    scene,       // Initialize sceneScript as null
-    sceneScriptLoading: true // Initial loading state
+    scene, // Initialize sceneScript as null
+    sceneScriptLoading: true, // Initial loading state
   });
 
   /**
-  * When script and scene are loaded in, fetch the scene text
-  * 
-  * Retrieves the scene script based on the project script and scene ID.
-  * 
-  *
-  * @return {Promise<void>} Async function with no explicit return value
-  */
+   * When script and scene are loaded in, fetch the scene text
+   *
+   * Retrieves the scene script based on the project script and scene ID.
+   *
+   *
+   * @return {Promise<void>} Async function with no explicit return value
+   */
   useEffect(() => {
     const fetchSceneText = async () => {
       if (project?.script && scene?.scene) {
         try {
           const sceneScript = await getSceneText(project.script, scene.scene);
-          setTabContext(prevContext => ({
+          setTabContext((prevContext) => ({
             ...prevContext,
             sceneScript,
-            sceneScriptLoading: false
+            sceneScriptLoading: false,
           }));
           console.log("Scene Script Fetched and set:", sceneScript);
         } catch (error) {
-          console.error('Failed to fetch scene text:', error);
-          setTabContext(prevContext => ({
+          console.error("Failed to fetch scene text:", error);
+          setTabContext((prevContext) => ({
             ...prevContext,
-            sceneScriptLoading: false
+            sceneScriptLoading: false,
           }));
         }
-      } 
+      }
     };
 
     fetchSceneText();
-  }, [project?.script, scene?.scene]); 
+  }, [project?.script, scene?.scene]);
 
   useEffect(() => {
-    console.log('Updating context:', tabContext);
-  },[tabContext]);
+    console.log("Updating context:", tabContext);
+  }, [tabContext]);
 
   if (tabContext === undefined) return;
 
