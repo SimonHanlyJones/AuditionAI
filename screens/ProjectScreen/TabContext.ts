@@ -7,10 +7,19 @@ export type TabContextInfo = {
   project: ProjectInfo;
   character: CharacterInfo;
   scene: SceneInfo;
-  sceneScript?: {
-    dialogue: { character: string; text: string; gender: string }[];
-  };
+  sceneScript?: SceneScript;
   sceneScriptLoading: boolean;
+  voicesLoading: boolean;
+};
+
+export type SceneScript = {
+  dialogue: {
+    character: string;
+    text: string;
+    gender: string;
+    uri?: string;
+    voice?: string;
+  }[];
 };
 
 type SetTabContextInfo = (info: TabContextInfo) => void;

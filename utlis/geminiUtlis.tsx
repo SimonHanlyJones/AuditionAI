@@ -136,7 +136,7 @@ async function callGemini(script: string, prompt: string) {
       data.candidates[0].content.parts.length === 0 ||
       !data.candidates[0].content.parts[0].text
     ) {
-      console.error("No meaningful AI output found.");
+      console.error("No meaningful AI output found: ", data);
       throw new Error("No meaningful AI output found.");
     }
 
@@ -164,8 +164,8 @@ export async function getTitleAndCharacters(script: string) {
   Ensure that characters are listed only once even if they are called different things in the script. Ensure that the titles and characters have normal formatting and case.
   
   SCRIPT:`;
-  console.log('PROMPT:', prompt);
-  console.log('script length:', script.length);
+  console.log("PROMPT:", prompt);
+  console.log("script length:", script.length);
   console.log("title and characters request sent");
   const response = await callGemini(script, prompt);
   console.log("get title and characters response:", response);
@@ -219,8 +219,8 @@ export async function getCharacterAnalysis(
   
   SCRIPT:
   `;
-  console.log('PROMPT:', prompt);
-  console.log('script length:', script.length);
+  console.log("PROMPT:", prompt);
+  console.log("script length:", script.length);
 
   console.log("analysis sent, waiting for response");
   var response = await callGemini(script, prompt);
@@ -260,7 +260,9 @@ async function parseJSONString(jsonString: string) {
       return JSON.parse(retrimmedJsonString); // Attempt to parse the corrected JSON
     } catch (innerError) {
       // If parsing the corrected JSON also fails, throw an error
-      throw new Error("JSON parsing failed after attempting to fix: " + innerError);
+      throw new Error(
+        "JSON parsing failed after attempting to fix: " + innerError
+      );
     }
   }
 }
@@ -271,7 +273,10 @@ async function parseJSONString(jsonString: string) {
  * @return {string} The trimmed JSON string.
  */
 async function trimJSONString(jsonString: string) {
-  const cleanedJsonString = jsonString.split('\n').filter(line => !line.trim().startsWith('//')).join('\n');
+  const cleanedJsonString = jsonString
+    .split("\n")
+    .filter((line) => !line.trim().startsWith("//"))
+    .join("\n");
   const startIndex = cleanedJsonString.indexOf("{");
   const endIndex = cleanedJsonString.lastIndexOf("}");
 
@@ -282,32 +287,39 @@ async function trimJSONString(jsonString: string) {
   return cleanedJsonString.substring(startIndex, endIndex + 1);
 }
 
-export async function getSceneText(script: string, sceneDescription: string) {
+export async function getSceneText(
+  script: string,
+  sceneDescription: string,
+  userCharacter: string
+) {
   const prompt = `Your job is to read the script set out below, identify the scene that matches this description: 
   
-  ${sceneDescription}
+  ${sceneDescription} where ${userCharacter} appears.
 
   You must parse the full text of this scene into a JSON object with the following headings:
   { "dialogue":
     [
-      "character": string,
-      "text": string,
-      "gender": string,
+      {
+        "character": string,
+        "text": string,
+        "gender": string,
+      }
     ]
   }
   
-  Provide only the characters dialog, and any stage directions as a separate character. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations. Start and end the scene in the proper place, at the point indicated in the script and once there is a location change. Provide valid JSON in the format above.
+  Provide only the characters dialog, and any stage directions as a separate character named 'STAGE DIRECTIONS'. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations. Start and end the scene in the proper place, at the point indicated in the script with text like '43 INT. DRAWING ROOM - THE LUCAS' HOUSE - DAY. 43' or '2 EXT. LONGBOURN HOUSE - DAY. 2'. Provide valid JSON in the format above. Fix any formatting errors.
   
   SCRIPT:
   `;
-  console.log('PROMPT:', prompt);
-  console.log('script length:', script.length);
+  console.log("PROMPT:", prompt);
+  console.log("script length:", script.length);
 
   console.log("Scene script request sent, waiting for response");
-  var response = await callGemini(script, prompt)
+  var response = await callGemini(script, prompt);
+  console.log("response received, attempting to parse JSON");
   response = await parseJSONString(response);
-  console.log("response received, parsing JSON")
+  console.log("response received, parsing JSON");
   // response = await fixJSONGeminiCall(response)
-  console.log("parsed JSON: ", response)
-  return response
+  console.log("parsed JSON: ", response);
+  return response;
 }

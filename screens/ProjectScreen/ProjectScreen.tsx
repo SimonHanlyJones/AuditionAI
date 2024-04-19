@@ -9,6 +9,10 @@ import { useRoute, Screens } from "@/navigation";
 import { TabContext, type TabContextInfo } from "./TabContext";
 import { getSceneText } from "@/utlis/geminiUtlis";
 import { useFocusEffect } from "@react-navigation/native";
+import {
+  addVoiceIDToSceneScript,
+  getVoiceAndAddUriToSceneScript,
+} from "@/utlis/voiceUtlis";
 
 const Tabs = createBottomTabNavigator();
 
@@ -19,45 +23,81 @@ export function ProjectScreen() {
   const [tabContext, setTabContext] = useState<TabContextInfo>({
     project,
     character,
-    scene,       // Initialize sceneScript as null
-    sceneScriptLoading: true // Initial loading state
+    scene, // Initialize sceneScript as null
+    sceneScriptLoading: true, // Initial loading state
+    voicesLoading: true,
   });
 
   /**
-  * When script and scene are loaded in, fetch the scene text
-  * 
-  * Retrieves the scene script based on the project script and scene ID.
-  * 
-  *
-  * @return {Promise<void>} Async function with no explicit return value
-  */
+   * When script and scene are loaded in, fetch the scene text
+   *
+   * Retrieves the scene script based on the project script and scene ID.
+   *
+   *
+   * @return {Promise<void>} Async function with no explicit return value
+   */
   useEffect(() => {
     const fetchSceneText = async () => {
-      if (project?.script && scene?.scene) {
+      if (project?.script && scene?.scene && character?.name) {
         try {
-          const sceneScript = await getSceneText(project.script, scene.scene);
-          setTabContext(prevContext => ({
+          const sceneScript = await getSceneText(
+            project.script,
+            scene.scene,
+            character.name
+          );
+          setTabContext((prevContext) => ({
             ...prevContext,
             sceneScript,
-            sceneScriptLoading: false
+            sceneScriptLoading: false,
           }));
           console.log("Scene Script Fetched and set:", sceneScript);
         } catch (error) {
-          console.error('Failed to fetch scene text:', error);
-          setTabContext(prevContext => ({
+          console.error("Failed to fetch scene text:", error);
+          setTabContext((prevContext) => ({
             ...prevContext,
-            sceneScriptLoading: false
+            sceneScriptLoading: false,
           }));
         }
-      } 
+      }
+    };
+    fetchSceneText();
+  }, [project?.script, scene?.scene]);
+
+  // useEffect to get voices
+  useEffect(() => {
+    // Define the async function within the useEffect
+    const updateVoiceMappingAndSynthesizeVoice = async () => {
+      if (
+        !tabContext.sceneScriptLoading &&
+        tabContext.sceneScript &&
+        tabContext.sceneScript.dialogue.length > 0 &&
+        tabContext.character
+      ) {
+        const sceneScriptWithVoiceMap = await addVoiceIDToSceneScript(
+          tabContext.sceneScript,
+          tabContext.character.name
+        );
+        const sceneScriptWithVoices = await getVoiceAndAddUriToSceneScript(
+          sceneScriptWithVoiceMap,
+          tabContext.character.name
+        );
+
+        setTabContext((prevContext) => ({
+          ...prevContext,
+          sceneScript: sceneScriptWithVoices,
+          voicesLoading: false,
+        }));
+
+        console.log("Updated sceneScriptWithVoices:", sceneScriptWithVoices);
+      }
     };
 
-    fetchSceneText();
-  }, [project?.script, scene?.scene]); 
+    updateVoiceMappingAndSynthesizeVoice();
+  }, [tabContext.sceneScriptLoading]);
 
   useEffect(() => {
-    console.log('Updating context:', tabContext);
-  },[tabContext]);
+    console.log("Updating context");
+  }, [tabContext]);
 
   if (tabContext === undefined) return;
 
