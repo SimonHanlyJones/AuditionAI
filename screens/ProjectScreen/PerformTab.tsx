@@ -63,10 +63,6 @@ export function PerformTab() {
   return (
     <View style={BASE_STYLES.screenContainer}>
       <LineLearning />
-      <Text style={styles.sceneCharacterName}>
-        This tab will also need the new script, and will use the trickier
-        voice/listening tech
-      </Text>
     </View>
   );
 }

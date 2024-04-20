@@ -106,7 +106,7 @@ function LineLearning() {
       );
   }, [tabContext?.info.sceneScriptLoading]);
 
-  async function playVoices() {
+  async function playAllVoices() {
     console.log("Starting Performance");
 
     if (
@@ -140,7 +140,7 @@ function LineLearning() {
       <Button
         title="Play Dialogue"
         onPress={function () {
-          playVoices();
+          playAllVoices();
         }}
       />
     </View>
