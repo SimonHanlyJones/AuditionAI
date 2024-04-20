@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { ProjectInfo } from "./screens/projects";
 import type { CharacterInfo } from "./screens/characters";
-import type { SceneInfo } from "./screens/scenes";
+import type { SceneScriptInfo } from "./screens/scenes";
 
 // TODO: make this hacky storage more robust
 const STORAGE_PREFIX = "auditionAIData_";
@@ -33,7 +33,6 @@ const getAllKeys = async () => {
     console.log("Stored keys:", keys);
     return keys;
   } catch (e) {
-    // read key error
     console.log("Failed to fetch the keys", e);
   }
 };
@@ -62,13 +61,12 @@ export async function getCharacterFromStorage(
   );
 }
 
-// TODO: THIS SHOULD BE GET SCRIPT
-export async function getSceneFromStorage(
+export async function getSceneScriptFromStorage(
   projectTitle: string,
   characterName: string,
   scene: string
-): Promise<SceneInfo | undefined> {
-  return retrieveData<SceneInfo>(
+): Promise<SceneScriptInfo | undefined> {
+  return retrieveData<SceneScriptInfo>(
     `${projectTitle}${SEPARATOR}${characterName}${SEPARATOR}${scene}`
   );
 }
@@ -87,14 +85,14 @@ export async function setCharacterToStorage(
   );
 }
 
-// TODO: THIS SHOULD BE SET SCRIPT
-export async function setSceneToStorage(
+export async function setSceneScriptToStorage(
   projectTitle: string,
   characterName: CharacterInfo,
-  scene: SceneInfo
+  scene: string,
+  sceneScript: SceneScriptInfo
 ): Promise<void> {
-  storeData<SceneInfo>(
-    projectTitle + SEPARATOR + characterName + SEPARATOR + scene.scene,
-    scene
+  storeData<SceneScriptInfo>(
+    projectTitle + SEPARATOR + characterName + SEPARATOR + scene,
+    sceneScript
   );
 }

@@ -1,7 +1,7 @@
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 
-import { ProjectInfo } from "@/screens/projects";
+import { SceneScriptInfo } from "@/screens/scenes";
 
 /**
  * Calls the 'Hello World' test function in Firebase Functions and retrieves the response message.
@@ -181,7 +181,7 @@ export async function getTitleAndCharacters(script: string) {
  */
 export async function getCharacterAnalysis(
   script: string,
-  characterName: string,
+  characterName: string
 ) {
   const prompt = `You are my acting coach. I am cast to play ${characterName} in the script attached. I want a full breakdown of this character, derived exclusively from the script provided. Your goal is to provide me every insight I need to bring ${characterName} with emotional honesty and integrity. I can only do this if you provide insight into ${characterName} and explain them in detail. Please analyze the script and give me a JSON object with the following headings:
   
@@ -261,7 +261,7 @@ async function parseJSONString(jsonString: string) {
     } catch (innerError) {
       // If parsing the corrected JSON also fails, throw an error
       throw new Error(
-        "JSON parsing failed after attempting to fix: " + innerError,
+        "JSON parsing failed after attempting to fix: " + innerError
       );
     }
   }
@@ -287,7 +287,10 @@ async function trimJSONString(jsonString: string) {
   return cleanedJsonString.substring(startIndex, endIndex + 1);
 }
 
-export async function getSceneText(script: string, sceneDescription: string) {
+export async function getSceneText(
+  script: string,
+  sceneDescription: string
+): Promise<SceneScriptInfo> {
   const prompt = `Your job is to read the script set out below, identify the scene that matches this description: 
   
   ${sceneDescription}
