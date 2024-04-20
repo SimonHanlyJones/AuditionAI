@@ -137,7 +137,6 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
     padding: 10,
   },
   analysis: {
