@@ -87,7 +87,7 @@ export async function setCharacterToStorage(
 
 export async function setSceneScriptToStorage(
   projectTitle: string,
-  characterName: CharacterInfo,
+  characterName: string,
   scene: string,
   sceneScript: SceneScriptInfo
 ): Promise<void> {

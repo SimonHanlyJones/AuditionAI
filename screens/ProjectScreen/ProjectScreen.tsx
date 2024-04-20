@@ -63,7 +63,7 @@ export function ProjectScreen() {
 
             setSceneScriptToStorage(
               project.title,
-              character,
+              character.name,
               scene.scene,
               sceneScript
             );
