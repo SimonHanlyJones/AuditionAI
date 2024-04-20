@@ -126,6 +126,10 @@ export function AnalysisTab() {
 
   return (
     <View style={styles.screenContainer}>
+      <View>
+        <Text>Character: {tabContext.info.character.name}</Text>
+        <Text>Scene: {tabContext.info.scene.scene}</Text>
+      </View>
       <ScrollView fadingEdgeLength={50}>
         <View style={styles.analysisContainer}>
           {analysisItemsMap.map((item, index) => (

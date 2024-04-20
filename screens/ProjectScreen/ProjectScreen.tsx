@@ -16,7 +16,13 @@ export function ProjectScreen() {
   const navigation = useNavigation<Screens.Project>();
   const { project, character, scene } = route.params;
 
-  useEffect(() => navigation.setOptions({ title: project.title }), []);
+  useEffect(
+    () =>
+      navigation.setOptions({
+        title: project.title + ": " + character.name + ", " + scene.scene,
+      }),
+    []
+  );
 
   const [tabContext, setTabContext] = useState<TabContextInfo>({
     project,

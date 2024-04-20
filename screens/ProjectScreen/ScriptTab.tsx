@@ -11,7 +11,7 @@ export function ScriptTab() {
     if (tabContext && tabContext?.info && tabContext?.info?.sceneScript) {
       console.log(
         "New Scene script data received:",
-        tabContext.info.sceneScript,
+        tabContext.info.sceneScript
       );
     }
   }, [tabContext?.info.sceneScript]);
@@ -36,6 +36,10 @@ export function ScriptTab() {
 
   return (
     <View style={styles.screenContainer}>
+      <View>
+        <Text>Character: {tabContext.info.character.name}</Text>
+        <Text>Scene: {tabContext.info.scene.scene}</Text>
+      </View>
       <ScrollView fadingEdgeLength={50}>
         {tabContext.info.sceneScript.dialogue.map((item, index) => (
           <View key={index}>
