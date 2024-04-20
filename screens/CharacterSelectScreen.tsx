@@ -18,7 +18,6 @@ export function CharacterSelectScreen() {
   const { project } = route.params;
 
   const [isLoadingCharacter, setIsLoadingCharacter] = useState(false);
-  useEffect(() => {});
 
   const charactersItems = project.characters.map((characterName) => {
     return {
@@ -40,7 +39,7 @@ export function CharacterSelectScreen() {
           project,
           character,
         });
-        setIsLoadingCharacter(false); // TODO?: this might be causing gross flashing before the navigation happens
+        setTimeout(() => setIsLoadingCharacter(false), 1000); // TODO: hacky delay so that the loading doesn't end before navigation
       },
     };
   });
