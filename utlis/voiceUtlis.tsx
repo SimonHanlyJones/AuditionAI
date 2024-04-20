@@ -7,9 +7,9 @@ interface ValidVoices {
 }
 
 const validVoices: ValidVoices = {
-  "en-GB-Neural2-A": "FEMALE",
-  "en-GB-Neural2-B": "MALE",
   "en-GB-Neural2-C": "FEMALE",
+  "en-GB-Neural2-B": "MALE",
+  "en-GB-Neural2-A": "FEMALE",
   "en-GB-Neural2-D": "MALE",
   "en-AU-Neural2-A": "FEMALE",
   "en-AU-Neural2-B": "MALE",

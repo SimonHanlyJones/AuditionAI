@@ -205,8 +205,8 @@ export async function getCharacterAnalysis(
   
   {
       "characterOverview:": string,
-      "personalityTraits": [{trait: string, description: string}],
-      "physicalTraits": [{trait: string, description: string}],
+      "personalityTraits": [{"trait": string, "description": string}],
+      "physicalTraits": [{"trait": string, "description": string}],
       "costumeChoices": string,
       "mainRelationships": [{"name": string}, {"relationship": string}, {"description": string}],
       "emotionalCharacterArc": string,
@@ -222,7 +222,7 @@ export async function getCharacterAnalysis(
   console.log("PROMPT:", prompt);
   console.log("script length:", script.length);
 
-  console.log("analysis sent, waiting for response");
+  console.log("analysis request sent, waiting for response");
   var response = await callGemini(script, prompt);
   console.log("response received, parsing JSON");
   // response = await fixJSONGeminiCall(response)
@@ -287,6 +287,8 @@ async function trimJSONString(jsonString: string) {
   return cleanedJsonString.substring(startIndex, endIndex + 1);
 }
 
+// TODO write function to consolidate SceneText with the same character name
+
 export async function getSceneText(
   script: string,
   sceneDescription: string,
@@ -307,7 +309,7 @@ export async function getSceneText(
     ]
   }
   
-  Provide only the characters dialog, and any stage directions as a separate character named 'STAGE DIRECTIONS'. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations. Start and end the scene in the proper place, at the point indicated in the script with text like '43 INT. DRAWING ROOM - THE LUCAS' HOUSE - DAY. 43' or '2 EXT. LONGBOURN HOUSE - DAY. 2'. Provide valid JSON in the format above. Fix any formatting errors.
+  Provide only the characters dialog, and any stage directions as a separate character named 'STAGE DIRECTIONS'. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations and that one character is named ${userCharacter}. Start and end the scene in the proper place, at the point indicated in the script with text like '43 INT. DRAWING ROOM - THE LUCAS' HOUSE - DAY. 43' or '2 EXT. LONGBOURN HOUSE - DAY. 2'. Provide valid JSON in the format above. Fix any formatting errors.
   
   SCRIPT:
   `;

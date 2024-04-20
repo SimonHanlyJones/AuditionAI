@@ -28,7 +28,6 @@ import { useRoute, Screens } from "@/navigation";
 
 export function PerformTab() {
   const tabContext = useContext(TabContext);
-  const [userDialogues, setUserDialogues] = useState({});
 
   useEffect(() => {
     if (
@@ -40,43 +39,6 @@ export function PerformTab() {
       console.log("Voice data received:", tabContext.info.sceneScript);
     }
   }, [tabContext?.info.sceneScript]);
-
-  // get the user dialogues
-  useEffect(() => {
-    type userCharacterDialogue = { [key: number]: string };
-
-    async function getUserCharacterDialogue(
-      sceneScript: SceneScript,
-      userCharacter: string
-    ): Promise<userCharacterDialogue> {
-      const result: userCharacterDialogue = {};
-
-      if (!userCharacter || !sceneScript || !sceneScript.dialogue) {
-        return result;
-      }
-
-      sceneScript.dialogue.forEach(function (dialogue, index) {
-        if (dialogue.character && dialogue.character === userCharacter) {
-          result[index] = dialogue.text;
-        }
-        // console.log(index, dialogue);
-      });
-
-      return result;
-    }
-    if (
-      !tabContext?.info.sceneScriptLoading &&
-      tabContext?.info.sceneScript &&
-      tabContext?.info.sceneScript.dialogue &&
-      tabContext?.info.character.name
-    )
-      setUserDialogues(
-        getUserCharacterDialogue(
-          tabContext?.info.sceneScript,
-          tabContext?.info.character.name
-        )
-      );
-  }, [tabContext?.info.sceneScriptLoading]);
 
   if (tabContext?.info.voicesLoading) {
     return (
