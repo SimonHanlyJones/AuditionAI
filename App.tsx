@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { StatusBar } from "expo-status-bar";
 import { navigationStyle } from "@/primitives";
 import { styles } from "@/primitives";
 
@@ -28,6 +29,7 @@ export default function App() {
   if (isLoading) {
     return (
       <View style={styles.splashScreen}>
+        <StatusBar style="light" />
         <Text style={styles.splashScreenText}>AuditionAI</Text>
       </View>
     );
@@ -35,6 +37,7 @@ export default function App() {
 
   return (
     <NavigationContainer theme={navigationStyle}>
+      <StatusBar style="light" />
       <Stack.Navigator
         initialRouteName="ProjectSelect"
         screenOptions={{
