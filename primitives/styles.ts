@@ -149,7 +149,7 @@ export const styles = StyleSheet.create({
   },
   headerScene: {
     color: colors.textColor,
-    fontSize: 14,
+    fontSize: 16,
     padding: 4,
     textAlign: "center",
   },
