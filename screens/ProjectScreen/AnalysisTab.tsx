@@ -126,9 +126,17 @@ export function AnalysisTab() {
 
   return (
     <View style={styles.screenContainer}>
-      <View>
-        <Text>Character: {tabContext.info.character.name}</Text>
-        <Text>Scene: {tabContext.info.scene.scene}</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerCharacter}>
+          {tabContext.info.character.name}
+        </Text>
+        <Text
+          style={styles.headerScene}
+          numberOfLines={5}
+          ellipsizeMode={"tail"}
+        >
+          {tabContext.info.scene.scene}
+        </Text>
       </View>
       <ScrollView fadingEdgeLength={50}>
         <View style={styles.analysisContainer}>

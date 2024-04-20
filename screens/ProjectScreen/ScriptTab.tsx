@@ -1,6 +1,5 @@
 import { ActivityIndicator, Text, View, ScrollView } from "react-native";
 import { styles, colors } from "@/primitives";
-// import { BASE_STYLES } from "@/primitives";
 import { useContext, useEffect } from "react";
 import { TabContext } from "./TabContext";
 
@@ -36,10 +35,6 @@ export function ScriptTab() {
 
   return (
     <View style={styles.screenContainer}>
-      <View>
-        <Text>Character: {tabContext.info.character.name}</Text>
-        <Text>Scene: {tabContext.info.scene.scene}</Text>
-      </View>
       <ScrollView fadingEdgeLength={50}>
         {tabContext.info.sceneScript.dialogue.map((item, index) => (
           <View key={index}>

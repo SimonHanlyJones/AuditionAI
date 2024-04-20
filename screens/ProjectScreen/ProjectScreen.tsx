@@ -19,7 +19,7 @@ export function ProjectScreen() {
   useEffect(
     () =>
       navigation.setOptions({
-        title: project.title + ": " + character.name + ", " + scene.scene,
+        title: project.title,
       }),
     []
   );
