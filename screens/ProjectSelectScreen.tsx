@@ -1,23 +1,34 @@
 import { View, ScrollView, Pressable, Text } from "react-native";
 import { styles } from "@/primitives";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigation, Screens } from "@/navigation";
-import { getProjects, getNewProjectInfo } from "./projects";
+import { getNewProjectInfo } from "./projects";
+import type { ProjectInfo } from "./projects";
 
 import {
   ScriptAnalysisComponentDemoComponent,
   HelloWorldButtonFromAPI,
   VoiceTestButton,
 } from "@/components/testButtons";
+import { getProjectsFromStorage, setProjectToStorage } from "@/asyncStorage";
 
 export function ProjectSelectScreen() {
   const navigation = useNavigation<Screens.ProjectSelect>();
 
-  const [projects, setProjects] = useState(getProjects());
+  const [projects, setProjects] = useState<ProjectInfo[]>([]);
+  useEffect(() => {
+    async function fetchProjects() {
+      const projects = await getProjectsFromStorage();
+      setProjects(projects);
+    }
+    fetchProjects();
+  }, []);
 
   async function addProject() {
     const newProject = await getNewProjectInfo();
     if (newProject) {
+      // TODO: nicer to not have these decoupled like this
+      setProjectToStorage(newProject);
       setProjects([...projects, newProject]);
     }
   }
