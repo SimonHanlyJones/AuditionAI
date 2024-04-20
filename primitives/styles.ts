@@ -26,11 +26,13 @@ export const styles = StyleSheet.create({
     textShadowRadius: 5,
   },
   screenContainer: {
+    alignItems: "center",
     backgroundColor: colors.background,
     borderColor: colors.border,
     borderTopWidth: 1,
     flex: 1,
     flexDirection: "column",
+    justifyContent: "center",
     width: "100%",
   },
   loadingBox: {
@@ -138,6 +140,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     padding: 10,
+    width: "100%",
   },
   analysis: {
     alignItems: "center",
@@ -145,8 +148,8 @@ export const styles = StyleSheet.create({
     borderColor: colors.border,
     borderWidth: 1,
     justifyContent: "center",
-    marginHorizontal: 15,
-    margin: 10,
+    marginHorizontal: 10,
+    marginVertical: 10,
     padding: 10,
     width: 100,
   },
