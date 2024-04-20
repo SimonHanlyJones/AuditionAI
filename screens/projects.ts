@@ -12,10 +12,12 @@ export interface ProjectInfo {
 export async function getNewProjectInfo() {
   const script = await getScriptAndConvert();
 
+  // //////////////////////////////
   if (!script) {
-    alert("No script selected, please select a script."); // Show alert message
-    return;
+    // alert("No script selected, please select a script.");
+    return "NoScript";
   }
+  // //////////////////////////////
 
   const titleAndCharacters = await getTitleAndCharacters(script);
 

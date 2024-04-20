@@ -1,10 +1,16 @@
-import { View, ScrollView, Pressable, Text } from "react-native";
-import { styles } from "@/primitives";
 import { useState, useEffect } from "react";
+import {
+  View,
+  ScrollView,
+  Pressable,
+  Text,
+  Modal,
+  ActivityIndicator,
+} from "react-native";
+import { styles, colors } from "@/primitives";
 import { useNavigation, Screens } from "@/navigation";
 import { getNewProjectInfo } from "./projects";
 import type { ProjectInfo } from "./projects";
-
 import {
   ScriptAnalysisComponentDemoComponent,
   HelloWorldButtonFromAPI,
@@ -16,6 +22,7 @@ export function ProjectSelectScreen() {
   const navigation = useNavigation<Screens.ProjectSelect>();
 
   const [projects, setProjects] = useState<ProjectInfo[]>([]);
+  const [isLoadingProject, setIsLoadingProject] = useState(false);
   useEffect(() => {
     async function fetchProjects() {
       const projects = await getProjectsFromStorage();
@@ -25,11 +32,20 @@ export function ProjectSelectScreen() {
   }, []);
 
   async function addProject() {
+    setTimeout(() => {
+      setIsLoadingProject(true);
+    }, 200);
+
     const newProject = await getNewProjectInfo();
-    if (newProject) {
+    if (newProject !== "NoScript") {
       // TODO: nicer to not have these decoupled like this
       setProjectToStorage(newProject);
       setProjects([...projects, newProject]);
+    }
+    if (newProject) {
+      setTimeout(() => {
+        setIsLoadingProject(false);
+      }, 200);
     }
   }
 
@@ -60,6 +76,19 @@ export function ProjectSelectScreen() {
           </Pressable>
         ))}
       </ScrollView>
+      <Modal
+        transparent={true}
+        visible={isLoadingProject}
+        animationType="fade"
+        statusBarTranslucent
+      >
+        <View style={styles.overlay}>
+          <View style={styles.loadingBox}>
+            <ActivityIndicator size={40} color={colors.textColor} />
+            <Text style={styles.loadingText}>Loading Script</Text>
+          </View>
+        </View>
+      </Modal>
       <Pressable
         style={({ pressed }) => [
           styles.addProject,
@@ -70,7 +99,7 @@ export function ProjectSelectScreen() {
         <Text style={styles.addProjectText}>+</Text>
       </Pressable>
       {/* <HelloWorldButtonFromAPI /> */}
-      <VoiceTestButton />
+      {/* <VoiceTestButton /> */}
     </View>
   );
 }
