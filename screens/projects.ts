@@ -1,4 +1,7 @@
-import { getScriptAndConvert, getTitleAndCharacters } from '@/utlis/geminiUtlis';
+import {
+  getScriptAndConvert,
+  getTitleAndCharacters,
+} from "@/utlis/geminiUtlis";
 
 export interface ProjectInfo {
   title: string;
@@ -9,15 +12,17 @@ export interface ProjectInfo {
 export async function getNewProjectInfo() {
   const script = await getScriptAndConvert();
 
+  // //////////////////////////////
   if (!script) {
-    alert('No script selected, please select a script.'); // Show alert message
-    return;
+    // alert("No script selected, please select a script.");
+    return "NoScript";
   }
+  // //////////////////////////////
 
   const titleAndCharacters = await getTitleAndCharacters(script);
-  
+
   if (!titleAndCharacters.characters || !titleAndCharacters.title || !script) {
-    throw new Error('Missing information from API');
+    throw new Error("Missing information from API");
   }
 
   const newProject: ProjectInfo = {
@@ -25,12 +30,10 @@ export async function getNewProjectInfo() {
     script: script,
     characters: titleAndCharacters.characters,
   };
-  return newProject
+  return newProject;
 }
 
-
 export function getProjects(): ProjectInfo[] {
-  
   // TODO: get projects from storage
   // TEMP: returning hard coded data
   return [

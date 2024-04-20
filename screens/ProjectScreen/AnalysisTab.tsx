@@ -1,25 +1,40 @@
-import { useState } from "react";
-import { View, ScrollView, Pressable, Text, Modal, TouchableWithoutFeedback} from "react-native";
+import { useEffect, useState } from "react";
+import {
+  View,
+  ScrollView,
+  Pressable,
+  Text,
+  Modal,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { styles } from "@/primitives";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useContext } from "react";
 import { type CharacterInfo } from "../characters";
 import { TabContext } from "./TabContext";
 
+type IconName = React.ComponentProps<typeof MaterialCommunityIcons>["name"];
+type AnalysisItem = {
+  text: string;
+  onPress: () => void;
+  icon?: IconName;
+};
+
 export function AnalysisTab() {
   const tabContext = useContext(TabContext);
-  if (tabContext === undefined) return;
 
   const [showAnalysisModal, setShowAnalysisModal] = useState(false);
-  const [modalTitle, setModalTitle] = useState('');
-  const [modalData, setModalData] = useState(undefined);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalData, setModalData] = useState<
+    CharacterInfo[keyof CharacterInfo] | undefined
+  >(undefined);
 
   function addItemIfInfoPresent(
-    analysisItems: { text: string; onPress: () => void }[],
+    analysisItems: AnalysisItem[],
     character: CharacterInfo,
-    infoKey: string,
+    infoKey: keyof CharacterInfo,
     infoTitle: string,
-    iconName?: string
+    iconName?: IconName
   ) {
     if (infoKey in character) {
       analysisItems.push({
@@ -30,14 +45,15 @@ export function AnalysisTab() {
           setShowAnalysisModal(true);
           // console.log(infoTitle + ":", character[infoKey as keyof CharacterInfo]);
         },
-        icon: iconName
+        icon: iconName,
       });
     }
   }
 
-  const { project, character, scene } = tabContext.info;
+  if (tabContext === undefined) return;
+  const { project, character, scene } = tabContext.info; // Q: does this lose reactivity, since we are destructuring?
 
-  const analysisItems: { text: string; onPress: () => void }[] = [];
+  const analysisItems: AnalysisItem[] = [];
   addItemIfInfoPresent(
     analysisItems,
     character,
@@ -105,23 +121,57 @@ export function AnalysisTab() {
   const analysisItemsMap = analysisItems.map((item) => ({
     text: item.text,
     onPress: item.onPress,
-    icon: item.icon
-    }),
-  );
+    icon: item.icon,
+  }));
 
   return (
     <View style={styles.screenContainer}>
+      <View style={styles.header}>
+        <Text style={styles.headerCharacter}>
+          {tabContext.info.character.name}
+        </Text>
+        <Text
+          style={styles.headerScene}
+          numberOfLines={5}
+          ellipsizeMode={"tail"}
+        >
+          {tabContext.info.scene.scene}
+        </Text>
+      </View>
       <ScrollView fadingEdgeLength={50}>
         <View style={styles.analysisContainer}>
           {analysisItemsMap.map((item, index) => (
-            <Pressable key={index} onPress={item.onPress} style={({pressed}) => [styles.analysis, pressed && styles.analysisPressed]}>
-                <MaterialCommunityIcons style={styles.analysisIcon} name={item.icon} size={40} />
-                <Text style={styles.analysisText} numberOfLines={2} adjustsFontSizeToFit>{item.text}</Text>
+            <Pressable
+              key={index}
+              onPress={item.onPress}
+              style={({ pressed }) => [
+                styles.analysis,
+                pressed && styles.analysisPressed,
+              ]}
+            >
+              <MaterialCommunityIcons
+                style={styles.analysisIcon}
+                name={item.icon}
+                size={40}
+              />
+              <Text
+                style={styles.analysisText}
+                numberOfLines={2}
+                adjustsFontSizeToFit
+              >
+                {item.text}
+              </Text>
             </Pressable>
-        ))}
-      </View>
+          ))}
+        </View>
       </ScrollView>
-      <Modal transparent={true} visible={showAnalysisModal} animationType="fade" onRequestClose={() => setShowAnalysisModal(false)} statusBarTranslucent>
+      <Modal
+        transparent={true}
+        visible={showAnalysisModal}
+        animationType="fade"
+        onRequestClose={() => setShowAnalysisModal(false)}
+        statusBarTranslucent
+      >
         <TouchableWithoutFeedback onPress={() => setShowAnalysisModal(false)}>
           <View style={styles.overlay}>
             <TouchableWithoutFeedback>
@@ -130,22 +180,23 @@ export function AnalysisTab() {
                   <Text style={styles.h2Text}>{modalTitle}</Text>
                 </View>
                 <ScrollView fadingEdgeLength={50}>
-                {typeof modalData === 'string' && (
-                  <View style={styles.textBox}>
+                  {typeof modalData === "string" && (
+                    <View style={styles.textBox}>
                       <Text style={styles.text}>{modalData}</Text>
-                  </View>
-                )}
-                {typeof modalData === 'object' && (
-                  modalData.map((item, index) => (
-                    <View key={index} style={styles.textBox}>
-                      {Object.entries(item).map(([key, value]) => (
-                        <View key={key} style={styles.textItem}>
-                          <Text style={styles.text}><Text style={styles.textKey}>{key}:</Text> {value}</Text> 
-                        </View>
-                      ))}
                     </View>
-                  ))
-                )}
+                  )}
+                  {typeof modalData === "object" &&
+                    modalData.map((item, index) => (
+                      <View key={index} style={styles.textBox}>
+                        {Object.entries(item).map(([key, value]) => (
+                          <View key={key} style={styles.textItem}>
+                            <Text style={styles.text}>
+                              <Text style={styles.textKey}>{key}:</Text> {value}
+                            </Text>
+                          </View>
+                        ))}
+                      </View>
+                    ))}
                 </ScrollView>
               </View>
             </TouchableWithoutFeedback>

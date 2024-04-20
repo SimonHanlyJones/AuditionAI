@@ -1,7 +1,7 @@
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 
-import { ProjectInfo } from "@/screens/projects";
+import { SceneScriptInfo } from "@/screens/scenes";
 
 /**
  * Calls the 'Hello World' test function in Firebase Functions and retrieves the response message.
@@ -166,6 +166,8 @@ export async function getTitleAndCharacters(script: string) {
   SCRIPT:`;
   console.log("PROMPT:", prompt);
   console.log("script length:", script.length);
+  console.log("PROMPT:", prompt);
+  console.log("script length:", script.length);
   console.log("title and characters request sent");
   const response = await callGemini(script, prompt);
   console.log("get title and characters response:", response);
@@ -287,13 +289,11 @@ async function trimJSONString(jsonString: string) {
   return cleanedJsonString.substring(startIndex, endIndex + 1);
 }
 
-// TODO write function to consolidate SceneText with the same character name
-
 export async function getSceneText(
   script: string,
   sceneDescription: string,
   userCharacter: string
-) {
+): Promise<SceneScriptInfo> {
   const prompt = `Your job is to read the script set out below, identify the scene that matches this description: 
   
   ${sceneDescription} where ${userCharacter} appears.
@@ -313,6 +313,8 @@ export async function getSceneText(
   
   SCRIPT:
   `;
+  console.log("PROMPT:", prompt);
+  console.log("script length:", script.length);
   console.log("PROMPT:", prompt);
   console.log("script length:", script.length);
 

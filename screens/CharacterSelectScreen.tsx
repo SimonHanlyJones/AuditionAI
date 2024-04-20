@@ -1,9 +1,16 @@
-import { View, ScrollView, Pressable, Text, ActivityIndicator } from "react-native";
+import {
+  View,
+  ScrollView,
+  Pressable,
+  Text,
+  ActivityIndicator,
+} from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { styles, colors } from "@/primitives";
 import { useNavigation, useRoute, Screens } from "@/navigation";
-import { getCharacterInfo } from "./characters";
+import { CharacterInfo, getCharacterInfo } from "./characters";
+import { setCharacterToStorage, getCharacterFromStorage } from "@/asyncStorage";
 
 export function CharacterSelectScreen() {
   const navigation = useNavigation<Screens.CharacterSelect>();
@@ -11,19 +18,28 @@ export function CharacterSelectScreen() {
   const { project } = route.params;
 
   const [isLoadingCharacter, setIsLoadingCharacter] = useState(false);
-  useEffect(() => {});
 
   const charactersItems = project.characters.map((characterName) => {
     return {
       text: characterName,
       onPress: async () => {
         setIsLoadingCharacter(true);
-        const character = await getCharacterInfo(project.script, characterName);
+        let character: CharacterInfo | undefined = undefined;
+        const characterFromStorage = await getCharacterFromStorage(
+          project.title,
+          characterName
+        );
+        if (characterFromStorage === undefined) {
+          character = await getCharacterInfo(project.script, characterName);
+          setCharacterToStorage(project.title, character);
+        } else {
+          character = characterFromStorage;
+        }
         navigation.navigate("SceneSelect", {
           project,
           character,
         });
-        setIsLoadingCharacter(false); // TODO?: this might be causing gross flashing before the navigation happens
+        setTimeout(() => setIsLoadingCharacter(false), 1000); // TODO: hacky delay so that the loading doesn't end before navigation
       },
     };
   });

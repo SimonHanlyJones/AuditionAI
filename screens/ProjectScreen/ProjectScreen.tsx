@@ -5,10 +5,14 @@ import { useState, useEffect } from "react";
 import { AnalysisTab } from "./AnalysisTab";
 import { ScriptTab } from "./ScriptTab";
 import { PerformTab } from "./PerformTab";
-import { useRoute, Screens } from "@/navigation";
+import { useRoute, useNavigation, Screens } from "@/navigation";
 import { TabContext, type TabContextInfo } from "./TabContext";
 import { getSceneText } from "@/utlis/geminiUtlis";
-import { useFocusEffect } from "@react-navigation/native";
+import {
+  getSceneScriptFromStorage,
+  setSceneScriptToStorage,
+} from "@/asyncStorage";
+import type { SceneScriptInfo } from "@/screens/scenes";
 import {
   addVoiceIDToSceneScript,
   getVoiceAndAddUriToSceneScript,
@@ -18,13 +22,22 @@ const Tabs = createBottomTabNavigator();
 
 export function ProjectScreen() {
   const route = useRoute<Screens.Project>();
+  const navigation = useNavigation<Screens.Project>();
   const { project, character, scene } = route.params;
+
+  useEffect(
+    () =>
+      navigation.setOptions({
+        title: project.title,
+      }),
+    []
+  );
 
   const [tabContext, setTabContext] = useState<TabContextInfo>({
     project,
     character,
-    scene, // Initialize sceneScript as null
-    sceneScriptLoading: true, // Initial loading state
+    scene,
+    sceneScriptLoading: true,
     voicesLoading: true,
   });
 
@@ -38,26 +51,44 @@ export function ProjectScreen() {
    */
   useEffect(() => {
     const fetchSceneText = async () => {
-      if (project?.script && scene?.scene && character?.name) {
-        try {
-          const sceneScript = await getSceneText(
-            project.script,
-            scene.scene,
-            character.name
-          );
-          setTabContext((prevContext) => ({
-            ...prevContext,
-            sceneScript,
-            sceneScriptLoading: false,
-          }));
-          console.log("Scene Script Fetched and set:", sceneScript);
-        } catch (error) {
-          console.error("Failed to fetch scene text:", error);
-          setTabContext((prevContext) => ({
-            ...prevContext,
-            sceneScriptLoading: false,
-          }));
+      if (project?.script && scene?.scene) {
+        let sceneScript: SceneScriptInfo | undefined = undefined;
+        const sceneScriptFromStorage = await getSceneScriptFromStorage(
+          project.title,
+          character.name,
+          scene.scene
+        );
+
+        if (sceneScriptFromStorage === undefined) {
+          try {
+            console.log("PRE await getting scene text");
+
+            sceneScript = await getSceneText(
+              project.script,
+              scene.scene,
+              character.name
+            );
+            console.log("POST await getting scene text");
+
+            setSceneScriptToStorage(
+              project.title,
+              character.name,
+              scene.scene,
+              sceneScript
+            );
+          } catch (error) {
+            console.error("Failed to fetch scene text:", error);
+          }
+        } else {
+          sceneScript = sceneScriptFromStorage;
         }
+
+        setTabContext((prevContext) => ({
+          ...prevContext,
+          sceneScript,
+          sceneScriptLoading: false,
+        }));
+        console.log("Scene Script set:", sceneScript);
       }
     };
     fetchSceneText();
@@ -126,6 +157,7 @@ export function ProjectScreen() {
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="analytics-sharp" size={size} color={color} />
             ),
+            headerShown: false,
           }}
         />
         <Tabs.Screen
@@ -139,6 +171,7 @@ export function ProjectScreen() {
                 color={color}
               />
             ),
+            headerShown: false,
           }}
         />
         <Tabs.Screen
@@ -152,6 +185,7 @@ export function ProjectScreen() {
                 color={color}
               />
             ),
+            headerShown: false,
           }}
         />
       </Tabs.Navigator>
