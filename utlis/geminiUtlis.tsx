@@ -199,8 +199,7 @@ export async function getCharacterAnalysis(
   
   7. **Important Scenes**: Identify and explain the scenes from the script where ${characterName} experiences significant change or development. Describe the context of these scenes and how they contribute to the character's arc. Explore the nuance of the scenes and ${characterName}'s perspective in detail, deliver as much insight as possible to your actor.
   
-  8. **Scene Appearances**: An ordered list every scene from the script in which ${characterName} appears, provide a number that corresponds to the order in which the scene appears and a brief description of each scene to enable the actor to identify it.
-
+  8. **Scene Appearances**: An ordered list every scene from the script in which ${characterName} appears, provide a number that corresponds to the order in which the scene appears and a brief description of each scene to enable the actor to identify it. Make sure that the description is not a technical title, but an informal/informative summary of the scene.
   9. **Other insights**: Provide any additional insights or background information that can enhance my performance.
   
   The JSON object should be structured as follows:
