@@ -4,7 +4,7 @@ import { playAudio } from "@/utlis/voiceUtlis";
 import LineLearning from "@/components/LineLearning";
 import DialogueList from "@/components/PerformDialogueList";
 import { TabContext, SceneScript } from "./TabContext";
-import { useContext, useEffect, useState } from "react";
+import { SetStateAction, useContext, useEffect, useState } from "react";
 import { styles, colors } from "@/primitives";
 import { useRoute, Screens } from "@/navigation";
 
@@ -64,10 +64,16 @@ export function PerformTab() {
 
   return (
     <View style={BASE_STYLES.screenContainer}>
-      <DialogueList script={tabContext?.info.sceneScript} />
+      <DialogueList
+        script={tabContext?.info.sceneScript}
+        currentLineIndex={currentLineIndex}
+        setCurrentLineIndex={setCurrentLineIndex}
+      />
       <LineLearning
         sceneScript={tabContext?.info.sceneScript}
         userCharacter={tabContext?.info.character.name}
+        currentLineIndex={currentLineIndex}
+        setCurrentLineIndex={setCurrentLineIndex}
       />
     </View>
   );
