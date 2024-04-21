@@ -1,29 +1,11 @@
 import { BASE_STYLES } from "@/primitives";
 import { playAudio } from "@/utlis/voiceUtlis";
 // import LineLearning from "@/components/LineLearning";
-import { TabContext, SceneScript } from "@/screens/ProjectScreen/TabContext";
-import { useContext, useEffect, useState } from "react";
+import { SceneScript } from "@/screens/ProjectScreen/TabContext";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { styles, colors } from "@/primitives";
-import { useRoute, Screens } from "@/navigation";
 
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  Dimensions,
-  Button,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-
-// export type TabContextInfo = {
-//   project: ProjectInfo;
-//   character: CharacterInfo;
-//   scene: SceneInfo;
-//   sceneScript?: SceneScript;
-//   sceneScriptLoading: boolean;
-//   voicesLoading: boolean;
-// };
+import { View, Text, Button } from "react-native";
 
 // export type SceneScript = {
 //   dialogue: {
@@ -43,7 +25,6 @@ type Dialogue = {
   voice?: string;
 };
 
-type UserCharacterDialogue = { [key: number]: string };
 type LineLearningProps = {
   sceneScript: SceneScript;
   userCharacter: string;
@@ -53,94 +34,27 @@ type LineLearningProps = {
 function LineLearning(props: LineLearningProps) {
   const dialogue = props.sceneScript.dialogue;
   const userCharacter = props.userCharacter;
-  const tabContext = useContext(TabContext);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [continuePlaying, setContinuePlaying] = useState(() => () => {});
 
-  // get the user dialogues
-  // const [userDialogues, setUserDialogues] = useState<UserCharacterDialogue>({});
-  // const [sortedUserDialogueIndexes, setSortedUserDialogueIndexes] = useState<
-  //   string[]
-  // >([]);
-  // const [currentUserLineIndex, setCurrentUserLineIndex] = useState(0);
-  // const [nextUserLine, setNextUserLine] = useState<string>("");
-
-  // useEffect(() => {
-  //   if (userDialogues) {
-  //     console.log("userDialogues:", userDialogues);
-  //     console.log("sortedUserDialogueIndexes:", sortedUserDialogueIndexes);
-  //   }
-  // }, [userDialogues]);
-
-  // useEffect(() => {
-  //   if (
-  //     tabContext &&
-  //     tabContext?.info &&
-  //     tabContext?.info.sceneScript &&
-  //     tabContext?.info.sceneScript.dialogue &&
-  //     tabContext?.info.sceneScript.dialogue.length > 0 &&
-  //     sortedUserDialogueIndexes &&
-  //     currentLineIndex < tabContext?.info.sceneScript.dialogue.length
-  //   ) {
-  //     if (
-  //       currentLineIndex >
-  //       parseInt(sortedUserDialogueIndexes[currentUserLineIndex])
-  //     )
-  //       setCurrentUserLineIndex(currentUserLineIndex + 1);
-
-  //     parseInt(sortedUserDialogueIndexes[currentUserLineIndex]);
-  //   }
-
-  //   if (currentUserLineIndex in userDialogues) {
-  //     setNextUserLine(userDialogues[currentUserLineIndex]);
-  //   }
-  // }, [currentLineIndex, sortedUserDialogueIndexes]);
-
-  // useEffect(() => {
-  //   async function getUserCharacterDialogue(
-  //     sceneScript: SceneScript,
-  //     userCharacter: string
-  //   ): Promise<UserCharacterDialogue> {
-  //     let result: UserCharacterDialogue = {};
-
-  //     if (!userCharacter || !sceneScript || !sceneScript.dialogue) {
-  //       return result;
-  //     }
-
-  //     sceneScript.dialogue.forEach(function (dialogue, index) {
-  //       if (dialogue.character && dialogue.character === userCharacter) {
-  //         result[index] = dialogue.text;
-  //       }
-  //       // console.log(index, dialogue);
-  //     });
-  //     const sortedIndexes = Object.keys(result).sort(
-  //       (a, b) => parseInt(a) - parseInt(b)
-  //     );
-  //     setUserDialogues(result);
-  //     setSortedUserDialogueIndexes(sortedIndexes);
-
-  //     return result;
-  //   }
-  //   if (
-  //     !tabContext?.info.sceneScriptLoading &&
-  //     tabContext?.info.sceneScript &&
-  //     tabContext?.info.sceneScript.dialogue &&
-  //     tabContext?.info.character.name
-  //   )
-  //     getUserCharacterDialogue(
-  //       tabContext?.info.sceneScript,
-  //       tabContext?.info.character.name
-  //     );
-  // }, [tabContext?.info.sceneScriptLoading]);
+  const waitForUser = useCallback(() => {
+    return new Promise<void>((resolve) => {
+      setContinuePlaying(() => () => {
+        resolve();
+      });
+    });
+  }, []);
 
   async function playAllVoices() {
     console.log("Starting Performance");
+    setIsPlaying(true);
 
     if (dialogue.length > 0) {
       for (let i = 0; i < dialogue.length; i++) {
         const line = dialogue[i];
         props.setCurrentLineIndex(i);
         if (line.character === userCharacter) {
-        }
-        if (line.uri) {
+        } else if (line.uri) {
           try {
             // console.log("playing text:" + line.text, " line uri", line.uri);
             await playAudio(line.uri);
@@ -150,6 +64,7 @@ function LineLearning(props: LineLearningProps) {
         }
       }
     }
+    setIsPlaying(false);
     console.log("Finished Performance");
   }
   return (
@@ -159,11 +74,13 @@ function LineLearning(props: LineLearningProps) {
         <Text style={styles.sceneCharacterName}>{nextUserLine}</Text>
       )} */}
       <Button
-        title="Play Dialogue"
-        onPress={function () {
-          playAllVoices();
-        }}
+        title={isPlaying ? "Playing..." : "Play Dialogue"}
+        onPress={playAllVoices}
+        disabled={isPlaying}
       />
+      {isPlaying && (
+        <Button title="Continue Playing" onPress={() => continuePlaying()} />
+      )}
     </View>
   );
 }
