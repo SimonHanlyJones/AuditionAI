@@ -2,6 +2,7 @@ import { ActivityIndicator, Text, View, Button } from "react-native";
 import { BASE_STYLES } from "@/primitives";
 import { playAudio } from "@/utlis/voiceUtlis";
 import LineLearning from "@/components/LineLearning";
+import DialogueList from "@/components/PerformDialogueList";
 import { TabContext, SceneScript } from "./TabContext";
 import { useContext, useEffect, useState } from "react";
 import { styles, colors } from "@/primitives";
@@ -28,6 +29,7 @@ import { useRoute, Screens } from "@/navigation";
 
 export function PerformTab() {
   const tabContext = useContext(TabContext);
+  const [currentLineIndex, setCurrentLineIndex] = useState(0);
 
   useEffect(() => {
     if (
@@ -62,7 +64,11 @@ export function PerformTab() {
 
   return (
     <View style={BASE_STYLES.screenContainer}>
-      <LineLearning />
+      <DialogueList script={tabContext?.info.sceneScript} />
+      <LineLearning
+        sceneScript={tabContext?.info.sceneScript}
+        userCharacter={tabContext?.info.character.name}
+      />
     </View>
   );
 }
