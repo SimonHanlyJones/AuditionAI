@@ -78,18 +78,21 @@ export const styles = StyleSheet.create({
     borderRadius: 33,
     borderWidth: 2,
     bottom: 24,
-    height: 66,
+    height: 60,
     justifyContent: "center",
     position: "absolute",
     right: 24,
-    width: 66,
+    width: 60,
   },
   addProjectPressed: {
     backgroundColor: colors.flash,
+    borderColor: colors.flash,
   },
   addProjectText: {
     color: colors.textColor,
     fontSize: 36,
+    marginBottom: 3,
+    marginLeft: 1,
   },
   project: {
     alignItems: "center",

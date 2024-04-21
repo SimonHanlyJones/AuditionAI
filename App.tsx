@@ -11,13 +11,26 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { StatusBar } from "expo-status-bar";
 import { navigationStyle } from "@/primitives";
 import { styles } from "@/primitives";
-
-import { getScriptAndConvert } from "./utlis/geminiUtlis";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const clearStorage = async () => {
+      try {
+        await AsyncStorage.clear();
+        console.log("AsyncStorage was cleared!");
+      } catch (e) {
+        // handling exception
+        console.error("Failed to clear the async storage.", e);
+      }
+    };
+
+    clearStorage();
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
