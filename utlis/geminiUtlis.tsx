@@ -296,7 +296,7 @@ export async function getSceneText(
 ): Promise<SceneScriptInfo> {
   const prompt = `Your job is to read the script set out below, identify the scene that matches this description: 
   
-  ${sceneDescription} where ${userCharacter} appears.
+  ${sceneDescription} where the character "${userCharacter}" appears.
 
   You must parse the full text of this scene into a JSON object with the following headings:
   { "dialogue":
@@ -309,7 +309,7 @@ export async function getSceneText(
     ]
   }
   
-  Provide only the characters dialog, and any stage directions as a separate character named 'STAGE DIRECTIONS'. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations and that one character is named ${userCharacter}. Start and end the scene in the proper place, at the point indicated in the script with text like '43 INT. DRAWING ROOM - THE LUCAS' HOUSE - DAY. 43' or '2 EXT. LONGBOURN HOUSE - DAY. 2'. Provide valid JSON in the format above. Fix any formatting errors.
+  Provide the related dialog for each character until that scene is complete, and any stage directions as a separate character named 'STAGE DIRECTIONS'. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations and that one character is named ${userCharacter}. Start and end the scene in the proper place, at the point indicated in the script with text like '43 INT. DRAWING ROOM - THE LUCAS' HOUSE - DAY. 43' or '2 EXT. LONGBOURN HOUSE - DAY. 2'. Provide valid JSON in the format above. Fix any formatting errors.
   
   SCRIPT:
   `;
