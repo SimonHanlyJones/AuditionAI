@@ -35,11 +35,14 @@ function LineLearning(props: LineLearningProps) {
   const dialogue = props.sceneScript.dialogue;
   const userCharacter = props.userCharacter;
   const [isPlaying, setIsPlaying] = useState(false);
+  const [waitingForUser, setWaitingForUser] = useState(false);
   const [continuePlaying, setContinuePlaying] = useState(() => () => {});
 
   const waitForUser = useCallback(() => {
+    setWaitingForUser(true);
     return new Promise<void>((resolve) => {
       setContinuePlaying(() => () => {
+        setWaitingForUser(false);
         resolve();
       });
     });
@@ -54,6 +57,7 @@ function LineLearning(props: LineLearningProps) {
         const line = dialogue[i];
         props.setCurrentLineIndex(i);
         if (line.character === userCharacter) {
+          await waitForUser();
         } else if (line.uri) {
           try {
             // console.log("playing text:" + line.text, " line uri", line.uri);
@@ -78,7 +82,7 @@ function LineLearning(props: LineLearningProps) {
         onPress={playAllVoices}
         disabled={isPlaying}
       />
-      {isPlaying && (
+      {isPlaying && waitingForUser && (
         <Button title="Continue Playing" onPress={() => continuePlaying()} />
       )}
     </View>
