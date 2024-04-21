@@ -221,4 +221,26 @@ export const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginVertical: 10,
   },
+  performItem: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+    height: 220,
+    padding: 10,
+  },
+  performCharacter: {
+    color: colors.textColor,
+    fontWeight: "bold",
+    fontSize: 22,
+    textAlign: "center",
+    textTransform: "uppercase",
+    margin: 5,
+  },
+  performLine: {
+    color: colors.textColor,
+    fontSize: 22,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
 });

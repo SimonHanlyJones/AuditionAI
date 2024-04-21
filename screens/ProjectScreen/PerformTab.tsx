@@ -1,5 +1,4 @@
 import { ActivityIndicator, Text, View, Button } from "react-native";
-import { BASE_STYLES } from "@/primitives";
 import { playAudio } from "@/utlis/voiceUtlis";
 import LineLearning from "@/components/LineLearning";
 import DialogueList from "@/components/PerformDialogueList";
@@ -63,7 +62,7 @@ export function PerformTab() {
   // if we have the voices, play them, and show the next userDialogue
 
   return (
-    <View style={BASE_STYLES.screenContainer}>
+    <View style={styles.screenContainer}>
       <DialogueList
         script={tabContext?.info.sceneScript}
         currentLineIndex={currentLineIndex}
