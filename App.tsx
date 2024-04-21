@@ -18,19 +18,20 @@ const Stack = createStackNavigator();
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const clearStorage = async () => {
-      try {
-        await AsyncStorage.clear();
-        console.log("AsyncStorage was cleared!");
-      } catch (e) {
-        // handling exception
-        console.error("Failed to clear the async storage.", e);
-      }
-    };
+  // UNCOMMENT BELOW TO CLEAR ASYNC STORAGE
+  // useEffect(() => {
+  //   const clearStorage = async () => {
+  //     try {
+  //       await AsyncStorage.clear();
+  //       console.log("AsyncStorage was cleared!");
+  //     } catch (e) {
+  //       // handling exception
+  //       console.error("Failed to clear the async storage.", e);
+  //     }
+  //   };
 
-    clearStorage();
-  }, []);
+  //   clearStorage();
+  // }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
