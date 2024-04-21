@@ -1,6 +1,6 @@
 import * as FileSystem from "expo-file-system";
 import { Audio } from "expo-av";
-import { SceneScript } from "@/screens/ProjectScreen/TabContext";
+import { SceneScript, Dialogue } from "@/screens/ProjectScreen/TabContext";
 
 interface ValidVoices {
   [key: string]: string;
@@ -192,7 +192,8 @@ export async function addVoiceIDToSceneScript(
   for (let line of sceneScriptCopy.dialogue) {
     if (
       userCharacter !== line.character &&
-      line.character !== "Stage Direction" &&
+      line.character !== "Stage Directions".toLowerCase() &&
+      line.character !== "STAGE DIRECTION".toLowerCase() &&
       !line.uri
     ) {
       if (line.character in characterMapping) {
@@ -211,16 +212,6 @@ export async function addVoiceIDToSceneScript(
   return sceneScriptCopy;
 }
 
-// export type SceneScript = {
-//     dialogue: {
-//       character: string;
-//       text: string;
-//       gender: string;
-//       uri?: string;
-//       voice?: string;
-//     }[];
-//   };
-
 export async function getVoiceAndAddUriToSceneScript(
   sceneScriptOriginal: SceneScript,
   userCharacter: string
@@ -232,8 +223,8 @@ export async function getVoiceAndAddUriToSceneScript(
   for (let line of sceneScriptCopy.dialogue) {
     if (
       userCharacter !== line.character &&
-      line.character !== "Stage Direction" &&
-      line.character !== "STAGE DIRECTION" &&
+      line.character !== "Stage Directions".toLowerCase() &&
+      line.character !== "STAGE DIRECTION".toLowerCase() &&
       line.gender &&
       line.voice &&
       validateVoice(line.voice, line.gender) &&

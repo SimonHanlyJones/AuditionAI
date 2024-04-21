@@ -12,14 +12,16 @@ export type TabContextInfo = {
   voicesLoading: boolean;
 };
 
+export type Dialogue = {
+  character: string;
+  text: string;
+  gender: string;
+  uri?: string;
+  voice?: string;
+};
+
 export type SceneScript = {
-  dialogue: {
-    character: string;
-    text: string;
-    gender: string;
-    uri?: string;
-    voice?: string;
-  }[];
+  dialogue: Dialogue[];
 };
 
 type SetTabContextInfo = (info: TabContextInfo) => void;

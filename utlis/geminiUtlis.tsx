@@ -324,5 +324,66 @@ export async function getSceneText(
   console.log("response received, parsing JSON");
   // response = await fixJSONGeminiCall(response)
   console.log("parsed JSON: ", response);
+
+  // make sure the user character is in the script
+  if (!checkForUserCharacter(response, userCharacter)) {
+    console.log("User character not found in scene script, trying to force it");
+    response = await getCorrectUserCharacter(
+      script,
+      sceneDescription,
+      userCharacter
+    );
+  }
+  // Throw error if no user character found
+  if (!checkForUserCharacter(response, userCharacter)) {
+    console.error("User character not found in scene script", response);
+  }
+
+  return response;
+}
+
+async function checkForUserCharacter(
+  sceneScript: SceneScriptInfo,
+  userCharacter: string
+): Promise<boolean> {
+  for (let line of sceneScript.dialogue) {
+    if (line.character.toUpperCase() === userCharacter.toUpperCase()) {
+      return true;
+    }
+  }
+
+  return false;
+}
+export async function getCorrectUserCharacter(
+  script: string,
+  sceneDescription: string,
+  userCharacter: string
+): Promise<SceneScriptInfo> {
+  const prompt = `Your job is to read the script set out below, identify and match the character that matches ${userCharacter}. There may be missing punctuation, a missing first name or some other deviation. Identify the character, and replace the wrong name with ${userCharacter}. Otherwise, return the rest of the script in the same format, which is set out below:
+  
+  { "dialogue":
+    [
+      {
+        "character": string,
+        "text": string,
+        "gender": string,
+      }
+    ]
+  }
+  
+  Provide valid JSON in the format above. Fix any formatting errors.
+  
+  SCRIPT:
+  `;
+  console.log("PROMPT:", prompt);
+  console.log("script length:", script.length);
+  console.log("PROMPT:", prompt);
+  console.log("script length:", script.length);
+
+  console.log("Scene script request sent, waiting for response");
+  var response = await callGemini(script, prompt);
+  console.log("response received, attempting to parse JSON");
+  response = await parseJSONString(response);
+  console.log("parsed JSON: ", response);
   return response;
 }

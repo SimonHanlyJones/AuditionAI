@@ -30,16 +30,16 @@ export function PerformTab() {
   const tabContext = useContext(TabContext);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
 
-  useEffect(() => {
-    if (
-      tabContext &&
-      tabContext?.info &&
-      tabContext?.info?.sceneScript &&
-      !tabContext?.info?.voicesLoading
-    ) {
-      console.log("Voice data received:", tabContext.info.sceneScript);
-    }
-  }, [tabContext?.info.sceneScript]);
+  // useEffect(() => {
+  //   if (
+  //     tabContext &&
+  //     tabContext?.info &&
+  //     tabContext?.info?.sceneScript &&
+  //     !tabContext?.info?.voicesLoading
+  //   ) {
+  //     console.log("Voice data received:", tabContext.info.sceneScript);
+  //   }
+  // }, [tabContext?.info.sceneScript]);
 
   if (tabContext?.info.voicesLoading) {
     return (
@@ -59,8 +59,7 @@ export function PerformTab() {
     );
   }
 
-  // if we have the voices, play them, and show the next userDialogue
-
+  // return statement for when we have voices and dialogue
   return (
     <View style={styles.screenContainer}>
       <DialogueList

@@ -17,6 +17,7 @@ import {
   addVoiceIDToSceneScript,
   getVoiceAndAddUriToSceneScript,
 } from "@/utlis/voiceUtlis";
+import { consolidateDialogue } from "@/utlis/generalUtils";
 
 const Tabs = createBottomTabNavigator();
 
@@ -82,6 +83,10 @@ export function ProjectScreen() {
         } else {
           sceneScript = sceneScriptFromStorage;
         }
+        // adjacent dialogue added to same characters
+        if (sceneScript) {
+          sceneScript = await consolidateDialogue(sceneScript);
+        }
 
         setTabContext((prevContext) => ({
           ...prevContext,
@@ -96,7 +101,6 @@ export function ProjectScreen() {
 
   // useEffect to get voices
   useEffect(() => {
-    // Define the async function within the useEffect
     const updateVoiceMappingAndSynthesizeVoice = async () => {
       if (
         !tabContext.sceneScriptLoading &&
