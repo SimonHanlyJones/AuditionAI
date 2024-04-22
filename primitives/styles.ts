@@ -5,6 +5,7 @@ export const colors = {
   border: "#59428C",
   flash: "#761DF2",
   textColor: "#F2EFE9",
+  contrast: "#FFA500",
 };
 
 export const styles = StyleSheet.create({
@@ -226,8 +227,8 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
-    height: 220,
-    padding: 10,
+    height: 280,
+    padding: 20,
   },
   performCharacter: {
     color: colors.textColor,
@@ -237,10 +238,19 @@ export const styles = StyleSheet.create({
     textTransform: "uppercase",
     margin: 5,
   },
+  performSelectedCharacter: {
+    color: colors.contrast,
+    fontWeight: "bold",
+    fontSize: 24,
+    textAlign: "center",
+    textTransform: "uppercase",
+    margin: 5,
+  },
   performLine: {
     color: colors.textColor,
     fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
+    paddingBottom: 10,
   },
 });
