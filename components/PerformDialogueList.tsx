@@ -41,9 +41,9 @@ const DialogueList = (props: PerformDialogueProps) => {
             : styles.performCharacter
         }
       >
-        {item.character.toUpperCase()}
+        {item.character}
       </Text>
-      <Text style={styles.performLine} adjustsFontSizeToFit>
+      <Text style={styles.performLine} numberOfLines={6} adjustsFontSizeToFit>
         {item.text}
       </Text>
     </View>
