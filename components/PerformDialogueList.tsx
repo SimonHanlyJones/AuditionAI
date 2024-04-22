@@ -25,7 +25,7 @@ const DialogueList = (props: PerformDialogueProps) => {
   useEffect(() => {
     flatListRef.current.scrollToIndex({
       animated: true,
-      index: Math.max(props.currentLineIndex - 1, 0),
+      index: Math.max(props.currentLineIndex - 0.5, 0),
     });
   }, [props.currentLineIndex]);
 
