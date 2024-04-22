@@ -126,13 +126,16 @@ export const styles = StyleSheet.create({
     borderColor: colors.border,
     borderBottomWidth: 1,
     justifyContent: "center",
+    alignContent: "center",
     padding: 16,
+    height: 80,
   },
   scenePressed: {
     backgroundColor: colors.flash,
   },
   sceneText: {
     color: colors.textColor,
+    textAlign: "center",
     fontSize: 16,
   },
   header: {
