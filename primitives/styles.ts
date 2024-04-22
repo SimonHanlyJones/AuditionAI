@@ -5,7 +5,7 @@ export const colors = {
   border: "#59428C",
   flash: "#761DF2",
   textColor: "#F2EFE9",
-  contrast: "#FFA500",
+  contrast: "#63D4D5",
 };
 
 export const styles = StyleSheet.create({

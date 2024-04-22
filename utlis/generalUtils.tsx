@@ -1,10 +1,6 @@
-import * as FileSystem from "expo-file-system";
-import { Audio } from "expo-av";
 import { SceneScript, Dialogue } from "@/screens/ProjectScreen/TabContext";
 
-export async function consolidateDialogue(
-  sceneScript: SceneScript
-): Promise<SceneScript> {
+export function consolidateDialogue(sceneScript: SceneScript): SceneScript {
   const consolidatedDialogue: Dialogue[] = [];
   let lastDialogue: Dialogue | null = null;
 
@@ -33,13 +29,13 @@ export async function consolidateDialogue(
   return { dialogue: consolidatedDialogue };
 }
 
-export async function removeTextInBrackets(
-  sceneScript: SceneScript
-): Promise<SceneScript> {
+export function cleanDialog(sceneScript: SceneScript): SceneScript {
+  // TODO?: we might want to just remove/modify brackets for the text-to-speech
   const updatedDialogues = sceneScript.dialogue.map((dialogue) => {
     const newText = dialogue.text
-      .replace(/\(.*?\)/g, "")
-      .replace(/\[.*?\]/g, "")
+      .replace(/\s+/g, " ") // replace multiple spaces with a single space
+      .replace(/\(.*?\)/g, "") // removing () brackets and included text
+      .replace(/\[.*?\]/g, "") // removing [] brackets and included text
       .trim();
     return {
       ...dialogue,
