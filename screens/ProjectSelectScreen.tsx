@@ -11,11 +11,7 @@ import { styles, colors } from "@/primitives";
 import { useNavigation, Screens } from "@/navigation";
 import { getNewProjectInfo } from "./projects";
 import type { ProjectInfo } from "./projects";
-import {
-  ScriptAnalysisComponentDemoComponent,
-  HelloWorldButtonFromAPI,
-  VoiceTestButton,
-} from "@/components/testButtons";
+
 import { getProjectsFromStorage, setProjectToStorage } from "@/asyncStorage";
 
 export function ProjectSelectScreen() {
@@ -98,8 +94,6 @@ export function ProjectSelectScreen() {
       >
         <Text style={styles.addProjectText}>+</Text>
       </Pressable>
-      {/* <HelloWorldButtonFromAPI /> */}
-      {/* <VoiceTestButton /> */}
     </View>
   );
 }

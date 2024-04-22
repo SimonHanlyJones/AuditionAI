@@ -14,7 +14,7 @@ export async function consolidateDialogue(
       line.character.toUpperCase() === lastDialogue.character.toUpperCase()
     ) {
       // Append the current line's text to the last dialogue in the array with a newline in between
-      lastDialogue.text += "\n" + line.text;
+      lastDialogue.text += "\n\n" + line.text;
     } else {
       // Push the lastDialogue to consolidatedDialogue if it's not null
       if (lastDialogue) {

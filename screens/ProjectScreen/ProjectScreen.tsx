@@ -17,7 +17,10 @@ import {
   addVoiceIDToSceneScript,
   getVoiceAndAddUriToSceneScript,
 } from "@/utlis/voiceUtlis";
-import { consolidateDialogue } from "@/utlis/generalUtils";
+import {
+  consolidateDialogue,
+  removeTextInBrackets,
+} from "@/utlis/generalUtils";
 
 const Tabs = createBottomTabNavigator();
 
@@ -86,6 +89,7 @@ export function ProjectScreen() {
         // adjacent dialogue added to same characters
         if (sceneScript) {
           sceneScript = await consolidateDialogue(sceneScript);
+          sceneScript = await removeTextInBrackets(sceneScript);
         }
 
         setTabContext((prevContext) => ({
