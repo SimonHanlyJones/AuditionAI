@@ -19,9 +19,8 @@ function VoiceRecognition(props: VoiceRecognitionProps) {
   const [partialText, setPartialText] = useState("");
 
   const handleRecognizedText = (recognizedText: string) => {
-    console.log(recognizedText);
+    // console.log(recognizedText);
     setRecognizedText(recognizedText);
-
     props.onResult(recognizedText);
   };
 
