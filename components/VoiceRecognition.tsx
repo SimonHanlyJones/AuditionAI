@@ -82,7 +82,7 @@ function VoiceRecognition(props: VoiceRecognitionProps) {
     await Voice.stop();
     props.setIsListening(false);
   }
-
+  return <View></View>;
   // return (
   //   <View>
   //     <Button

@@ -1,5 +1,4 @@
 import { playAudio } from "@/utlis/voiceUtlis";
-import { startVoiceRecognition } from "@/utlis/useVoiceRecognition";
 // import LineLearning from "@/components/LineLearning";
 import { SceneScript } from "@/screens/ProjectScreen/TabContext";
 import { useEffect, useState, useCallback, useRef } from "react";
