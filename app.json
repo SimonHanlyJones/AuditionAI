@@ -9,11 +9,9 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#130526"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.simonhj.AuditionAI"
@@ -21,7 +19,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#130526"
       },
       "package": "com.simonhj.AuditionAI"
     },
@@ -33,8 +31,6 @@
         "projectId": "22e77276-5012-410e-b7c1-3a2a5d211be7"
       }
     },
-    "plugins": [
-      "@react-native-voice/voice"
-    ]
+    "plugins": ["@react-native-voice/voice"]
   }
 }
