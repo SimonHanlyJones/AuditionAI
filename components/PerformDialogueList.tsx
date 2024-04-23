@@ -32,7 +32,14 @@ const DialogueList = (props: PerformDialogueProps) => {
 
   // Render each item in the FlatList
   const renderItem = ({ item, index }: { item: Dialogue; index: number }) => (
-    <View style={styles.performItem}>
+    <View
+      style={[
+        styles.performItem,
+        item.character.toUpperCase() === "STAGE DIRECTIONS" && {
+          display: "none",
+        },
+      ]}
+    >
       <Text
         style={[
           styles.performCharacter,
