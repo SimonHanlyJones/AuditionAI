@@ -9,12 +9,14 @@ interface VoiceRecognitionProps {
   isListening: boolean; // The state passed from the parent
   setIsListening: React.Dispatch<React.SetStateAction<boolean>>;
   onResult: (text: string) => void;
+  onPartialResult: (text: string) => void;
   onError: (error: string) => void;
 }
 
 function VoiceRecognition(props: VoiceRecognitionProps) {
   // const [isListening, setIsListening] = useState(false);
   const [recognizedText, setRecognizedText] = useState("");
+  const [partialText, setPartialText] = useState("");
 
   const handleRecognizedText = (recognizedText: string) => {
     console.log(recognizedText);
@@ -42,10 +44,17 @@ function VoiceRecognition(props: VoiceRecognitionProps) {
     }
   };
 
-  //   if we have recongised text, and we are wating for user, then we can let the user continue and clear the text
+  const onSpeechPartialResults = (e: any) => {
+    console.log("Partial speech results.");
+    if (e.value && e.value.length > 0) {
+      setPartialText(e.value[0]); // Update partial text state
+      props.onPartialResult(e.value[0]);
+    }
+  };
 
   useEffect(() => {
     Voice.onSpeechResults = onSpeechResults;
+    Voice.onSpeechPartialResults = onSpeechPartialResults;
     Voice.onSpeechError = onSpeechError;
 
     return () => {
@@ -56,6 +65,7 @@ function VoiceRecognition(props: VoiceRecognitionProps) {
   useEffect(() => {
     if (props.isListening) {
       Voice.onSpeechResults = onSpeechResults;
+      Voice.onSpeechPartialResults = onSpeechPartialResults;
       Voice.onSpeechError = onSpeechError;
       startListening();
     }
@@ -81,7 +91,7 @@ function VoiceRecognition(props: VoiceRecognitionProps) {
   //         props.isListening ? stopListening : () => props.setIsListening(true)
   //       }
   //     />
-  //     <Text style={styles.text}>Recognized Text: {recognizedText}</Text>
+  //     <Text style={styles.text}>Partial Recognized Text: {partialText}</Text>
   //   </View>
   // );
 }

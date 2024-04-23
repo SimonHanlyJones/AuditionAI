@@ -67,6 +67,11 @@ function LineLearning(props: LineLearningProps) {
     },
     [waitingForUser, continuePlaying]
   );
+  const [partialText, setPartialText] = useState("");
+  const handlePartialResult = (text: string) => {
+    console.log("Received partial text:", text);
+    setPartialText(text); // Update state with partial result
+  };
 
   const handleVoiceError = (error: any) => {
     if (waitingForUser) {
@@ -243,6 +248,7 @@ function LineLearning(props: LineLearningProps) {
           isListening={isListening}
           setIsListening={setIsListening}
           onResult={handleVoiceResult}
+          onPartialResult={handlePartialResult}
           onError={handleVoiceError}
         />
       </View>
