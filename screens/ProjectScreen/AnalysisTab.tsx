@@ -186,6 +186,7 @@ export function AnalysisTab() {
                     </View>
                   )}
                   {typeof modalData === "object" &&
+                    modalTitle !== "Scene Appearances" &&
                     modalData.map((item, index) => (
                       <View key={index} style={styles.textBox}>
                         {Object.entries(item).map(([key, value]) => (
@@ -197,6 +198,23 @@ export function AnalysisTab() {
                         ))}
                       </View>
                     ))}
+                  {typeof modalData === "object" &&
+                    modalTitle === "Scene Appearances" &&
+                    modalData.map(
+                      (item, index) =>
+                        "scene" in item && (
+                          <View key={index} style={styles.textBox}>
+                            <View key={index} style={styles.textItem}>
+                              <Text style={styles.text}>
+                                <Text style={styles.textKey}>
+                                  Scene #{index + 1}:
+                                </Text>{" "}
+                                {item.scene}
+                              </Text>
+                            </View>
+                          </View>
+                        )
+                    )}
                 </ScrollView>
               </View>
             </TouchableWithoutFeedback>
