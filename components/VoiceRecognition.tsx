@@ -73,17 +73,17 @@ function VoiceRecognition(props: VoiceRecognitionProps) {
     props.setIsListening(false);
   }
 
-  return (
-    <View>
-      <Button
-        title={props.isListening ? "Stop Listening" : "Start Listening"}
-        onPress={
-          props.isListening ? stopListening : () => props.setIsListening(true)
-        }
-      />
-      <Text style={styles.text}>Recognized Text: {recognizedText}</Text>
-    </View>
-  );
+  // return (
+  //   <View>
+  //     <Button
+  //       title={props.isListening ? "Stop Listening" : "Start Listening"}
+  //       onPress={
+  //         props.isListening ? stopListening : () => props.setIsListening(true)
+  //       }
+  //     />
+  //     <Text style={styles.text}>Recognized Text: {recognizedText}</Text>
+  //   </View>
+  // );
 }
 
 export default VoiceRecognition;
