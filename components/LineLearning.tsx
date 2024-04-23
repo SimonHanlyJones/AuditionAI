@@ -66,9 +66,16 @@ function LineLearning(props: LineLearningProps) {
     },
     [waitingForUser, continuePlaying]
   );
+
   const [partialText, setPartialText] = useState("");
+  /**
+   * Handles a partial speech result. Great for streaming speech recognition.
+   *
+   * @param {string} text - The partial result to handle.
+   * @return {void} No return value.
+   */
   const handlePartialResult = (text: string) => {
-    console.log("Received partial text:", text);
+    // console.log("Received partial text:", text);
     setPartialText(text); // Update state with partial result
   };
 
@@ -132,8 +139,8 @@ function LineLearning(props: LineLearningProps) {
   const waitForUser = useCallback(() => {
     setWaitingForUser(true);
     setIsListening(true);
-    // somehow wait until isListening is set to False???????
 
+    // somehow wait until isListening is set to False???????
     return new Promise<void>((resolve) => {
       resolvePromiseRef.current = () => {
         setWaitingForUser(false);
