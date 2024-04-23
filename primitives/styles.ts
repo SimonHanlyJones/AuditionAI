@@ -11,8 +11,6 @@ export const styles = StyleSheet.create({
   splashScreen: {
     alignItems: "center",
     backgroundColor: colors.background,
-    borderColor: colors.border,
-    borderTopWidth: 1,
     flex: 1,
     flexDirection: "column",
     justifyContent: "center",
@@ -242,5 +240,27 @@ export const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  performButtons: {
+    alignItems: "center",
+    borderColor: colors.border,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    flexDirection: "row",
+    height: 60,
+    justifyContent: "center",
+  },
+  performButton: {
+    alignItems: "center",
+    flex: 1,
+    height: 60,
+    justifyContent: "center",
+  },
+  performButtonPressed: {
+    backgroundColor: colors.flash,
+  },
+  performIcon: {
+    color: colors.textColor,
+    margin: 0,
   },
 });

@@ -1,16 +1,17 @@
-import { BASE_STYLES } from "@/primitives";
+import { styles } from "@/primitives";
 import { playAudio } from "@/utlis/voiceUtlis";
 import { startVoiceRecognition } from "@/utlis/useVoiceRecognition";
 // import LineLearning from "@/components/LineLearning";
 import { SceneScript } from "@/screens/ProjectScreen/TabContext";
 import { useEffect, useState, useCallback, useRef } from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import Voice from "@react-native-voice/voice";
 import stringSimilarity from "string-similarity";
 import VoiceRecognition from "./VoiceRecognition";
 import { styles, colors } from "@/primitives";
 
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, Pressable } from "react-native";
 
 // export type SceneScript = {
 //   dialogue: {
@@ -186,24 +187,62 @@ function LineLearning(props: LineLearningProps) {
   };
 
   return (
-    <View>
-      <Text>Press the button to start the performance:</Text>
-
-      <Button
-        title={isPlaying ? "Reset Performance" : "Play Dialogue"}
-        onPress={
-          isPlaying
-            ? resetPerformance
-            : () => {
-                playRequested.current = true;
-                setIsPlaying(true);
-              }
-        }
-      />
-      {isPlaying && (
-        <Button title="Pause Performance" onPress={() => pausePerformance()} />
-      )}
-      {isPlaying && waitingForUser && (
+    <View style={styles.performButtons}>
+      <Pressable
+        onPress={() => resetPerformance()}
+        style={({ pressed }) => [
+          styles.performButton,
+          pressed && styles.performButtonPressed,
+        ]}
+      >
+        <MaterialCommunityIcons
+          style={styles.performIcon}
+          name={"replay"}
+          size={36}
+        />
+      </Pressable>
+      <Pressable
+        onPress={() => {
+          playRequested.current = true;
+          setIsPlaying(true);
+        }}
+        style={({ pressed }) => [
+          styles.performButton,
+          pressed && styles.performButtonPressed,
+        ]}
+        disabled={isPlaying}
+      >
+        <MaterialCommunityIcons
+          style={
+            isPlaying
+              ? [styles.performIcon, { opacity: 0.2 }]
+              : styles.performIcon
+          }
+          name={"play"}
+          size={36}
+        />
+      </Pressable>
+      <Pressable
+        onPress={() => {
+          pausePerformance();
+        }}
+        style={({ pressed }) => [
+          styles.performButton,
+          pressed && styles.performButtonPressed,
+        ]}
+        disabled={!isPlaying}
+      >
+        <MaterialCommunityIcons
+          style={
+            !isPlaying
+              ? [styles.performIcon, { opacity: 0.2 }]
+              : styles.performIcon
+          }
+          name={"pause"}
+          size={36}
+        />
+      </Pressable>
+      {/* {isPlaying && waitingForUser && (
         <Button title="Continue Playing" onPress={() => continuePlaying()} />
       )}
       {/* <View>
@@ -216,7 +255,7 @@ function LineLearning(props: LineLearningProps) {
         setIsListening={setIsListening}
         onResult={handleVoiceResult}
         onError={handleVoiceError}
-      />
+      /> */}
     </View>
   );
 }
