@@ -1,5 +1,6 @@
 import { BASE_STYLES } from "@/primitives";
 import { playAudio } from "@/utlis/voiceUtlis";
+import { startVoiceRecognition } from "@/utlis/useVoiceRecognition";
 // import LineLearning from "@/components/LineLearning";
 import { SceneScript } from "@/screens/ProjectScreen/TabContext";
 import { useEffect, useState, useCallback, useRef } from "react";
@@ -7,6 +8,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import Voice from "@react-native-voice/voice";
 import stringSimilarity from "string-similarity";
 import VoiceRecognition from "./VoiceRecognition";
+import { styles, colors } from "@/primitives";
 
 import { View, Text, Button } from "react-native";
 
@@ -40,6 +42,7 @@ function LineLearning(props: LineLearningProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const playRequested = useRef(false);
   const isPlayingRef = useRef(isPlaying);
+  const [isListening, setIsListening] = useState(false);
 
   const [waitingForUser, setWaitingForUser] = useState(false);
   const [continuePlaying, setContinuePlaying] = useState(() => () => {});
@@ -161,6 +164,27 @@ function LineLearning(props: LineLearningProps) {
       props.setCurrentLineIndex(0);
     }
   }
+
+  const [result, setResult] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const handlePress = async () => {
+    setResult(null); // Reset previous results
+    setError(null); // Reset previous errors
+    try {
+      const recognitionResult = await startVoiceRecognition();
+      if (recognitionResult.text) {
+        setResult(recognitionResult.text);
+      } else {
+        console.log("error");
+        setError("No speech recognized");
+      }
+    } catch (err) {
+      console.log("error");
+      setError(`Error: ${err}`);
+    }
+  };
+
   return (
     <View>
       <Text>Press the button to start the performance:</Text>
@@ -182,9 +206,14 @@ function LineLearning(props: LineLearningProps) {
       {isPlaying && waitingForUser && (
         <Button title="Continue Playing" onPress={() => continuePlaying()} />
       )}
+      {/* <View>
+        <Button title="Start Voice Recognition" onPress={handlePress} />
+        {result && <Text style={styles.text}>Recognized Text: {result}</Text>}
+        {error && <Text style={styles.text}>{error}</Text>}
+      </View> */}
       <VoiceRecognition
-        waitingForUser={waitingForUser}
-        setWaitingForUser={setWaitingForUser}
+        isListening={isListening}
+        setIsListening={setIsListening}
         onResult={handleVoiceResult}
         onError={handleVoiceError}
       />
