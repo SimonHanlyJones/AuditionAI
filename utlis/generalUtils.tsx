@@ -1,5 +1,3 @@
-import * as FileSystem from "expo-file-system";
-import { Audio } from "expo-av";
 import { SceneScript, Dialogue } from "@/screens/ProjectScreen/TabContext";
 
 export async function consolidateDialogue(

@@ -191,24 +191,27 @@ export async function addVoiceIDToSceneScript(
 
   for (let line of sceneScriptCopy.dialogue) {
     if (
-      userCharacter !== line.character &&
-      line.character !== "Stage Directions".toLowerCase() &&
-      line.character !== "STAGE DIRECTION".toLowerCase() &&
+      userCharacter.toUpperCase() !== line.character.toUpperCase() &&
+      line.character.toUpperCase() !== "STAGE DIRECTIONS" &&
+      line.character.toUpperCase() !== "STAGE DIRECTION" &&
       !line.uri
     ) {
-      if (line.character in characterMapping) {
-        line.voice = characterMapping[line.character];
+      if (line.character.toUpperCase() in characterMapping) {
+        line.voice = characterMapping[line.character.toUpperCase()];
       } else if (line.gender.toUpperCase() === "MALE") {
-        characterMapping[line.character] = maleVoices[maleVoiceIndex];
+        characterMapping[line.character.toUpperCase()] =
+          maleVoices[maleVoiceIndex];
         line.voice = maleVoices[maleVoiceIndex];
         maleVoiceIndex = (maleVoiceIndex + 1) % maleVoices.length;
       } else {
-        characterMapping[line.character] = femaleVoices[maleVoiceIndex];
+        characterMapping[line.character.toUpperCase()] =
+          femaleVoices[femaleVoiceIndex];
         line.voice = femaleVoices[femaleVoiceIndex];
         femaleVoiceIndex = (femaleVoiceIndex + 1) % femaleVoices.length;
       }
     }
   }
+  console.log("characterMapping: ", characterMapping);
   return sceneScriptCopy;
 }
 

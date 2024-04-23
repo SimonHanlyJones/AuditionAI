@@ -3,7 +3,10 @@ import { playAudio } from "@/utlis/voiceUtlis";
 // import LineLearning from "@/components/LineLearning";
 import { SceneScript } from "@/screens/ProjectScreen/TabContext";
 import { useEffect, useState, useCallback, useRef } from "react";
-import { styles, colors } from "@/primitives";
+
+import Voice from "@react-native-voice/voice";
+import stringSimilarity from "string-similarity";
+import VoiceRecognition from "./VoiceRecognition";
 
 import { View, Text, Button } from "react-native";
 
@@ -36,6 +39,44 @@ function LineLearning(props: LineLearningProps) {
   const userCharacter = props.userCharacter;
   const [isPlaying, setIsPlaying] = useState(false);
   const playRequested = useRef(false);
+  const isPlayingRef = useRef(isPlaying);
+
+  const [waitingForUser, setWaitingForUser] = useState(false);
+  const [continuePlaying, setContinuePlaying] = useState(() => () => {});
+
+  // VOICE RECOGNITION
+
+  // const handleVoiceResult = (text: string) => {
+  //   if (waitingForUser) {
+  //     continuePlaying();
+  //     console.log("user should continue", waitingForUser);
+  //   }
+  //   console.log("Voice recognition result:", text);
+  //   // Add logic to compare text or handle the result
+  // };
+  const handleVoiceResult = useCallback(
+    (text: string) => {
+      console.log("Voice recognition result:", text);
+      if (waitingForUser) {
+        console.log("User should continue", waitingForUser); // Logging current state before it changes
+        continuePlaying(); // Call the function that resolves the promise
+      }
+    },
+    [waitingForUser, continuePlaying]
+  );
+
+  const handleVoiceError = (error: any) => {
+    if (waitingForUser) {
+      console.log("User should continue", waitingForUser); // Logging current state before it changes
+      continuePlaying(); // Call the function that resolves the promise
+    }
+    // console.error("Voice recognition error:", error);
+  };
+
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
+
   useEffect(() => {
     // Effect to handle starting the play when isPlaying is set to true
     if (isPlaying && playRequested.current) {
@@ -43,9 +84,6 @@ function LineLearning(props: LineLearningProps) {
       playAllVoices(); // Call the function only after isPlaying is confirmed to be true
     }
   }, [isPlaying]);
-
-  const [waitingForUser, setWaitingForUser] = useState(false);
-  const [continuePlaying, setContinuePlaying] = useState(() => () => {});
 
   // useEffect to Stop Performance on Unmount
   useEffect(() => {
@@ -59,10 +97,19 @@ function LineLearning(props: LineLearningProps) {
 
   function resetPerformance() {
     console.log("resetting performance");
+    isPlayingRef.current = false;
     setIsPlaying(false);
     setWaitingForUser(false);
     setContinuePlaying(() => () => {});
     props.setCurrentLineIndex(0);
+  }
+
+  function pausePerformance() {
+    console.log("resetting performance");
+    isPlayingRef.current = false;
+    setIsPlaying(false);
+    setWaitingForUser(false);
+    setContinuePlaying(() => () => {});
   }
 
   const waitForUser = useCallback(() => {
@@ -78,11 +125,11 @@ function LineLearning(props: LineLearningProps) {
   async function playAllVoices() {
     console.log("Starting Performance, userCharacter: ", userCharacter);
 
-    if (dialogue.length > 0) {
-      for (let i = 0; i < dialogue.length; i++) {
-        if (!isPlaying) {
+    if (dialogue.length > 0 && props.currentLineIndex < dialogue.length) {
+      for (let i = props.currentLineIndex; i < dialogue.length; i++) {
+        if (!isPlayingRef.current) {
           // Direct check on isPlaying state
-          console.log("Playback stopped.");
+          console.log("Playback stopped or paused.");
           break;
         }
         const line = dialogue[i];
@@ -95,7 +142,9 @@ function LineLearning(props: LineLearningProps) {
             console.log(
               "playing text:" + line.character + line.text,
               " line uri",
-              line.uri
+              line.uri,
+              " voiceID: ",
+              line.voice
             );
             await playAudio(line.uri);
           } catch (error) {
@@ -104,9 +153,13 @@ function LineLearning(props: LineLearningProps) {
         }
       }
     }
-    setIsPlaying(false);
-    console.log("Finished Performance");
-    props.setCurrentLineIndex(0);
+    if (!isPlayingRef.current) {
+      console.log("Playback paused.");
+    } else {
+      setIsPlaying(false);
+      console.log("Finished Performance");
+      props.setCurrentLineIndex(0);
+    }
   }
   return (
     <View>
@@ -123,9 +176,18 @@ function LineLearning(props: LineLearningProps) {
               }
         }
       />
+      {isPlaying && (
+        <Button title="Pause Performance" onPress={() => pausePerformance()} />
+      )}
       {isPlaying && waitingForUser && (
         <Button title="Continue Playing" onPress={() => continuePlaying()} />
       )}
+      <VoiceRecognition
+        waitingForUser={waitingForUser}
+        setWaitingForUser={setWaitingForUser}
+        onResult={handleVoiceResult}
+        onError={handleVoiceError}
+      />
     </View>
   );
 }
