@@ -1,5 +1,4 @@
 import { View, ScrollView, Pressable, Text } from "react-native";
-import { useState, useEffect } from "react";
 import { styles } from "@/primitives";
 import { useNavigation, useRoute, Screens } from "@/navigation";
 
@@ -34,7 +33,7 @@ export function SceneSelectScreen() {
           >
             <Text
               style={styles.sceneText}
-              numberOfLines={1}
+              numberOfLines={2}
               ellipsizeMode={"tail"}
             >
               {item.text}

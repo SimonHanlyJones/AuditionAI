@@ -235,6 +235,14 @@ export const styles = StyleSheet.create({
     textTransform: "uppercase",
     margin: 5,
   },
+  performSelectedCharacter: {
+    color: colors.textColor,
+    fontWeight: "bold",
+    fontSize: 22,
+    textAlign: "center",
+    textTransform: "uppercase",
+    margin: 5,
+  },
   performLine: {
     color: colors.textColor,
     fontSize: 22,

@@ -16,6 +16,7 @@ type PerformDialogueProps = {
   script: SceneScript;
   currentLineIndex: number;
   setCurrentLineIndex: React.Dispatch<React.SetStateAction<number>>;
+  selectedCharacterName: string;
 };
 
 const DialogueList = (props: PerformDialogueProps) => {
@@ -24,15 +25,23 @@ const DialogueList = (props: PerformDialogueProps) => {
   useEffect(() => {
     flatListRef.current.scrollToIndex({
       animated: true,
-      index: Math.max(props.currentLineIndex - 1, 0),
+      index: Math.max(props.currentLineIndex - 0.5, 0),
     });
   }, [props.currentLineIndex]);
 
   // Render each item in the FlatList
   const renderItem = ({ item }: { item: Dialogue }) => (
     <View style={styles.performItem}>
-      <Text style={styles.performCharacter}>
-        {item.character.toUpperCase()}
+      <Text
+        style={
+          // TODO: this conditional is not robust, probably should make the item.character data cleaner upstream
+          item.character.toLowerCase() ===
+          props.selectedCharacterName.toLowerCase()
+            ? styles.performSelectedCharacter
+            : styles.performCharacter
+        }
+      >
+        {item.character}
       </Text>
       <Text style={styles.performLine} numberOfLines={6} adjustsFontSizeToFit>
         {item.text}
