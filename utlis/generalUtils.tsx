@@ -32,18 +32,22 @@ export function consolidateDialogue(sceneScript: SceneScript): SceneScript {
 export function cleanDialog(sceneScript: SceneScript): SceneScript {
   // TODO?: we might want to just remove/modify brackets for the text-to-speech
   const updatedDialogues = sceneScript.dialogue.map((dialogue) => {
-    const newText = dialogue.text
-      .replace(/\s+/g, " ") // replace multiple spaces with a single space
-      .replace(/\(.*?\)/g, "") // removing () brackets and included text
-      .replace(/\[.*?\]/g, "") // removing [] brackets and included text
-      .trim();
     return {
       ...dialogue,
-      text: newText,
+      character: cleanText(dialogue.character),
+      text: cleanText(dialogue.text),
     };
   });
 
   return {
     dialogue: updatedDialogues,
   };
+}
+
+export function cleanText(text: string): string {
+  return text
+    .replace(/\s+/g, " ") // replace multiple spaces with a single space
+    .replace(/\(.*?\)/g, "") // removing () brackets and included text
+    .replace(/\[.*?\]/g, "") // removing [] brackets and included text
+    .trim();
 }
