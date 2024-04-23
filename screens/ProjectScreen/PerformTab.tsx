@@ -66,6 +66,7 @@ export function PerformTab() {
         script={tabContext?.info.sceneScript}
         currentLineIndex={currentLineIndex}
         setCurrentLineIndex={setCurrentLineIndex}
+        userCharacter={tabContext?.info.character.name}
       />
       <LineLearning
         sceneScript={tabContext?.info.sceneScript}

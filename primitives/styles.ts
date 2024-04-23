@@ -1,10 +1,33 @@
 import { StyleSheet } from "react-native";
 
+// Original Theme
 export const colors = {
   background: "#130526",
   border: "#59428C",
   flash: "#761DF2",
   textColor: "#F2EFE9",
+  textHighlight: "#D6BCF9",
+};
+
+// Blue Theme
+// export const colors = {
+//   background: "#010B1E",
+//   border: "#003366",
+//   flash: "#1D73F2",
+//   textColor: "#F2EFE9",
+//   textHighlight: "#B0D1F9",
+// };
+
+export const navigationStyle = {
+  dark: true,
+  colors: {
+    primary: colors.textColor,
+    background: colors.background,
+    card: colors.background,
+    text: "#FFFFFF",
+    border: colors.border,
+    notification: "#000000",
+  },
 };
 
 export const styles = StyleSheet.create({
@@ -222,10 +245,7 @@ export const styles = StyleSheet.create({
   performItem: {
     alignItems: "center",
     justifyContent: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border,
-    height: 220,
-    padding: 10,
+    padding: 20,
   },
   performCharacter: {
     color: colors.textColor,
@@ -234,11 +254,13 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     textTransform: "uppercase",
     margin: 5,
+    opacity: 0.4,
   },
   performLine: {
     color: colors.textColor,
     fontSize: 22,
     fontWeight: "bold",
+    opacity: 0.4,
     textAlign: "center",
   },
   performButtons: {
@@ -257,7 +279,7 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   performButtonPressed: {
-    backgroundColor: colors.flash,
+    opacity: 0.4,
   },
   performIcon: {
     color: colors.textColor,

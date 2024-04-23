@@ -1,4 +1,3 @@
-import { styles } from "@/primitives";
 import { playAudio } from "@/utlis/voiceUtlis";
 import { startVoiceRecognition } from "@/utlis/useVoiceRecognition";
 // import LineLearning from "@/components/LineLearning";
@@ -250,7 +249,7 @@ function LineLearning(props: LineLearningProps) {
         {result && <Text style={styles.text}>Recognized Text: {result}</Text>}
         {error && <Text style={styles.text}>{error}</Text>}
       </View> */}
-      <VoiceRecognition
+      {/* <VoiceRecognition
         isListening={isListening}
         setIsListening={setIsListening}
         onResult={handleVoiceResult}

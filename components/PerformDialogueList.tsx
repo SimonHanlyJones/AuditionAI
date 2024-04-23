@@ -16,6 +16,7 @@ type PerformDialogueProps = {
   script: SceneScript;
   currentLineIndex: number;
   setCurrentLineIndex: React.Dispatch<React.SetStateAction<number>>;
+  userCharacter: string;
 };
 
 const DialogueList = (props: PerformDialogueProps) => {
@@ -24,17 +25,34 @@ const DialogueList = (props: PerformDialogueProps) => {
   useEffect(() => {
     flatListRef.current.scrollToIndex({
       animated: true,
-      index: Math.max(props.currentLineIndex - 1, 0),
+      index: props.currentLineIndex,
+      viewPosition: 0.5,
     });
   }, [props.currentLineIndex]);
 
   // Render each item in the FlatList
-  const renderItem = ({ item }: { item: Dialogue }) => (
+  const renderItem = ({ item, index }: { item: Dialogue; index: number }) => (
     <View style={styles.performItem}>
-      <Text style={styles.performCharacter}>
+      <Text
+        style={[
+          styles.performCharacter,
+          props.currentLineIndex === index && { opacity: 1 },
+          props.userCharacter.toUpperCase() !==
+            item.character.toUpperCase() && { color: colors.textHighlight },
+        ]}
+      >
         {item.character.toUpperCase()}
       </Text>
-      <Text style={styles.performLine} numberOfLines={6} adjustsFontSizeToFit>
+      <Text
+        style={[
+          styles.performLine,
+          props.currentLineIndex === index && { opacity: 1 },
+          props.userCharacter.toUpperCase() !==
+            item.character.toUpperCase() && { color: colors.textHighlight },
+        ]}
+        numberOfLines={16}
+        adjustsFontSizeToFit
+      >
         {item.text}
       </Text>
     </View>
@@ -47,7 +65,7 @@ const DialogueList = (props: PerformDialogueProps) => {
       keyExtractor={(item, index) => `${item.character}-${index}`}
       showsVerticalScrollIndicator={false}
       ref={flatListRef}
-      fadingEdgeLength={800}
+      fadingEdgeLength={250}
     />
   );
 };
