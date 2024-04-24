@@ -23,11 +23,13 @@ const DialogueList = (props: PerformDialogueProps) => {
   const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
-    flatListRef.current.scrollToIndex({
-      animated: true,
-      index: props.currentLineIndex,
-      viewPosition: 0.5,
-    });
+    if (flatListRef.current) {
+      flatListRef.current.scrollToIndex({
+        animated: true,
+        index: props.currentLineIndex,
+        viewPosition: 0.5,
+      });
+    }
   }, [props.currentLineIndex]);
 
   // Render each item in the FlatList
