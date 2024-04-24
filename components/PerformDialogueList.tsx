@@ -44,8 +44,11 @@ const DialogueList = (props: PerformDialogueProps) => {
         style={[
           styles.performCharacter,
           props.currentLineIndex === index && { opacity: 1 },
-          props.userCharacter.toUpperCase() !==
-            item.character.toUpperCase() && { color: colors.textHighlight },
+          !item.character
+            .toUpperCase()
+            .startsWith(props.userCharacter.toUpperCase()) && {
+            color: colors.textHighlight,
+          },
         ]}
       >
         {item.character.toUpperCase()}
@@ -54,8 +57,11 @@ const DialogueList = (props: PerformDialogueProps) => {
         style={[
           styles.performLine,
           props.currentLineIndex === index && { opacity: 1 },
-          props.userCharacter.toUpperCase() !==
-            item.character.toUpperCase() && { color: colors.textHighlight },
+          !item.character
+            .toUpperCase()
+            .startsWith(props.userCharacter.toUpperCase()) && {
+            color: colors.textHighlight,
+          },
         ]}
         numberOfLines={16}
         adjustsFontSizeToFit
