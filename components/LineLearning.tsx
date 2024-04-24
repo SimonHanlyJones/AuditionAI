@@ -162,7 +162,10 @@ function LineLearning(props: LineLearningProps) {
         const line = dialogue[i];
         props.setCurrentLineIndex(i);
 
-        if (line.character.toUpperCase() === userCharacter.toUpperCase()) {
+        // if (line.character.toUpperCase() === userCharacter.toUpperCase()) {
+        if (
+          line.character.toUpperCase().startsWith(userCharacter.toUpperCase())
+        ) {
           await waitForUser();
         } else if (line.uri) {
           try {
