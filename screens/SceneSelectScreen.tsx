@@ -26,6 +26,7 @@ export function SceneSelectScreen() {
           <Pressable
             key={index}
             onPress={item.onPress}
+            unstable_pressDelay={100}
             style={({ pressed }) => [
               styles.scene,
               pressed && styles.scenePressed,
