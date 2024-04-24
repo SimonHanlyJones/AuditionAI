@@ -57,6 +57,7 @@ export function CharacterSelectScreen() {
             <Pressable
               key={index}
               onPress={item.onPress}
+              unstable_pressDelay={100}
               style={({ pressed }) => [
                 styles.character,
                 pressed && styles.characterPressed,

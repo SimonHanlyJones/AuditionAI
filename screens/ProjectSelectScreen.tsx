@@ -57,6 +57,7 @@ export function ProjectSelectScreen() {
           <Pressable
             key={index}
             onPress={item.onPress}
+            unstable_pressDelay={100}
             style={({ pressed }) => [
               styles.project,
               pressed && styles.projectPressed,
