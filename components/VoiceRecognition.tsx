@@ -44,7 +44,7 @@ function VoiceRecognition(props: VoiceRecognitionProps) {
   };
 
   const onSpeechPartialResults = (e: any) => {
-    console.log("Partial speech results.");
+    // console.log("Partial speech results.");
     if (e.value && e.value.length > 0) {
       setPartialText(e.value[0]); // Update partial text state
       props.onPartialResult(e.value[0]);
@@ -81,6 +81,7 @@ function VoiceRecognition(props: VoiceRecognitionProps) {
     await Voice.stop();
     props.setIsListening(false);
   }
+
   return <View></View>;
   // return (
   //   <View>
