@@ -1,5 +1,6 @@
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
+import { compareTwoStrings } from "string-similarity";
 
 import { SceneScriptInfo } from "@/screens/scenes";
 
@@ -327,34 +328,28 @@ export async function getSceneText(
   // response = await fixJSONGeminiCall(response)
   console.log("parsed JSON: ", response);
 
+  if (!response.dialogue) {
+    console.error("Dialog missing from response", response);
+  }
+
   // make sure the user character is in the script
-  if (!(await checkForUserCharacter(response, userCharacter))) {
+  if (!checkForUserCharacter(response, userCharacter)) {
     console.log("User character not found in scene script, trying to force it");
-    response = await getCorrectUserCharacter(
-      script,
-      sceneDescription,
-      userCharacter
-    );
+    response = getCorrectUserCharacter(response, userCharacter);
   }
   // Throw error if no user character found
-  if (!(await checkForUserCharacter(response, userCharacter))) {
+  if (!checkForUserCharacter(response, userCharacter)) {
     console.error("User character not found in scene script", response);
   }
 
   return response;
 }
 
-async function checkForUserCharacter(
+function checkForUserCharacter(
   sceneScript: SceneScriptInfo,
   userCharacter: string
-): Promise<boolean> {
+): boolean {
   for (let line of sceneScript.dialogue) {
-    // console.log(
-    //   "CHARACTER CHECK, line.character.toUpperCase()",
-    //   line.character.toUpperCase(),
-    //   "userCharacter.toUpperCase()",
-    //   userCharacter.toUpperCase()
-    // );
     if (line.character.toUpperCase() === userCharacter.toUpperCase()) {
       console.log("user character match");
       return true;
@@ -364,36 +359,38 @@ async function checkForUserCharacter(
 
   return false;
 }
-export async function getCorrectUserCharacter(
-  script: string,
-  sceneDescription: string,
-  userCharacter: string
-): Promise<SceneScriptInfo> {
-  const prompt = `Your job is to read the script set out below, identify and match the character (from the "character" values) that is most similar to "${userCharacter}". There may be missing punctuation, a missing first name, a missing title or some other deviation. Identify the character, and replace the wrong name with ${userCharacter}. Otherwise, if the character already matches exactly, return the rest of the script in the same format, which is set out below:
-  
-  { "dialogue":
-    [
-      {
-        "character": string,
-        "text": string,
-        "gender": string,
-      }
-    ]
-  }
-  
-  Provide valid JSON in the format above. Fix any formatting errors.
-  
-  SCRIPT:
-  `;
-  console.log("PROMPT:", prompt);
-  console.log("script length:", script.length);
-  console.log("PROMPT:", prompt);
-  console.log("script length:", script.length);
 
-  console.log("Scene script FIXUP request sent, waiting for response");
-  var response = await callGemini(script, prompt);
-  console.log("response received, attempting to parse JSON");
-  response = await parseJSONString(response);
-  console.log("parsed JSON: ", response);
-  return response;
+/* TODO: better character matching 
+  using hacky character matching has edge cases that might fail, e.g. a name like Mr Darcy being closer to Mrs Darcy than Darcy
+  we could use a more advanced string matching algorithm, or LLM chaining
+  curre
+*/
+export function getCorrectUserCharacter(
+  sceneScript: SceneScriptInfo,
+  userCharacter: string
+): SceneScriptInfo {
+  const characters = [
+    ...new Set(
+      sceneScript.dialogue.map((line) => line.character.toLocaleUpperCase())
+    ),
+  ];
+  const stringDeltas = characters.map((character) =>
+    compareTwoStrings(character, userCharacter.toLocaleUpperCase())
+  );
+
+  const bestMatchIndex = stringDeltas.indexOf(Math.max(...stringDeltas));
+  const bestMatch = characters[bestMatchIndex];
+
+  console.log("user character", userCharacter);
+  console.log("best match", bestMatch);
+
+  return {
+    dialogue: sceneScript.dialogue.map((line) => {
+      return {
+        ...line,
+        character:
+          line.character === bestMatch ? userCharacter : line.character,
+      };
+    }),
+  };
 }
