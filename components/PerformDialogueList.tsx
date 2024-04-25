@@ -23,11 +23,13 @@ const DialogueList = (props: PerformDialogueProps) => {
   const flatListRef = useRef<FlatList>(null);
 
   useEffect(() => {
-    flatListRef.current.scrollToIndex({
-      animated: true,
-      index: props.currentLineIndex,
-      viewPosition: 0.5,
-    });
+    if (flatListRef.current) {
+      flatListRef.current.scrollToIndex({
+        animated: true,
+        index: props.currentLineIndex,
+        viewPosition: 0.5,
+      });
+    }
   }, [props.currentLineIndex]);
 
   // Render each item in the FlatList
@@ -44,8 +46,11 @@ const DialogueList = (props: PerformDialogueProps) => {
         style={[
           styles.performCharacter,
           props.currentLineIndex === index && { opacity: 1 },
-          props.userCharacter.toUpperCase() !==
-            item.character.toUpperCase() && { color: colors.textHighlight },
+          !item.character
+            .toUpperCase()
+            .startsWith(props.userCharacter.toUpperCase()) && {
+            color: colors.textHighlight,
+          },
         ]}
       >
         {item.character.toUpperCase()}
@@ -54,8 +59,11 @@ const DialogueList = (props: PerformDialogueProps) => {
         style={[
           styles.performLine,
           props.currentLineIndex === index && { opacity: 1 },
-          props.userCharacter.toUpperCase() !==
-            item.character.toUpperCase() && { color: colors.textHighlight },
+          !item.character
+            .toUpperCase()
+            .startsWith(props.userCharacter.toUpperCase()) && {
+            color: colors.textHighlight,
+          },
         ]}
         numberOfLines={16}
         adjustsFontSizeToFit

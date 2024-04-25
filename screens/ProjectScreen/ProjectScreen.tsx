@@ -71,13 +71,6 @@ export function ProjectScreen() {
               character.name
             );
             console.log("POST await getting scene text");
-
-            setSceneScriptToStorage(
-              project.title,
-              character.name,
-              scene.scene,
-              sceneScript
-            );
           } catch (error) {
             console.error("Failed to fetch scene text:", error);
           }
@@ -117,6 +110,13 @@ export function ProjectScreen() {
         const sceneScriptWithVoices = await getVoiceAndAddUriToSceneScript(
           sceneScriptWithVoiceMap,
           tabContext.character.name
+        );
+
+        setSceneScriptToStorage(
+          project.title,
+          character.name,
+          scene.scene,
+          sceneScriptWithVoices
         );
 
         setTabContext((prevContext) => ({

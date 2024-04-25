@@ -68,12 +68,7 @@ function LineLearning(props: LineLearningProps) {
   );
 
   const [partialText, setPartialText] = useState("");
-  /**
-   * Handles a partial speech result. Great for streaming speech recognition.
-   *
-   * @param {string} text - The partial result to handle.
-   * @return {void} No return value.
-   */
+
   const handlePartialResult = (text: string) => {
     // console.log("Received partial text:", text);
     setPartialText(text); // Update state with partial result
@@ -162,7 +157,10 @@ function LineLearning(props: LineLearningProps) {
         const line = dialogue[i];
         props.setCurrentLineIndex(i);
 
-        if (line.character.toUpperCase() === userCharacter.toUpperCase()) {
+        // if (line.character.toUpperCase() === userCharacter.toUpperCase()) {
+        if (
+          line.character.toUpperCase().startsWith(userCharacter.toUpperCase())
+        ) {
           await waitForUser();
         } else if (line.uri) {
           try {
