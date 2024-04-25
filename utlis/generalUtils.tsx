@@ -31,13 +31,15 @@ export function consolidateDialogue(sceneScript: SceneScript): SceneScript {
 
 export function cleanDialog(sceneScript: SceneScript): SceneScript {
   // TODO?: we might want to just remove/modify brackets for the text-to-speech
-  const updatedDialogues = sceneScript.dialogue.map((dialogue) => {
-    return {
-      ...dialogue,
-      character: cleanText(dialogue.character),
-      text: cleanText(dialogue.text),
-    };
-  });
+  const updatedDialogues = sceneScript.dialogue
+    .map((dialogue) => {
+      return {
+        ...dialogue,
+        character: cleanText(dialogue.character),
+        text: cleanText(dialogue.text),
+      };
+    })
+    .filter((dialogue) => dialogue.text.length > 0);
 
   return {
     dialogue: updatedDialogues,

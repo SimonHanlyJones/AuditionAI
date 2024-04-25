@@ -362,8 +362,6 @@ function checkForUserCharacter(
 
 /* TODO: better character matching 
   using hacky character matching has edge cases that might fail, e.g. a name like Mr Darcy being closer to Mrs Darcy than Darcy
-  we could use a more advanced string matching algorithm, or LLM chaining
-  curre
 */
 export function getCorrectUserCharacter(
   sceneScript: SceneScriptInfo,
