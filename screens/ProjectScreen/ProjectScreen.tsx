@@ -67,6 +67,7 @@ export function ProjectScreen() {
             sceneScript = await getSceneText(
               project.script,
               scene.scene,
+              scene.number,
               character.name
             );
             console.log("POST await getting scene text");

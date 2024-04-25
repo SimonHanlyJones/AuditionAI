@@ -11,6 +11,7 @@ import { styles, colors } from "@/primitives";
 import { useNavigation, Screens } from "@/navigation";
 import { getNewProjectInfo } from "./projects";
 import type { ProjectInfo } from "./projects";
+import { cleanText } from "@/utlis/generalUtils";
 
 import { getProjectsFromStorage, setProjectToStorage } from "@/asyncStorage";
 
@@ -32,8 +33,15 @@ export function ProjectSelectScreen() {
       setIsLoadingProject(true);
     }, 200);
 
-    const newProject = await getNewProjectInfo();
+    let newProject = await getNewProjectInfo();
     if (newProject !== "NoScript") {
+      newProject = newProject as ProjectInfo;
+      newProject = {
+        ...(newProject as ProjectInfo),
+        characters: newProject.characters.map((character) =>
+          cleanText(character)
+        ),
+      } as ProjectInfo;
       // TODO: nicer to not have these decoupled like this
       setProjectToStorage(newProject);
       setProjects([...projects, newProject]);

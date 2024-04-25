@@ -161,7 +161,7 @@ export async function getTitleAndCharacters(script: string) {
       "title": string,
       "characters": [string]
   } 
-  Ensure that characters are listed only once even if they are called different things in the script. Ensure that the titles and characters have normal formatting and case.
+  Ensure that characters are listed only once even if they are called different things in the script, use the name for a character which is most commonly used within the script. Ensure that the titles and characters have normal formatting and case.
   
   SCRIPT:`;
   console.log("PROMPT:", prompt);
@@ -291,6 +291,7 @@ async function trimJSONString(jsonString: string) {
 export async function getSceneText(
   script: string,
   sceneDescription: string,
+  sceneNumber: number,
   userCharacter: string
 ): Promise<SceneScriptInfo> {
   const prompt = `Your job is to read the script set out below, identify the scene that matches this description: 
@@ -308,7 +309,8 @@ export async function getSceneText(
     ]
   }
   
-  Provide the related dialog for each character until that scene is complete, and any stage directions as a separate character named 'STAGE DIRECTIONS'. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations and that one character is named ${userCharacter}. Start and end the scene in the proper place, at the point indicated in the script with text like '43 INT. DRAWING ROOM - THE LUCAS' HOUSE - DAY. 43' or '2 EXT. LONGBOURN HOUSE - DAY. 2'. Provide valid JSON in the format above. Fix any formatting errors.
+  Provide the related dialog for each character until that scene is complete, and any stage directions as a separate character named 'STAGE DIRECTIONS'. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations and that one character is named ${userCharacter}. Start and end the scene in the proper place, reading from the scene number: '${sceneNumber}'. Provide valid JSON in the format above. Fix any formatting errors.
+  Additionally ensure that the text is formatted correctly, with appropriate punctuation, spelling and spaces between each word; you are allowed to separate words by a space if they appear to accidentally have no space between them.
   
   SCRIPT:
   `;
@@ -367,7 +369,7 @@ export async function getCorrectUserCharacter(
   sceneDescription: string,
   userCharacter: string
 ): Promise<SceneScriptInfo> {
-  const prompt = `Your job is to read the script set out below, identify and match the character that matches ${userCharacter}. There may be missing punctuation, a missing first name or some other deviation. Identify the character, and replace the wrong name with ${userCharacter}. Otherwise, return the rest of the script in the same format, which is set out below:
+  const prompt = `Your job is to read the script set out below, identify and match the character (from the "character" values) that is most similar to "${userCharacter}". There may be missing punctuation, a missing first name, a missing title or some other deviation. Identify the character, and replace the wrong name with ${userCharacter}. Otherwise, if the character already matches exactly, return the rest of the script in the same format, which is set out below:
   
   { "dialogue":
     [
