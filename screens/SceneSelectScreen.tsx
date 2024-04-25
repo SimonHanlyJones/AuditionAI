@@ -33,7 +33,7 @@ export function SceneSelectScreen() {
           >
             <Text
               style={styles.sceneText}
-              numberOfLines={2}
+              numberOfLines={1}
               ellipsizeMode={"tail"}
             >
               {item.text}
