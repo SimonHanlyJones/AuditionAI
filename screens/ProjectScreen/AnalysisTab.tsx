@@ -172,54 +172,57 @@ export function AnalysisTab() {
         onRequestClose={() => setShowAnalysisModal(false)}
         statusBarTranslucent
       >
-        {/* <TouchableWithoutFeedback onPress={() => setShowAnalysisModal(false)}> */}
-        <View style={styles.overlay}>
-          {/* <TouchableWithoutFeedback> */}
-          <View style={styles.modal}>
-            <View style={styles.h2}>
-              <Text style={styles.h2Text}>{modalTitle}</Text>
-            </View>
-            <ScrollView fadingEdgeLength={50}>
-              {typeof modalData === "string" && (
-                <View style={styles.textBox}>
-                  <Text style={styles.text}>{modalData}</Text>
+        <TouchableWithoutFeedback onPress={() => setShowAnalysisModal(false)}>
+          <View style={styles.overlay}>
+            <TouchableWithoutFeedback>
+              <View style={styles.modal}>
+                <View style={styles.h2}>
+                  <Text style={styles.h2Text}>{modalTitle}</Text>
                 </View>
-              )}
-              {typeof modalData === "object" &&
-                modalTitle !== "Scene Appearances" &&
-                modalData.map((item, index) => (
-                  <View key={index} style={styles.textBox}>
-                    {Object.entries(item).map(([key, value]) => (
-                      <View key={key} style={styles.textItem}>
-                        <Text style={styles.text}>
-                          <Text style={styles.textKey}>{key}:</Text> {value}
-                        </Text>
+                <ScrollView fadingEdgeLength={50}>
+                  <View onStartShouldSetResponder={() => true}>
+                    {typeof modalData === "string" && (
+                      <View style={styles.textBox}>
+                        <Text style={styles.text}>{modalData}</Text>
                       </View>
-                    ))}
-                  </View>
-                ))}
-              {typeof modalData === "object" &&
-                modalTitle === "Scene Appearances" &&
-                modalData.map(
-                  (item, index) =>
-                    "scene" in item && (
-                      <View key={index} style={styles.textBox}>
-                        <View key={index} style={styles.textItem}>
-                          <Text style={styles.text}>
-                            <Text style={styles.textKey}>
-                              Scene #{index + 1}:
-                            </Text>{" "}
-                            {item.scene}
-                          </Text>
+                    )}
+                    {typeof modalData === "object" &&
+                      modalTitle !== "Scene Appearances" &&
+                      modalData.map((item, index) => (
+                        <View key={index} style={styles.textBox}>
+                          {Object.entries(item).map(([key, value]) => (
+                            <View key={key} style={styles.textItem}>
+                              <Text style={styles.text}>
+                                <Text style={styles.textKey}>{key}:</Text>{" "}
+                                {value}
+                              </Text>
+                            </View>
+                          ))}
                         </View>
-                      </View>
-                    )
-                )}
-            </ScrollView>
+                      ))}
+                    {typeof modalData === "object" &&
+                      modalTitle === "Scene Appearances" &&
+                      modalData.map(
+                        (item, index) =>
+                          "scene" in item && (
+                            <View key={index} style={styles.textBox}>
+                              <View key={index} style={styles.textItem}>
+                                <Text style={styles.text}>
+                                  <Text style={styles.textKey}>
+                                    Scene #{index + 1}:
+                                  </Text>{" "}
+                                  {item.scene}
+                                </Text>
+                              </View>
+                            </View>
+                          )
+                      )}
+                  </View>
+                </ScrollView>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
-          {/* </TouchableWithoutFeedback> */}
-        </View>
-        {/* </TouchableWithoutFeedback> */}
+        </TouchableWithoutFeedback>
       </Modal>
     </View>
   );
