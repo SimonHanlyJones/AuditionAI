@@ -80,7 +80,7 @@ The project uses React Native Expo with EAS. Expo is a platform that abstracts a
 
 https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/1cd2c629-3f10-4c36-9028-25f3934bca1a
 
-2. Download this text file which contains a script of Romeo and Juliet, which can be used as a demo script for our app's features
+2. Download this text file which contains a script of Romeo and Juliet, which can be used as a demo script for our app's features https://drive.google.com/file/d/1oXoQR_ajyewGfu8FnUcBAi_l1jH_nTod/view?usp=sharing
 
 ## Non-preferred method: Download Build and Clone Repo
 While it is preferred that the user download an run the APK at the above link on their android phone.
@@ -104,4 +104,4 @@ https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/dde109d2-ad15-4dea-
 ```
 	yarn run android
 ```
-
+7. Download this text file which contains a script of Romeo and Juliet, which can be used as a demo script for our app's features https://drive.google.com/file/d/1oXoQR_ajyewGfu8FnUcBAi_l1jH_nTod/view?usp=sharing
