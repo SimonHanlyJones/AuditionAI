@@ -326,7 +326,7 @@ export async function getSceneText(
   console.log("parsed JSON: ", response);
 
   // make sure the user character is in the script
-  if (!checkForUserCharacter(response, userCharacter)) {
+  if (!(await checkForUserCharacter(response, userCharacter))) {
     console.log("User character not found in scene script, trying to force it");
     response = await getCorrectUserCharacter(
       script,
@@ -335,7 +335,7 @@ export async function getSceneText(
     );
   }
   // Throw error if no user character found
-  if (!checkForUserCharacter(response, userCharacter)) {
+  if (!(await checkForUserCharacter(response, userCharacter))) {
     console.error("User character not found in scene script", response);
   }
 
@@ -347,10 +347,18 @@ async function checkForUserCharacter(
   userCharacter: string
 ): Promise<boolean> {
   for (let line of sceneScript.dialogue) {
+    // console.log(
+    //   "CHARACTER CHECK, line.character.toUpperCase()",
+    //   line.character.toUpperCase(),
+    //   "userCharacter.toUpperCase()",
+    //   userCharacter.toUpperCase()
+    // );
     if (line.character.toUpperCase() === userCharacter.toUpperCase()) {
+      console.log("user character match");
       return true;
     }
   }
+  console.log("no user character match");
 
   return false;
 }
@@ -380,7 +388,7 @@ export async function getCorrectUserCharacter(
   console.log("PROMPT:", prompt);
   console.log("script length:", script.length);
 
-  console.log("Scene script request sent, waiting for response");
+  console.log("Scene script FIXUP request sent, waiting for response");
   var response = await callGemini(script, prompt);
   console.log("response received, attempting to parse JSON");
   response = await parseJSONString(response);
