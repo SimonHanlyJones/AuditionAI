@@ -75,3 +75,33 @@ FLOWCHART
 The project uses React Native Expo with EAS. Expo is a platform that abstracts away much of the native code requirements of react native. EAS is an addition feature that allows the use of additional libraries. 
 
 # Installation Instructions
+## Preferred Method
+1. Our preferred method of installation is for the user to directly download and install the APK file available at this link on their Android phone. This will run the project without the need for any additional steps
+
+https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/1cd2c629-3f10-4c36-9028-25f3934bca1a
+
+2. Download this text file which contains a script of Romeo and Juliet, which can be used as a demo script for our app's features
+
+## Non-preferred method: Download Build and Clone Repo
+While it is preferred that the user download an run the APK at the above link on their android phone.
+### Download development build
+
+1. Install the expo go app on their android phone from the play store. 
+
+2. Download and install this development build of Audition AI:
+https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/dde109d2-ad15-4dea-807b-320ed35f5923
+
+3. Clone this repo
+```
+  git clone https://github.com/SimonHanlyJones/AuditionAI.git
+```
+5. The user must then run yarn install
+```
+	yarn install
+```
+5. Connect android phone with a USB cable 
+6. Start the development server, which will launch the app on the phone.
+```
+	yarn run android
+```
+
