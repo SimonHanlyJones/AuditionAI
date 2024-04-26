@@ -1,8 +1,7 @@
 import React, { useRef, useEffect } from "react";
-import { View, Text, FlatList, StyleSheet, Button } from "react-native";
+import { View, Text, FlatList } from "react-native";
 import { styles, colors } from "@/primitives";
-import { LinearGradient } from "expo-linear-gradient";
-import { TabContext, SceneScript } from "@/screens/ProjectScreen/TabContext";
+import { SceneScript } from "@/screens/ProjectScreen/TabContext";
 
 type Dialogue = {
   character: string;
