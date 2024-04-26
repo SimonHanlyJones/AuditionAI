@@ -1,7 +1,7 @@
 # Audition AI
-Ryan Mann
-
 Simon Hanly-Jones
+
+Ryan Mann
 
 Emmanuel Isaac
 
