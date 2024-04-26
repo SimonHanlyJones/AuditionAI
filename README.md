@@ -1,6 +1,8 @@
 # Audition AI
 Ryan Mann
+
 Simon Hanly-Jones
+
 Emmanuel Isaac
 
 Google Cloud ID: audition-a-i-ak9x5l
