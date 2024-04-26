@@ -1,33 +1,12 @@
 import { playAudio } from "@/utlis/voiceUtlis";
-// import LineLearning from "@/components/LineLearning";
 import { SceneScript } from "@/screens/ProjectScreen/TabContext";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import Voice from "@react-native-voice/voice";
-import stringSimilarity from "string-similarity";
 import VoiceRecognition from "./VoiceRecognition";
-import { styles, colors } from "@/primitives";
+import { styles } from "@/primitives";
 
-import { View, Text, Button, Pressable } from "react-native";
-
-// export type SceneScript = {
-//   dialogue: {
-//     character: string;
-//     text: string;
-//     gender: string;
-//     uri?: string;
-//     voice?: string;
-//   }[];
-// };
-
-type Dialogue = {
-  character: string;
-  text: string;
-  gender: string;
-  uri?: string;
-  voice?: string;
-};
+import { View, Pressable } from "react-native";
 
 type LineLearningProps = {
   sceneScript: SceneScript;
@@ -47,15 +26,6 @@ function LineLearning(props: LineLearningProps) {
   const [continuePlaying, setContinuePlaying] = useState(() => () => {});
 
   // VOICE RECOGNITION
-
-  // const handleVoiceResult = (text: string) => {
-  //   if (waitingForUser) {
-  //     continuePlaying();
-  //     console.log("user should continue", waitingForUser);
-  //   }
-  //   console.log("Voice recognition result:", text);
-  //   // Add logic to compare text or handle the result
-  // };
   const handleVoiceResult = useCallback(
     (text: string) => {
       console.log("Voice recognition result:", text);
@@ -70,7 +40,6 @@ function LineLearning(props: LineLearningProps) {
   const [partialText, setPartialText] = useState("");
 
   const handlePartialResult = (text: string) => {
-    // console.log("Received partial text:", text);
     setPartialText(text); // Update state with partial result
   };
 
@@ -79,7 +48,6 @@ function LineLearning(props: LineLearningProps) {
       console.log("User should continue", waitingForUser); // Logging current state before it changes
       continuePlaying(); // Call the function that resolves the promise
     }
-    // console.error("Voice recognition error:", error);
   };
 
   useEffect(() => {
@@ -157,7 +125,6 @@ function LineLearning(props: LineLearningProps) {
         const line = dialogue[i];
         props.setCurrentLineIndex(i);
 
-        // if (line.character.toUpperCase() === userCharacter.toUpperCase()) {
         if (
           line.character.toUpperCase().startsWith(userCharacter.toUpperCase())
         ) {
@@ -243,10 +210,6 @@ function LineLearning(props: LineLearningProps) {
           size={36}
         />
       </Pressable>
-      {/* {isPlaying && waitingForUser && (
-        <Button title="Continue Playing" onPress={() => continuePlaying()} />
-      )} */}
-
       <View>
         <VoiceRecognition
           isListening={isListening}

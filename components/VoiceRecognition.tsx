@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Button, Text, View, LogBox } from "react-native";
+import { View, LogBox } from "react-native";
 import Voice from "@react-native-voice/voice";
-import { styles, colors } from "@/primitives";
 
 LogBox.ignoreLogs(["new NativeEventEmitter"]);
 

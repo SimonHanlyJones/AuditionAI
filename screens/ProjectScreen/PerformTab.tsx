@@ -1,45 +1,13 @@
-import { ActivityIndicator, Text, View, Button } from "react-native";
-import { playAudio } from "@/utlis/voiceUtlis";
+import { ActivityIndicator, Text, View } from "react-native";
 import LineLearning from "@/components/LineLearning";
 import DialogueList from "@/components/PerformDialogueList";
-import { TabContext, SceneScript } from "./TabContext";
-import { SetStateAction, useContext, useEffect, useState } from "react";
+import { TabContext } from "./TabContext";
+import { useContext, useState } from "react";
 import { styles, colors } from "@/primitives";
-import { useRoute, Screens } from "@/navigation";
-
-// export type TabContextInfo = {
-//   project: ProjectInfo;
-//   character: CharacterInfo;
-//   scene: SceneInfo;
-//   sceneScript?: SceneScript;
-//   sceneScriptLoading: boolean;
-//   voicesLoading: boolean;
-// };
-
-// export type SceneScript = {
-//   dialogue: {
-//     character: string;
-//     text: string;
-//     gender: string;
-//     uri?: string;
-//     voice?: string;
-//   }[];
-// };
 
 export function PerformTab() {
   const tabContext = useContext(TabContext);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
-
-  // useEffect(() => {
-  //   if (
-  //     tabContext &&
-  //     tabContext?.info &&
-  //     tabContext?.info?.sceneScript &&
-  //     !tabContext?.info?.voicesLoading
-  //   ) {
-  //     console.log("Voice data received:", tabContext.info.sceneScript);
-  //   }
-  // }, [tabContext?.info.sceneScript]);
 
   if (tabContext?.info.voicesLoading) {
     return (
