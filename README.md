@@ -88,10 +88,10 @@ The project uses React Native Expo with EAS. Expo is a platform that abstracts a
 # Installation Instructions
 ## Preferred Method
 1. Our preferred method of installation is for the user to directly download and install the APK file available at this link on their Android phone. This will install our app AuditionAI, which can be run like any other android app without the need for any additional steps
+https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/390407f3-12fe-4794-944c-668c2cefa674
 
-<img src="https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/1cd2c629-3f10-4c36-9028-25f3934bca1a" width="300">
-
-2. Download this text file on your phone which contains a script of Romeo and Juliet, which can be used as a demo script for our app's features https://drive.google.com/file/d/1oXoQR_ajyewGfu8FnUcBAi_l1jH_nTod/view?usp=sharing
+2. Download this text file on your phone which contains a script of Romeo and Juliet, which can be used as a demo script for our app's features
+   https://drive.google.com/file/d/1oXoQR_ajyewGfu8FnUcBAi_l1jH_nTod/view?usp=sharing
 
 ## Non-preferred method: Download Build and Clone Repo
 While it is preferred that the user download an run the preview APK at the above link on their android phone, it is also possible to recreate the development environment with the steps below:
