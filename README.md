@@ -105,7 +105,7 @@ While it is preferred that the user download an run the preview APK at the above
 1. Set up your computer as an Expo Development Environment by following the steps on this website: https://reactnative.dev/docs/environment-setup?package-manager=yarn&guide=quickstart
 2. Install the expo go app on your android phone from the play store. 
 
-3. Download and install this development build of Audition AI, this is a testing build which requires a connection to a computer to work
+3. Download and install this development build of Audition AI (on the android phone), this is a testing build which requires a connection to a computer to work
    https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/e21c87f5-ec7c-4869-aa90-f88ac3ded879
 
 4. Clone this repo on your computer in bash or powershell
