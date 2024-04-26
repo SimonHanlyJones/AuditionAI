@@ -16,11 +16,11 @@ We have made a React-Native android app that leverages Gemini AI (Gemini Pro 1.5
 
 ### Character Breakdown
 
-INSERT SCREENSHO
+INSERT SCREENSHOT
 
 The idea is to give the actor a comprehensive picture of their character so that they can portray them in a way that makes sense with the rest of the story .
 
-The actor is proved with a detailed breakdown of their chosen character with the following headings:
+The actor is provided with a detailed breakdown of their chosen character with the following headings:
 1. Character Overview
 2. Personality Traits
 3. Physical Traits
@@ -46,18 +46,18 @@ Again Gemini Pro 1.5 is provided the entire script, and asked to return a specif
 
 SCREENSHOT
 
-The final core feature of our app is performance/ Line Learning. The objective is to allow actors to practice their scenes with AI actors so they  can learn their lines more easily. We provide a unique voice id to each 'non-player character' which then uses Vertex AI's voice synthesis model to generate a consistent voice for that character.
+The final core feature of our app is performance/ line learning. The objective is to allow actors to practice their scenes with AI actors so they  can learn their lines more easily. We provide a unique voice id to each 'non-player character' which then uses Vertex AI's voice synthesis model to generate a consistent voice for that character.
 When it is the user's turn to perform a line we use Speech to Text functionality to identify when the user is finished talking and the other AI actors should proceed. 
 ## User Flow
 The user is first promoted to select a script, usually from a play or movie, from their device.
 
 SCREENSHOT
 
-This will the present the user a list of the characters in the script, the user then choses their character.
+This will present the user a list of the characters in the script, the user then choses their character.
 
 SCREENSHOT
 
-The user then choses their audition scene, or the scene they they want to practice.
+The user then chooses their audition scene, or the scene they they want to practice.
 
 SCREENSHOT
 
@@ -76,32 +76,38 @@ The project uses React Native Expo with EAS. Expo is a platform that abstracts a
 
 # Installation Instructions
 ## Preferred Method
-1. Our preferred method of installation is for the user to directly download and install the APK file available at this link on their Android phone. This will run the project without the need for any additional steps
+1. Our preferred method of installation is for the user to directly download and install the APK file available at this link on their Android phone. This will install our app AuditionAI, which can be run like any other android app without the need for any additional steps
 
 https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/1cd2c629-3f10-4c36-9028-25f3934bca1a
 
-2. Download this text file which contains a script of Romeo and Juliet, which can be used as a demo script for our app's features https://drive.google.com/file/d/1oXoQR_ajyewGfu8FnUcBAi_l1jH_nTod/view?usp=sharing
+2. Download this text file on your phone which contains a script of Romeo and Juliet, which can be used as a demo script for our app's features https://drive.google.com/file/d/1oXoQR_ajyewGfu8FnUcBAi_l1jH_nTod/view?usp=sharing
 
 ## Non-preferred method: Download Build and Clone Repo
 While it is preferred that the user download an run the APK at the above link on their android phone.
 ### Download development build
 
-1. Install the expo go app on their android phone from the play store. 
+1. Set up your computer as an Expo Development Envornment by following the steps on this website: https://reactnative.dev/docs/environment-setup?package-manager=yarn&guide=quickstart
+2.  Install the expo go app on your android phone from the play store. 
 
-2. Download and install this development build of Audition AI:
-https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/dde109d2-ad15-4dea-807b-320ed35f5923
+3. Download and install this development build of Audition AI, this is a testing build which requires a connection to a computer to work
+   https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/e21c87f5-ec7c-4869-aa90-f88ac3ded879
 
-3. Clone this repo
+4. Clone this repo on your computer in bash or powershell
 ```
   git clone https://github.com/SimonHanlyJones/AuditionAI.git
 ```
-5. The user must then run yarn install
+5. On your computer computer in bash or powershell enter the project directory
+```
+	cd AuditionAI
+```
+5. On your computer install the neccisary dependancies
 ```
 	yarn install
 ```
-5. Connect android phone with a USB cable 
-6. Start the development server, which will launch the app on the phone.
+6. Connect your android phone with a USB cable 
+7. Start the development server, which will launch the app on the phone.
 ```
 	yarn run android
 ```
-7. Download this text file which contains a script of Romeo and Juliet, which can be used as a demo script for our app's features https://drive.google.com/file/d/1oXoQR_ajyewGfu8FnUcBAi_l1jH_nTod/view?usp=sharing
+8. Download this text file onto your phone which contains a script of Romeo and Juliet, which can be used as a demo script for our app's features
+https://drive.google.com/file/d/1oXoQR_ajyewGfu8FnUcBAi_l1jH_nTod/view?usp=sharing
