@@ -74,7 +74,7 @@ The user then chooses their audition scene, or the scene they they want to pract
 
 <img src="https://github.com/SimonHanlyJones/AuditionAI/assets/46434944/a4004884-6720-46d2-bd56-b962a6f2260b" width="300">
 
-The core functions show above are then made available to the user.
+The core functions shown above are then made available to the user.
 
 ## Technical Details
 As mentioned above, the app relies on;
