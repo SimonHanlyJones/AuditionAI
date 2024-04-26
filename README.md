@@ -10,6 +10,8 @@ Google Firebase ID: audition-a-i-ak9x5l
 
 Welcome to Audition AI powered by Google Gemini AI and Vertex AI.
 
+Video Demo: https://youtu.be/tX6t81S99ko
+
 ## Core features
 
 This project aims to help actors learn about characters in order to prepare for performances and auditions. The concept is to provide the actor with three tools:
