@@ -58,7 +58,7 @@ Again Gemini Pro 1.5 is provided the entire script, and asked to return a specif
 
 <img src="https://github.com/SimonHanlyJones/AuditionAI/assets/46434944/987aa165-190a-49a9-901f-cb9f9eeca30e" width="300">
 
-The final core feature of our app is performance/ line learning. The objective is to allow actors to practice their scenes with AI actors so they  can learn their lines more easily. We provide a unique voice id to each 'non-player character' which then uses Vertex AI's voice synthesis model to generate a consistent voice for that character.
+The final core feature of our app is performance/ line learning. The objective is to allow actors to practice their scenes with AI actors so they can learn their lines more easily. We provide a unique voice id to each 'non-player character' which then uses Vertex AI's voice synthesis model to generate a consistent voice for that character.
 When it is the user's turn to perform a line we use Speech to Text functionality to identify when the user is finished talking and the other AI actors should proceed. 
 ## User Flow
 The user is first promoted to select a script, usually from a play or movie, from their device.
@@ -79,7 +79,7 @@ The core functions shown above are then made available to the user.
 ## Technical Details
 As mentioned above, the app relies on;
 1. React Native on the frontend, HTTPS requests are made to the backend
-2. Google Firebase Functions are used as a backend wrapper, to securely store the API keys for for Gemini AI and Vertex AI. These functions take the HTTPS requests from the frontend, and format them and pass them to the Google API's for Gemini AI and Vertex AI. In this way, the API keys are not exposed to the user.  
+2. Google Firebase Functions are used as a backend wrapper, to securely store the API keys for Gemini AI and Vertex AI. These functions take the HTTPS requests from the frontend, and format them and pass them to the Google API's for Gemini AI and Vertex AI. In this way, the API keys are not exposed to the user.  
 ### Data Flowchart
 The flow data is shown on this flowchart:
 
@@ -102,8 +102,8 @@ While it is preferred that the user download an run the preview APK at the above
 
 ### Download development build
 
-1. Set up your computer as an Expo Development Envornment by following the steps on this website: https://reactnative.dev/docs/environment-setup?package-manager=yarn&guide=quickstart
-2.  Install the expo go app on your android phone from the play store. 
+1. Set up your computer as an Expo Development Environment by following the steps on this website: https://reactnative.dev/docs/environment-setup?package-manager=yarn&guide=quickstart
+2. Install the expo go app on your android phone from the play store. 
 
 3. Download and install this development build of Audition AI, this is a testing build which requires a connection to a computer to work
    https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/e21c87f5-ec7c-4869-aa90-f88ac3ded879
