@@ -1,4 +1,4 @@
-import { playAudio } from "@/utlis/voiceUtlis";
+import { AudioManager } from "@/utlis/voiceUtlis";
 import { SceneScript } from "@/screens/ProjectScreen/TabContext";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -7,6 +7,7 @@ import VoiceRecognition from "./VoiceRecognition";
 import { styles } from "@/primitives";
 
 import { View, Pressable } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 
 type LineLearningProps = {
   sceneScript: SceneScript;
@@ -24,6 +25,27 @@ function LineLearning(props: LineLearningProps) {
 
   const [waitingForUser, setWaitingForUser] = useState(false);
   const [continuePlaying, setContinuePlaying] = useState(() => () => {});
+  const audioManagerRef = useRef<AudioManager | null>(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        pausePerformance();
+      };
+    }, [])
+  );
+
+  useEffect(() => {
+    // Initialize the AudioManager instance
+    audioManagerRef.current = new AudioManager();
+
+    return () => {
+      // Stop audio and clean up on component unmount
+      if (audioManagerRef.current) {
+        audioManagerRef.current.stopAudio();
+      }
+    };
+  }, []);
 
   // VOICE RECOGNITION
   const handleVoiceResult = useCallback(
@@ -74,6 +96,9 @@ function LineLearning(props: LineLearningProps) {
 
   function resetPerformance() {
     console.log("resetting performance");
+    if (audioManagerRef.current && !isListening) {
+      audioManagerRef.current.stopAudio();
+    }
     isPlayingRef.current = false;
     setIsPlaying(false);
     setWaitingForUser(false);
@@ -82,7 +107,10 @@ function LineLearning(props: LineLearningProps) {
   }
 
   function pausePerformance() {
-    console.log("resetting performance");
+    console.log("pausing performance");
+    if (audioManagerRef.current && !isListening) {
+      audioManagerRef.current.stopAudio();
+    }
     isPlayingRef.current = false;
     setIsPlaying(false);
     setWaitingForUser(false);
@@ -138,7 +166,9 @@ function LineLearning(props: LineLearningProps) {
               " voiceID: ",
               line.voice
             );
-            await playAudio(line.uri);
+            if (audioManagerRef.current) {
+              await audioManagerRef.current.playAudio(line.uri);
+            }
           } catch (error) {
             console.error(`Failed to play audio for line: ${error}`);
           }

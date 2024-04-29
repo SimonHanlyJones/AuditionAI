@@ -34,39 +34,86 @@ interface PlaybackStatus {
   isLoaded?: boolean;
   error?: string;
 }
-export async function playAudio(uri: string) {
-  const soundObject = new Audio.Sound();
-  try {
-    // Load the audio file from the provided URI
-    await soundObject.loadAsync({ uri: uri });
-    // Play the audio file
-    await soundObject.playAsync();
 
-    // Return a Promise that only resolves when the audio finishes playing
-    return new Promise<void>((resolve, reject) => {
-      soundObject.setOnPlaybackStatusUpdate(
-        (playbackStatus: PlaybackStatus) => {
-          if (playbackStatus.didJustFinish) {
-            // Resolve the promise when the audio has finished playing
-            soundObject.unloadAsync(); // Cleanup the sound object
-            resolve();
-          } else if (!playbackStatus.isLoaded) {
-            // Check if there is an error
-            if (playbackStatus.error) {
+export class AudioManager {
+  private soundObject = new Audio.Sound();
+
+  async playAudio(uri: string): Promise<void> {
+    try {
+      // Load the audio file from the provided URI
+      await this.soundObject.loadAsync({ uri: uri });
+      // Play the audio file
+      await this.soundObject.playAsync();
+
+      // Return a Promise that only resolves when the audio finishes playing
+      return new Promise<void>((resolve, reject) => {
+        this.soundObject.setOnPlaybackStatusUpdate(
+          (playbackStatus: PlaybackStatus) => {
+            if (playbackStatus.didJustFinish) {
+              // Resolve the promise when the audio has finished playing
+              this.unloadSound();
+              resolve();
+            } else if (playbackStatus.error) {
+              // Check if there is an error
               console.log(`Playback error: ${playbackStatus.error}`);
-              soundObject.unloadAsync(); // Cleanup the sound object
+              this.unloadSound();
               reject(new Error(`Playback error: ${playbackStatus.error}`));
             }
           }
-        }
-      );
-    });
-  } catch (error) {
-    console.error("Error loading or playing sound:", error);
-    soundObject.unloadAsync(); // Ensure cleanup on error
-    throw error; // Rethrow if you want to handle this error outside the function
+        );
+      });
+    } catch (error) {
+      console.error("Error loading or playing sound:", error);
+      this.unloadSound(); // Ensure cleanup on error
+      throw error; // Rethrow if you want to handle this error outside the function
+    }
+  }
+
+  async stopAudio(): Promise<void> {
+    // Stop the audio if it is currently playing
+
+    await this.soundObject.stopAsync();
+    // Unload the sound object to free up resources
+    await this.unloadSound();
+  }
+
+  private async unloadSound(): Promise<void> {
+    await this.soundObject.unloadAsync();
   }
 }
+// export async function playAudio(uri: string) {
+//   const soundObject = new Audio.Sound();
+//   try {
+//     // Load the audio file from the provided URI
+//     await soundObject.loadAsync({ uri: uri });
+//     // Play the audio file
+//     await soundObject.playAsync();
+
+//     // Return a Promise that only resolves when the audio finishes playing
+//     return new Promise<void>((resolve, reject) => {
+//       soundObject.setOnPlaybackStatusUpdate(
+//         (playbackStatus: PlaybackStatus) => {
+//           if (playbackStatus.didJustFinish) {
+//             // Resolve the promise when the audio has finished playing
+//             soundObject.unloadAsync(); // Cleanup the sound object
+//             resolve();
+//           } else if (!playbackStatus.isLoaded) {
+//             // Check if there is an error
+//             if (playbackStatus.error) {
+//               console.log(`Playback error: ${playbackStatus.error}`);
+//               soundObject.unloadAsync(); // Cleanup the sound object
+//               reject(new Error(`Playback error: ${playbackStatus.error}`));
+//             }
+//           }
+//         }
+//       );
+//     });
+//   } catch (error) {
+//     console.error("Error loading or playing sound:", error);
+//     soundObject.unloadAsync(); // Ensure cleanup on error
+//     throw error; // Rethrow if you want to handle this error outside the function
+//   }
+// }
 async function getUniqueFilename() {
   const date = new Date();
   // Format date as 'YYYYMMDD_HHMMSSmmm'
