@@ -12,11 +12,27 @@ import { StatusBar } from "expo-status-bar";
 import { navigationStyle } from "@/primitives";
 import { styles } from "@/primitives";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomHeaderBackButton from "@/components/HeaderBackButton";
 
 const Stack = createStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+
+  // UNCOMMENT BELOW TO CLEAR ASYNC STORAGE
+  // useEffect(() => {
+  //   const clearStorage = async () => {
+  //     try {
+  //       await AsyncStorage.clear();
+  //       console.log("AsyncStorage was cleared!");
+  //     } catch (e) {
+  //       // handling exception
+  //       console.error("Failed to clear the async storage.", e);
+  //     }
+  //   };
+
+  //   clearStorage();
+  // }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -53,17 +69,26 @@ export default function App() {
         <Stack.Screen
           name="CharacterSelect"
           component={CharacterSelectScreen}
-          options={{ title: "Select Character" }}
+          options={{
+            title: "Select Character",
+            headerLeft: (props) => <CustomHeaderBackButton {...props} />,
+          }}
         />
         <Stack.Screen
           name="SceneSelect"
           component={SceneSelectScreen}
-          options={{ title: "Select Scene" }}
+          options={{
+            title: "Select Scene",
+            headerLeft: (props) => <CustomHeaderBackButton {...props} />,
+          }}
         />
         <Stack.Screen
           name="Project"
           component={ProjectScreen}
-          options={{ title: "Project" }}
+          options={{
+            title: "Project",
+            headerLeft: (props) => <CustomHeaderBackButton {...props} />,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

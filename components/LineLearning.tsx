@@ -30,7 +30,9 @@ function LineLearning(props: LineLearningProps) {
   useFocusEffect(
     useCallback(() => {
       return () => {
-        pausePerformance();
+        if (isPlayingRef.current) {
+          pausePerformance();
+        }
       };
     }, [])
   );

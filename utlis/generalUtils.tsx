@@ -30,7 +30,6 @@ export function consolidateDialogue(sceneScript: SceneScript): SceneScript {
 }
 
 export function cleanDialog(sceneScript: SceneScript): SceneScript {
-  // TODO?: we might want to just remove/modify brackets for the text-to-speech
   const updatedDialogues = sceneScript.dialogue
     .map((dialogue) => {
       return {

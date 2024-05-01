@@ -3,6 +3,7 @@ import * as FileSystem from "expo-file-system";
 import { compareTwoStrings } from "string-similarity";
 
 import { SceneScriptInfo } from "@/screens/scenes";
+import JSON5 from "json5";
 
 /**
  * Calls the 'Hello World' test function in Firebase Functions and retrieves the response message.
@@ -52,7 +53,10 @@ export const getScriptAndConvert = async () => {
       results = await uploadPdfForExtraction(result.assets[0].uri);
     } else if (fileType === "text/plain") {
       const fileUri = result.assets[0].uri;
-      const fileContent = await FileSystem.readAsStringAsync(fileUri);
+      let fileContent = await FileSystem.readAsStringAsync(fileUri);
+      // Replace square brackets with round brackets
+      fileContent = fileContent.replace(/\[/g, "(").replace(/\]/g, ")");
+
       results = fileContent;
     }
     return results;
@@ -107,10 +111,18 @@ async function uploadPdfForExtraction(pdfUri: string) {
  * @param {string} prompt - The prompt input for the Gemini service.
  * @return {string} The generated content based on the script and prompt.
  */
+let controller = new AbortController();
+
+export function abortGemini() {
+  controller.abort();
+}
+
 async function callGemini(script: string, prompt: string) {
   // url for local function emulation
   // const url = `http://127.0.0.1:5001/audition-a-i-ak9x5l/us-central1/callGemini`;
   const url = `https://callgemini-7dxvm6ugja-uc.a.run.app`;
+
+  controller = new AbortController(); // Create a new controller for the new request
 
   try {
     const response = await fetch(url, {
@@ -120,6 +132,7 @@ async function callGemini(script: string, prompt: string) {
         authorization: "duckduck",
       },
       body: JSON.stringify({ prompt: prompt, script: script }),
+      signal: controller.signal,
     });
 
     if (!response.ok) {
@@ -137,6 +150,9 @@ async function callGemini(script: string, prompt: string) {
       data.candidates[0].content.parts.length === 0 ||
       !data.candidates[0].content.parts[0].text
     ) {
+      if (data.candidates[0].finishReason === "RECITATION") {
+        throw new Error("RECITATION_ERROR");
+      }
       console.error("No meaningful AI output found: ", data);
       throw new Error("No meaningful AI output found.");
     }
@@ -146,6 +162,10 @@ async function callGemini(script: string, prompt: string) {
 
     return content;
   } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      console.log("Fetch request was aborted by the client.");
+      return undefined; // Optionally handle aborted state differently in your app
+    }
     console.error("Error during API call:", error);
     throw error;
   }
@@ -165,12 +185,14 @@ export async function getTitleAndCharacters(script: string) {
   Ensure that characters are listed only once even if they are called different things in the script, use the name for a character which is most commonly used within the script. Ensure that the titles and characters have normal formatting and case.
   
   SCRIPT:`;
-  console.log("PROMPT:", prompt);
-  console.log("script length:", script.length);
+
   console.log("PROMPT:", prompt);
   console.log("script length:", script.length);
   console.log("title and characters request sent");
   const response = await callGemini(script, prompt);
+  if (!response) {
+    return undefined;
+  }
   console.log("get title and characters response:", response);
   return await parseJSONString(response);
 }
@@ -182,6 +204,7 @@ export async function getTitleAndCharacters(script: string) {
  * @param {string} characterName - The name of the character to analyze.
  * @return {Promise<any>} A Promise that resolves to a JSON object containing insights about the character based on the script content.
  */
+
 export async function getCharacterAnalysis(
   script: string,
   characterName: string
@@ -201,20 +224,47 @@ export async function getCharacterAnalysis(
   7. **Important Scenes**: Identify and explain the scenes from the script where ${characterName} experiences significant change or development. Describe the context of these scenes and how they contribute to the character's arc. Explore the nuance of the scenes and ${characterName}'s perspective in detail, deliver as much insight as possible to your actor.
   
   8. **Scene Appearances**: An ordered list every scene from the script in which ${characterName} appears, provide a number that corresponds to the order in which the scene appears and a brief description of each scene to enable the actor to identify it. Make sure that the description is not a technical title, but an informal/informative summary of the scene.
+
   9. **Other insights**: Provide any additional insights or background information that can enhance my performance.
   
   The JSON object should be structured as follows:
   
   {
-      "characterOverview:": string,
-      "personalityTraits": [{"trait": string, "description": string}],
-      "physicalTraits": [{"trait": string, "description": string}],
-      "costumeChoices": string,
-      "mainRelationships": [{"name": string}, {"relationship": string}, {"description": string}],
-      "emotionalCharacterArc": string,
-      "importantScenes": [{"scene": string, "description": string}],
-      "sceneAppearances": [{"number": int, "scene": string}],
-      "otherInsights": string
+    "characterOverview": "string",
+    "personalityTraits": [
+      {
+        "trait": "string",
+        "description": "string"
+      }
+    ],
+    "physicalTraits": [
+      {
+        "trait": "string",
+        "description": "string"
+      }
+    ],
+    "costumeChoices": "string",
+    "mainRelationships": [
+      {
+        "name": "string",
+        "relationship": "string",
+        "description": "string"
+      }
+    ],
+    "emotionalCharacterArc": "string",
+    "importantScenes": [
+      {
+        "scene": "string",
+        "description": "string"
+      }
+    ],
+    "sceneAppearances": [
+      {
+        "number": int,
+        "scene": "string"
+      }
+    ],
+    "otherInsights": "string"
   }
   
   Please provide the analysis with no additional explanation, ensuring all insights are derived from the script content I have attached. Provide valid JSON in the format above do not add and fields or add any text that is not valid JSON.
@@ -226,6 +276,10 @@ export async function getCharacterAnalysis(
 
   console.log("analysis request sent, waiting for response");
   var response = await callGemini(script, prompt);
+  if (!response) {
+    return undefined;
+  }
+
   console.log("response received, parsing JSON");
   // response = await fixJSONGeminiCall(response)
   // console.log("parsed JSON: ", response)
@@ -245,6 +299,25 @@ export async function fixJSONGeminiCall(json: string) {
   return response;
 }
 
+function cleanJsonString(jsonString: string) {
+  // Replace single quotes with double quotes
+  jsonString = jsonString.replace(/'/g, '"');
+
+  // Remove trailing commas
+  jsonString = jsonString.replace(/,\s*}/g, "}");
+  jsonString = jsonString.replace(/,\s*]/g, "]");
+
+  // Add any additional clean up rules here
+
+  return jsonString;
+}
+
+function preprocessAIGeneratedJSON(output: string) {
+  // Escape special characters and fix common JSON string issues
+  const cleanedOutput = output.replace(/\\([\s\S])|(")/g, "\\$1$2");
+  return cleanedOutput;
+}
+
 /**
  * Asynchronously parses a JSON string after trimming, and handles any errors by throwing an "Invalid JSON string" error.
  *
@@ -253,13 +326,16 @@ export async function fixJSONGeminiCall(json: string) {
  */
 async function parseJSONString(jsonString: string) {
   try {
-    const trimmedJsonString = await trimJSONString(jsonString);
-    return JSON.parse(trimmedJsonString);
+    let string = await trimJSONString(jsonString);
+    string = preprocessAIGeneratedJSON(string);
+
+    return JSON5.parse(string);
   } catch (error) {
     try {
       const fixedJsonString = await fixJSONGeminiCall(jsonString);
       const retrimmedJsonString = await trimJSONString(fixedJsonString);
-      return JSON.parse(retrimmedJsonString); // Attempt to parse the corrected JSON
+      // const recleanedJsonString = cleanJsonString(retrimmedJsonString);
+      return JSON5.parse(retrimmedJsonString); // Attempt to parse the corrected JSON
     } catch (innerError) {
       // If parsing the corrected JSON also fails, throw an error
       throw new Error(
@@ -289,44 +365,54 @@ async function trimJSONString(jsonString: string) {
   return cleanedJsonString.substring(startIndex, endIndex + 1);
 }
 
+async function parseSceneOutput(jsonString: string) {
+  try {
+    let string = JSON5.parse(jsonString);
+    string = { dialogue: string };
+
+    return string;
+  } catch (error) {
+    throw new Error("JSON parsing failed after attempting to fix: " + error);
+  }
+}
+
 export async function getSceneText(
   script: string,
   sceneDescription: string,
   sceneNumber: number,
   userCharacter: string
-): Promise<SceneScriptInfo> {
+): Promise<SceneScriptInfo | undefined> {
   const prompt = `Your job is to read the script set out below, identify the scene that matches this description: 
   
   ${sceneDescription} where the character "${userCharacter}" appears.
 
   You must parse the full text of this scene into a JSON object with the following headings:
-  { "dialogue":
-    [
+  [
       {
-        "character": string,
-        "text": string,
-        "gender": string,
+        "character": "string",
+        "text": "string",
+        "gender": "string"
       }
-    ]
-  }
+  ]
   
-  Provide the related dialog for each character until that scene is complete, and any stage directions as a separate character named 'STAGE DIRECTIONS'. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations and that one character is named ${userCharacter}. Start and end the scene in the proper place, reading from the scene number: '${sceneNumber}'. Provide valid JSON in the format above. Fix any formatting errors.
-  Additionally ensure that the text is formatted correctly, with appropriate punctuation, spelling and spaces between each word; you are allowed to separate words by a space if they appear to accidentally have no space between them.
+  
+  Provide the related dialog for each character until that scene is complete, and any stage directions as a separate character named 'STAGE DIRECTIONS'. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations and that one character is named ${userCharacter}. Start and end the scene in the proper place. Provide valid list of JSON in the format above. Escape single quotes with double quotes. Escape all special characters with backslashes. Additionally ensure that the text is formatted correctly, with appropriate punctuation, spelling and spaces between each word; you are allowed to separate words by a space if they appear to have no space between them.
   
   SCRIPT:
   `;
   console.log("PROMPT:", prompt);
   console.log("script length:", script.length);
-  console.log("PROMPT:", prompt);
-  console.log("script length:", script.length);
 
   console.log("Scene script request sent, waiting for response");
   var response = await callGemini(script, prompt);
+  if (response === undefined) {
+    return undefined;
+  }
   console.log("response received, attempting to parse JSON");
-  response = await parseJSONString(response);
-  console.log("response received, parsing JSON");
-  // response = await fixJSONGeminiCall(response)
-  console.log("parsed JSON: ", response);
+  console.log("response: ", response);
+
+  response = await parseSceneOutput(response);
+  console.log("parsed JSON");
 
   if (!response.dialogue) {
     console.error("Dialog missing from response", response);
@@ -360,9 +446,6 @@ function checkForUserCharacter(
   return false;
 }
 
-/* TODO: better character matching 
-  using hacky character matching has edge cases that might fail, e.g. a name like Mr Darcy being closer to Mrs Darcy than Darcy
-*/
 export function getCorrectUserCharacter(
   sceneScript: SceneScriptInfo,
   userCharacter: string

@@ -42,7 +42,7 @@ export function ProjectSelectScreen() {
           cleanText(character)
         ),
       } as ProjectInfo;
-      // TODO: nicer to not have these decoupled like this
+
       setProjectToStorage(newProject);
       setProjects([...projects, newProject]);
     }
@@ -91,6 +91,9 @@ export function ProjectSelectScreen() {
           <View style={styles.loadingBox}>
             <ActivityIndicator size={40} color={colors.textColor} />
             <Text style={styles.loadingText}>Loading Script</Text>
+            <Text style={styles.loadingText}>
+              Please note this can take up to two minutes
+            </Text>
           </View>
         </View>
       </Modal>

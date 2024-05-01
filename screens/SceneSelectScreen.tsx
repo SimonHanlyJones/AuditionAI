@@ -1,6 +1,7 @@
 import { View, ScrollView, Pressable, Text } from "react-native";
 import { styles } from "@/primitives";
 import { useNavigation, useRoute, Screens } from "@/navigation";
+import HardwareBackButtonHandler from "@/components/BackButtonHandler";
 
 export function SceneSelectScreen() {
   const navigation = useNavigation<Screens.SceneSelect>();
@@ -21,6 +22,7 @@ export function SceneSelectScreen() {
 
   return (
     <View style={styles.screenContainer}>
+      <HardwareBackButtonHandler />
       <ScrollView fadingEdgeLength={50}>
         {scenesItems.map((item, index) => (
           <Pressable

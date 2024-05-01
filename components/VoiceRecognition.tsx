@@ -68,6 +68,7 @@ function VoiceRecognition(props: VoiceRecognitionProps) {
       startListening();
     }
     if (!props.isListening) {
+      stopListening();
       Voice.destroy().then(Voice.removeAllListeners);
     }
   }, [props.isListening]);
@@ -82,17 +83,6 @@ function VoiceRecognition(props: VoiceRecognitionProps) {
   }
 
   return <View></View>;
-  // return (
-  //   <View>
-  //     <Button
-  //       title={props.isListening ? "Stop Listening" : "Start Listening"}
-  //       onPress={
-  //         props.isListening ? stopListening : () => props.setIsListening(true)
-  //       }
-  //     />
-  //     <Text style={styles.text}>Partial Recognized Text: {partialText}</Text>
-  //   </View>
-  // );
 }
 
 export default VoiceRecognition;

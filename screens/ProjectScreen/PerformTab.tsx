@@ -9,11 +9,25 @@ export function PerformTab() {
   const tabContext = useContext(TabContext);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
 
+  if (tabContext?.info.scriptErrorMessage) {
+    // Add a return statement to handle cases where recitation error
+    return (
+      <View style={styles.screenContainer}>
+        <Text style={styles.sceneCharacterName}>
+          {tabContext?.info.scriptErrorMessage}
+        </Text>
+      </View>
+    );
+  }
+
   if (tabContext?.info.voicesLoading) {
     return (
       <View style={styles.loadingBox}>
         <ActivityIndicator size={40} color={colors.textColor} />
         <Text style={styles.loadingText}>Loading AI Actors</Text>
+        <Text style={styles.loadingText}>
+          Please note this can take up to two minutes
+        </Text>
       </View>
     );
   }

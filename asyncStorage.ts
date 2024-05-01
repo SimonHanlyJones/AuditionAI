@@ -3,7 +3,6 @@ import type { ProjectInfo } from "./screens/projects";
 import type { CharacterInfo } from "./screens/characters";
 import type { SceneScriptInfo } from "./screens/scenes";
 
-// TODO: make this hacky storage more robust
 const STORAGE_PREFIX = "auditionAIData_";
 const SEPARATOR = "_@_";
 

@@ -10,6 +10,7 @@ export type TabContextInfo = {
   sceneScript?: SceneScript;
   sceneScriptLoading: boolean;
   voicesLoading: boolean;
+  scriptErrorMessage?: string;
 };
 
 export type Dialogue = {

@@ -10,6 +10,7 @@ import { styles, colors } from "@/primitives";
 import { useNavigation, useRoute, Screens } from "@/navigation";
 import { CharacterInfo, getCharacterInfo } from "./characters";
 import { setCharacterToStorage, getCharacterFromStorage } from "@/asyncStorage";
+import HardwareBackButtonHandler from "@/components/BackButtonHandler";
 
 export function CharacterSelectScreen() {
   const navigation = useNavigation<Screens.CharacterSelect>();
@@ -30,25 +31,33 @@ export function CharacterSelectScreen() {
         );
         if (characterFromStorage === undefined) {
           character = await getCharacterInfo(project.script, characterName);
-          setCharacterToStorage(project.title, character);
+          if (character) {
+            setCharacterToStorage(project.title, character);
+          }
         } else {
           character = characterFromStorage;
         }
-        navigation.navigate("SceneSelect", {
-          project,
-          character,
-        });
-        setTimeout(() => setIsLoadingCharacter(false), 1000); // TODO: hacky delay so that the loading doesn't end before navigation
+        if (character) {
+          navigation.navigate("SceneSelect", {
+            project,
+            character,
+          });
+        }
+        setTimeout(() => setIsLoadingCharacter(false), 1000);
       },
     };
   });
 
   return (
     <View style={styles.screenContainer}>
+      <HardwareBackButtonHandler />
       {isLoadingCharacter ? (
         <View style={styles.loadingBox}>
           <ActivityIndicator size={40} color={colors.textColor} />
           <Text style={styles.loadingText}>Loading Character</Text>
+          <Text style={styles.loadingText}>
+            Please note this can take up to two minutes
+          </Text>
         </View>
       ) : (
         <ScrollView fadingEdgeLength={50}>

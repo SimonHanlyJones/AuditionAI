@@ -18,15 +18,26 @@ export interface CharacterInfo {
   sceneAppearances?: SceneInfo[];
   otherInsights?: string;
 }
-
 export async function getCharacterInfo(
   projectScript: string,
   characterName: string
-): Promise<CharacterInfo> {
-  const jsonResponse = await getCharacterAnalysis(projectScript, characterName);
-  const character: CharacterInfo = {
-    ...{ name: characterName },
-    ...jsonResponse,
-  } as CharacterInfo;
-  return character;
+): Promise<CharacterInfo | undefined> {
+  try {
+    const jsonResponse = await getCharacterAnalysis(
+      projectScript,
+      characterName
+    );
+    if (jsonResponse) {
+      const character: CharacterInfo = {
+        ...{ name: characterName },
+        ...jsonResponse,
+      };
+      return character;
+    } else {
+      return undefined; // Return undefined if the response doesn't exist or is invalid
+    }
+  } catch (error) {
+    console.error("Error fetching character analysis:", error);
+    return undefined; // Return undefined in case of an error
+  }
 }

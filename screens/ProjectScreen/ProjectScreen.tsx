@@ -18,6 +18,7 @@ import {
   getVoiceAndAddUriToSceneScript,
 } from "@/utlis/voiceUtlis";
 import { consolidateDialogue, cleanDialog } from "@/utlis/generalUtils";
+import HardwareBackButtonHandler from "@/components/BackButtonHandler";
 
 const Tabs = createBottomTabNavigator();
 
@@ -40,6 +41,7 @@ export function ProjectScreen() {
     scene,
     sceneScriptLoading: true,
     voicesLoading: true,
+    scriptErrorMessage: undefined,
   });
 
   /**
@@ -73,6 +75,23 @@ export function ProjectScreen() {
             console.log("POST await getting scene text");
           } catch (error) {
             console.error("Failed to fetch scene text:", error);
+
+            if (
+              error instanceof Error &&
+              error.message.includes("RECITATION_ERROR")
+            ) {
+              setTabContext((prevContext) => ({
+                ...prevContext,
+                scriptErrorMessage:
+                  "RECITATION ERROR FROM GEMINI AI - Please select a different scene or try again",
+              }));
+            } else {
+              setTabContext((prevContext) => ({
+                ...prevContext,
+                scriptErrorMessage:
+                  "ERROR - Please select a different scene or try again",
+              }));
+            }
           }
         } else {
           sceneScript = sceneScriptFromStorage;
@@ -81,14 +100,14 @@ export function ProjectScreen() {
         if (sceneScript) {
           sceneScript = consolidateDialogue(sceneScript); // adjacent dialogue added to same characters
           sceneScript = cleanDialog(sceneScript);
-        }
 
-        setTabContext((prevContext) => ({
-          ...prevContext,
-          sceneScript,
-          sceneScriptLoading: false,
-        }));
-        console.log("Scene Script set:", sceneScript);
+          setTabContext((prevContext) => ({
+            ...prevContext,
+            sceneScript,
+            sceneScriptLoading: false,
+          }));
+          console.log("Scene Script set:", sceneScript);
+        }
       }
     };
     fetchSceneText();
@@ -140,6 +159,7 @@ export function ProjectScreen() {
 
   return (
     <TabContext.Provider value={{ info: tabContext, setInfo: setTabContext }}>
+      <HardwareBackButtonHandler />
       <Tabs.Navigator
         initialRouteName="Analysis"
         screenOptions={{

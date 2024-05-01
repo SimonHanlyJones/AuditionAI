@@ -15,11 +15,24 @@ export function ScriptTab() {
     }
   }, [tabContext?.info.sceneScript]);
 
+  if (tabContext?.info.scriptErrorMessage) {
+    // Add a return statement to handle cases where recitation error
+    return (
+      <View style={styles.screenContainer}>
+        <Text style={styles.sceneCharacterName}>
+          {tabContext?.info.scriptErrorMessage}
+        </Text>
+      </View>
+    );
+  }
   if (tabContext?.info.sceneScriptLoading) {
     return (
       <View style={styles.loadingBox}>
         <ActivityIndicator size={40} color={colors.textColor} />
         <Text style={styles.loadingText}>Loading Script</Text>
+        <Text style={styles.loadingText}>
+          Please note this can take up to two minutes
+        </Text>
       </View>
     );
   }

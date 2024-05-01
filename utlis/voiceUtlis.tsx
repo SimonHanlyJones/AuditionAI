@@ -81,39 +81,6 @@ export class AudioManager {
     await this.soundObject.unloadAsync();
   }
 }
-// export async function playAudio(uri: string) {
-//   const soundObject = new Audio.Sound();
-//   try {
-//     // Load the audio file from the provided URI
-//     await soundObject.loadAsync({ uri: uri });
-//     // Play the audio file
-//     await soundObject.playAsync();
-
-//     // Return a Promise that only resolves when the audio finishes playing
-//     return new Promise<void>((resolve, reject) => {
-//       soundObject.setOnPlaybackStatusUpdate(
-//         (playbackStatus: PlaybackStatus) => {
-//           if (playbackStatus.didJustFinish) {
-//             // Resolve the promise when the audio has finished playing
-//             soundObject.unloadAsync(); // Cleanup the sound object
-//             resolve();
-//           } else if (!playbackStatus.isLoaded) {
-//             // Check if there is an error
-//             if (playbackStatus.error) {
-//               console.log(`Playback error: ${playbackStatus.error}`);
-//               soundObject.unloadAsync(); // Cleanup the sound object
-//               reject(new Error(`Playback error: ${playbackStatus.error}`));
-//             }
-//           }
-//         }
-//       );
-//     });
-//   } catch (error) {
-//     console.error("Error loading or playing sound:", error);
-//     soundObject.unloadAsync(); // Ensure cleanup on error
-//     throw error; // Rethrow if you want to handle this error outside the function
-//   }
-// }
 async function getUniqueFilename() {
   const date = new Date();
   // Format date as 'YYYYMMDD_HHMMSSmmm'
