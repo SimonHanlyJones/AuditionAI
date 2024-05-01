@@ -13,6 +13,7 @@ import { navigationStyle } from "@/primitives";
 import { styles } from "@/primitives";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomHeaderBackButton from "@/components/HeaderBackButton";
+import { loadResourcesAndDataAsync } from "./utlis/generalUtils";
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,7 @@ export default function App() {
     }, 2000);
     return () => clearTimeout(timer);
   }, []);
+  loadResourcesAndDataAsync();
 
   if (isLoading) {
     return (

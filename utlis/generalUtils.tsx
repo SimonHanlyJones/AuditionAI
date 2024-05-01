@@ -1,4 +1,6 @@
 import { SceneScript, Dialogue } from "@/screens/ProjectScreen/TabContext";
+import * as Font from "expo-font";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export function consolidateDialogue(sceneScript: SceneScript): SceneScript {
   const consolidatedDialogue: Dialogue[] = [];
@@ -51,4 +53,17 @@ export function cleanText(text: string): string {
     .replace(/\(.*?\)/g, "") // removing () brackets and included text
     .replace(/\[.*?\]/g, "") // removing [] brackets and included text
     .trim();
+}
+
+export async function loadResourcesAndDataAsync() {
+  try {
+    // Pre-load fonts
+    await Font.loadAsync({
+      ...MaterialCommunityIcons.font,
+    });
+  } catch (e) {
+    console.warn(e);
+  } finally {
+    console.log("Fonts loaded");
+  }
 }
