@@ -396,7 +396,7 @@ export async function getSceneText(
   ]
   
   
-  Provide the related dialog for each character until that scene is complete, and any stage directions as a separate character named 'STAGE DIRECTIONS'. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations and that one character is named ${userCharacter}. Start and end the scene in the proper place. Provide valid list of JSON in the format above. Escape single quotes with double quotes. Escape all special characters with backslashes. Additionally ensure that the text is formatted correctly, with appropriate punctuation, spelling and spaces between each word; you are allowed to separate words by a space if they appear to have no space between them.
+  Provide the related dialog for each character until that scene is complete, and any stage directions as a separate character named 'STAGE DIRECTIONS'. Identify the gender of the character as 'MALE', 'FEMALE' or 'UNKNOWN' with no deviation. Provide this with no additional explanation. Ensure character names are consistent throughout without added words or explanations and that one character is named ${userCharacter}. Start and end the scene in the proper place. Provide valid list of JSON in the format above.
   
   SCRIPT:
   `;
