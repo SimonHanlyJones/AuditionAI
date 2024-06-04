@@ -91,10 +91,9 @@ The project uses React Native Expo with EAS. Expo is a platform that abstracts a
 
 # Installation Instructions
 ## Preferred Method
-1. Our preferred method of installation is for the user to directly download and install the APK file available at this link on their Android phone. This will install our app AuditionAI, which can be run like any other android app without the need for any additional steps
-[https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/430d93fb-fb3e-4c0b-961a-78a0130e012f](https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/430d93fb-fb3e-4c0b-961a-78a0130e012f)
+1. Our preferred method of installation is for the user to directly download and install the APK file available at this link on their Android phone. This will install our app AuditionAI, which can be run like any other android app without the need for any additional steps: [preview build](https://drive.google.com/file/d/1AjmhkVf0U_JGRcBFtoEv6YWoQ4-2ceDD/view?usp=drive_link)
 
-2. Download this text file on your phone which contains a script of Romeo and Juliet, which can be used as a demo script for our app's features
+3. Download this text file on your phone which contains a script of Romeo and Juliet, which can be used as a demo script for our app's features
    https://drive.google.com/file/d/1oXoQR_ajyewGfu8FnUcBAi_l1jH_nTod/view?usp=sharing
 
 ## Non-preferred method: Download Build and Clone Repo
@@ -105,10 +104,9 @@ While it is preferred that the user download an run the preview APK at the above
 1. Set up your computer as an Expo Development Environment by following the steps on this website: https://reactnative.dev/docs/environment-setup?package-manager=yarn&guide=quickstart
 2. Install the expo go app on your android phone from the play store. 
 
-3. Download and install this development build of Audition AI (on the android phone), this is a testing build which requires a connection to a computer to work
-   [https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/4862c908-e5d6-4dd8-b3e3-28c4657b9bb6](https://expo.dev/accounts/simonhj/projects/AuditionAI/builds/4862c908-e5d6-4dd8-b3e3-28c4657b9bb6)
+3. Download and install this development build of Audition AI (on the android phone), this is a testing build which requires a connection to a computer to work [dev_build](https://drive.google.com/file/d/1Y5RgOYJ_fHbBAsJQJPEspRxqTwtkp1XD/view?usp=drive_link)
 
-4. Clone this repo on your computer in bash or powershell
+5. Clone this repo on your computer in bash or powershell
 ```
   git clone https://github.com/SimonHanlyJones/AuditionAI.git
 ```
